@@ -245,6 +245,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 12px;
+            align-content: start;
         }
 
         .skill-tag {
@@ -257,6 +258,9 @@
             color: var(--primary);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .skill-tag:hover {
