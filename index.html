@@ -13,15 +13,22 @@
         }
 
         :root {
-            --primary: #1d1d1f;
-            --secondary: #6e6e73;
+            --primary: #f8fafc;
+            --secondary: rgba(226, 232, 240, 0.72);
             --accent: #0071e3;
-            --surface: #ffffff;
-            --background: #fbfbfd;
-            --border: #d2d2d7;
+            --surface: rgba(15, 23, 42, 0.45);
+            --background: rgba(8, 11, 30, 0.18);
+            --background-gradient: linear-gradient(180deg, rgba(4, 7, 22, 0.68) 0%, rgba(15, 23, 42, 0.52) 35%, rgba(30, 27, 75, 0.38) 100%);
+            --border: rgba(148, 163, 184, 0.35);
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --glass-highlight: rgba(255, 255, 255, 0.45);
+            --glass-shadow: 0 24px 50px rgba(8, 15, 40, 0.45);
+            --glass-blur: 18px;
+            --glass-text: rgba(255, 255, 255, 0.9);
         }
 
         html {
@@ -33,9 +40,149 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: var(--primary);
-            background: var(--background);
+            color: var(--glass-text);
+            background-image: var(--background-gradient), url('night-starry-sky-forest-silhouette-astronomy-cosmos-5k-3840x2160-1679.jpg');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             font-size: 17px;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            position: relative;
+            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.22), transparent 55%), var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+            backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent 60%);
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            mix-blend-mode: screen;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .glass-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card--compact {
+            border-radius: 18px;
+            box-shadow: 0 18px 34px rgba(10, 20, 45, 0.28);
+        }
+
+        .glass-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            padding: 12px 20px;
+            font-weight: 500;
+            font-size: 15px;
+            letter-spacing: 0.01em;
+            color: var(--glass-text);
+            text-transform: none;
+            box-shadow: 0 12px 24px rgba(8, 15, 40, 0.22);
+            backdrop-filter: blur(14px) saturate(120%);
+            -webkit-backdrop-filter: blur(14px) saturate(120%);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+        }
+
+        .glass-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 32px rgba(8, 15, 40, 0.35);
+        }
+
+        .glass-chip--dense {
+            padding: 8px 16px;
+            font-size: 13px;
+            min-width: 0;
+        }
+
+        .glass-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.27), rgba(255, 255, 255, 0.12));
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 16px 30px rgba(8, 15, 40, 0.26);
+            backdrop-filter: blur(16px) saturate(130%);
+            -webkit-backdrop-filter: blur(16px) saturate(130%);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .glass-button:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(8, 15, 40, 0.32);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.18));
+        }
+
+        .glass-button:active {
+            transform: translateY(0);
+        }
+
+        .glass-button--primary {
+            background: linear-gradient(135deg, rgba(0, 113, 227, 0.78), rgba(0, 210, 255, 0.52));
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.58);
+        }
+
+        .glass-button--primary:hover {
+            background: linear-gradient(135deg, rgba(0, 140, 255, 0.86), rgba(0, 210, 255, 0.58));
+        }
+
+        .glass-button--ghost {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--glass-text);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+        }
+
+        .glass-button--ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-button--icon {
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            border-radius: 14px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+        }
+
+        .glass-button--compact {
+            padding: 10px 18px;
+            font-size: 15px;
+            box-shadow: 0 10px 18px rgba(8, 15, 40, 0.2);
         }
 
         /* Hero Section */
@@ -122,33 +269,8 @@
             flex-wrap: wrap;
         }
 
-        .cta-button {
-            display: inline-block;
-            padding: 14px 32px;
-            background: transparent;
-            color: var(--accent);
-            text-decoration: none;
-            border-radius: 980px;
-            font-weight: 400;
-            font-size: 17px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1.5px solid var(--accent);
-        }
-
-        .cta-button:hover {
-            background: var(--accent);
-            color: white;
-            transform: scale(1.02);
-        }
-
-        .cta-button.primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .cta-button.primary:hover {
-            background: #0077ED;
-            border-color: #0077ED;
+        .contact-card .cta-buttons {
+            margin-bottom: 32px;
         }
 
         /* Stats Section */
@@ -180,10 +302,11 @@
         }
 
         .stat-item {
-            padding: 40px 20px;
+            padding: 40px 28px;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
             transform: translateY(30px);
+            color: var(--glass-text);
         }
 
         .stat-item.revealed {
@@ -229,6 +352,10 @@
             align-items: start;
         }
 
+        .about-text {
+            padding: 48px;
+        }
+
         .about-text h2 {
             font-size: 48px;
             font-weight: 600;
@@ -252,24 +379,8 @@
         }
 
         .skill-tag {
-            background: var(--surface);
-            padding: 16px 20px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 400;
-            font-size: 15px;
-            color: var(--primary);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .skill-tag:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-            border-color: var(--accent);
+            min-height: 48px;
+            padding: 0;
         }
 
         /* Projects Section */
@@ -304,12 +415,10 @@
         }
 
         .project-card {
-            background: var(--surface);
-            border-radius: 18px;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
+            box-shadow: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid var(--border);
             opacity: 0;
             transform: translateY(30px);
         }
@@ -321,17 +430,16 @@
 
         .project-card:hover {
             transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
         }
 
         .project-header {
             height: 140px;
-            background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08));
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 56px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .project-icon {
@@ -339,11 +447,12 @@
             font-weight: 600;
             letter-spacing: 0.04em;
             text-transform: uppercase;
-            color: var(--accent);
+            color: rgba(15, 23, 42, 0.9);
         }
 
         .project-content {
             padding: 32px;
+            color: var(--glass-text);
         }
 
         .project-title {
@@ -369,13 +478,7 @@
         }
 
         .tech-tag {
-            background: var(--background);
-            color: var(--secondary);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 400;
-            border: 1px solid var(--border);
+            padding: 0;
         }
 
         .project-links {
@@ -383,23 +486,10 @@
             gap: 12px;
         }
 
-        .project-link {
-            display: inline-flex;
-            align-items: center;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 400;
-            padding: 10px 20px;
-            border: 1.5px solid var(--accent);
-            border-radius: 980px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 15px;
-        }
-
-        .project-link:hover {
-            background: var(--accent);
-            color: white;
-            transform: scale(1.02);
+        .project-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         /* Experience Section */
@@ -415,7 +505,7 @@
 
         .timeline-item {
             padding: 48px 0;
-            border-left: 2px solid var(--border);
+            border-left: 2px solid rgba(255, 255, 255, 0.18);
             padding-left: 48px;
             position: relative;
             opacity: 0;
@@ -438,6 +528,11 @@
             left: -7px;
             top: 52px;
             border-radius: 50%;
+        }
+
+        .timeline-content {
+            padding: 32px;
+            border-radius: 24px;
         }
 
         .timeline-content h3 {
@@ -465,53 +560,41 @@
         .contact {
             padding: 120px 0;
             background: var(--surface);
+        }
+
+        .contact-card {
+            padding: 64px;
             text-align: center;
         }
 
-        .contact h2 {
+        .contact-card h2 {
             font-size: 48px;
             font-weight: 600;
             margin-bottom: 24px;
             letter-spacing: -0.015em;
         }
 
-        .contact p {
+        .contact-card p {
             font-size: 21px;
             color: var(--secondary);
-            margin-bottom: 48px;
+            margin: 0 auto 40px;
+            max-width: 680px;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 24px;
+            gap: 16px;
             margin-top: 48px;
             flex-wrap: wrap;
         }
 
         .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 56px;
-            height: 56px;
-            background: var(--background);
-            border-radius: 50%;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 16px;
+            letter-spacing: 0.12em;
+            font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.08em;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid var(--border);
             text-transform: uppercase;
-        }
-
-        .social-link:hover {
-            background: var(--accent);
-            color: white;
-            transform: scale(1.1);
-            border-color: var(--accent);
+            color: inherit;
         }
 
         /* Scroll Reveal */
@@ -579,6 +662,22 @@
                 padding: 80px 0;
             }
 
+            .about-text {
+                padding: 32px;
+            }
+
+            .contact-card {
+                padding: 40px 24px;
+            }
+
+            .glass-card {
+                border-radius: 20px;
+            }
+
+            .glass-card.glass-card--compact {
+                border-radius: 16px;
+            }
+
             .section-title {
                 font-size: 32px;
                 margin-bottom: 48px;
@@ -624,9 +723,9 @@
                 digital banking platforms across global markets.
             </p>
             <div class="cta-buttons">
-                <a href="#projects" class="cta-button primary">View My Work</a>
-                <a href="#contact" class="cta-button">Get In Touch</a>
-                <a href="https://github.com/allansli" class="cta-button" target="_blank">GitHub Profile</a>
+                <a href="#projects" class="glass-button glass-button--primary">View My Work</a>
+                <a href="#contact" class="glass-button glass-button--ghost">Get In Touch</a>
+                <a href="https://github.com/allansli" class="glass-button glass-button--ghost" target="_blank">GitHub Profile</a>
             </div>
         </div>
     </section>
@@ -635,25 +734,25 @@
     <section class="stats">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-item scroll-reveal">
+                <div class="stat-item scroll-reveal glass-card glass-card--compact">
                     <div style="display: table; table-layout: fixed; width:100%">
                         <div style="display: table-cell; text-align: right;" class="stat-number">15</div>
                         <div style="display: table-cell; text-align: left;" class="stat-sign">+</div>
                     </div>
                     <div class="stat-label">Years of Experience</div>
                 </div>
-                <div class="stat-item scroll-reveal">
+                <div class="stat-item scroll-reveal glass-card glass-card--compact">
                     <div class="stat-number">5</div>
                     <div class="stat-label">Major Digital Transformations</div>
                 </div>
-                <div class="stat-item scroll-reveal">
+                <div class="stat-item scroll-reveal glass-card glass-card--compact">
                     <div style="display: table;table-layout: fixed; width: 100%">
                         <div style="display: table-cell; text-align: right;" class="stat-number">30</div>
                         <div style="display: table-cell; text-align: left;" class="stat-sign">+</div>
                     </div>
                     <div class="stat-label">Global Markets Served</div>
                 </div>
-                <div class="stat-item scroll-reveal">
+                <div class="stat-item scroll-reveal glass-card glass-card--compact">
                     <div class="stat-number">4</div>
                     <div class="stat-label">Different Continents with Distributed Teams</div>
                 </div>
@@ -665,7 +764,7 @@
     <section class="about">
         <div class="container">
             <div class="about-content">
-                <div class="about-text scroll-reveal">
+                <div class="about-text glass-card glass-card--compact scroll-reveal">
                     <h2>About Me</h2>
                     <p>
                         I'm a seasoned technology executive with 12+ years transforming complex financial ecosystems
@@ -692,21 +791,21 @@
                     </p>
                 </div>
                 <div class="skills-grid scroll-reveal">
-                    <div class="skill-tag">Cloud Architecture</div>
-                    <div class="skill-tag">Digital Transformation</div>
-                    <div class="skill-tag">Technical Leadership</div>
-                    <div class="skill-tag">DevSecOps</div>
-                    <div class="skill-tag">Microservices</div>
-                    <div class="skill-tag">Kubernetes</div>
-                    <div class="skill-tag">Azure & AWS</div>
-                    <div class="skill-tag">Team Management</div>
-                    <div class="skill-tag">gRPC & Service Mesh</div>
-                    <div class="skill-tag">Strategic Planning</div>
-                    <div class="skill-tag">Client Engagement</div>
-                    <div class="skill-tag">Financial Services</div>
-                    <div class="skill-tag">Program Management</div>
-                    <div class="skill-tag">Innovation Leadership</div>
-                    <div class="skill-tag">Risk Management</div>
+                    <div class="skill-tag glass-chip">Cloud Architecture</div>
+                    <div class="skill-tag glass-chip">Digital Transformation</div>
+                    <div class="skill-tag glass-chip">Technical Leadership</div>
+                    <div class="skill-tag glass-chip">DevSecOps</div>
+                    <div class="skill-tag glass-chip">Microservices</div>
+                    <div class="skill-tag glass-chip">Kubernetes</div>
+                    <div class="skill-tag glass-chip">Azure & AWS</div>
+                    <div class="skill-tag glass-chip">Team Management</div>
+                    <div class="skill-tag glass-chip">gRPC & Service Mesh</div>
+                    <div class="skill-tag glass-chip">Strategic Planning</div>
+                    <div class="skill-tag glass-chip">Client Engagement</div>
+                    <div class="skill-tag glass-chip">Financial Services</div>
+                    <div class="skill-tag glass-chip">Program Management</div>
+                    <div class="skill-tag glass-chip">Innovation Leadership</div>
+                    <div class="skill-tag glass-chip">Risk Management</div>
                 </div>
             </div>
         </div>
@@ -722,7 +821,7 @@
                 <h3 class="category-title">DevOps & Cloud Infrastructure</h3>
                 <p class="category-subtitle">Modern deployment strategies and cloud-native architectures</p>
                 <div class="projects-grid">
-                    <div class="project-card scroll-reveal">
+                    <div class="project-card glass-card scroll-reveal">
                         <div class="project-header">
                             <span class="project-icon">CANARY</span>
                         </div>
@@ -735,21 +834,21 @@
                                 capabilities.
                             </p>
                             <div class="project-tech">
-                                <span class="tech-tag">Kubernetes</span>
-                                <span class="tech-tag">Argo Rollouts</span>
-                                <span class="tech-tag">Istio</span>
-                                <span class="tech-tag">GitOps</span>
-                                <span class="tech-tag">Progressive Delivery</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Kubernetes</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Argo Rollouts</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Istio</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">GitOps</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Progressive Delivery</span>
                             </div>
                             <div class="project-links">
-                                <a href="https://github.com/allansli/canary-argo" class="project-link" target="_blank">
+                                <a href="https://github.com/allansli/canary-argo" class="glass-button glass-button--compact glass-button--ghost" target="_blank">
                                     View Code
                                 </a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="project-card scroll-reveal">
+                    <div class="project-card glass-card scroll-reveal">
                         <div class="project-header">
                             <span class="project-icon">BALANCE</span>
                         </div>
@@ -761,14 +860,14 @@
                                 health checking, and automatic failover mechanisms for high-availability microservices.
                             </p>
                             <div class="project-tech">
-                                <span class="tech-tag">gRPC</span>
-                                <span class="tech-tag">Kubernetes</span>
-                                <span class="tech-tag">Load Balancing</span>
-                                <span class="tech-tag">Service Mesh</span>
-                                <span class="tech-tag">High Availability</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">gRPC</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Kubernetes</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Load Balancing</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Service Mesh</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">High Availability</span>
                             </div>
                             <div class="project-links">
-                                <a href="https://github.com/allansli/grpc-load-balancing-k8s" class="project-link"
+                                <a href="https://github.com/allansli/grpc-load-balancing-k8s" class="glass-button glass-button--compact glass-button--ghost"
                                     target="_blank">
                                     View Code
                                 </a>
@@ -783,7 +882,7 @@
                 <h3 class="category-title">Microservices & API Development</h3>
                 <p class="category-subtitle">Tools and patterns for distributed systems architecture</p>
                 <div class="projects-grid">
-                    <div class="project-card scroll-reveal">
+                    <div class="project-card glass-card scroll-reveal">
                         <div class="project-header">
                             <span class="project-icon">MOCK</span>
                         </div>
@@ -796,14 +895,14 @@
                                 environment isolation.
                             </p>
                             <div class="project-tech">
-                                <span class="tech-tag">gRPC</span>
-                                <span class="tech-tag">Mock Server</span>
-                                <span class="tech-tag">Microservices</span>
-                                <span class="tech-tag">Testing</span>
-                                <span class="tech-tag">Development Tools</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">gRPC</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Mock Server</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Microservices</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Testing</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Development Tools</span>
                             </div>
                             <div class="project-links">
-                                <a href="https://github.com/allansli/grpc-mock-server" class="project-link"
+                                <a href="https://github.com/allansli/grpc-mock-server" class="glass-button glass-button--compact glass-button--ghost"
                                     target="_blank">
                                     View Code
                                 </a>
@@ -811,7 +910,7 @@
                         </div>
                     </div>
 
-                    <div class="project-card scroll-reveal">
+                    <div class="project-card glass-card scroll-reveal">
                         <div class="project-header">
                             <span class="project-icon">TIMEOUT</span>
                         </div>
@@ -824,14 +923,14 @@
                                 environments.
                             </p>
                             <div class="project-tech">
-                                <span class="tech-tag">Distributed Systems</span>
-                                <span class="tech-tag">Circuit Breaker</span>
-                                <span class="tech-tag">Resilience</span>
-                                <span class="tech-tag">Timeout Management</span>
-                                <span class="tech-tag">Fault Tolerance</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Distributed Systems</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Circuit Breaker</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Resilience</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Timeout Management</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Fault Tolerance</span>
                             </div>
                             <div class="project-links">
-                                <a href="https://github.com/allansli/distributed-timeout" class="project-link"
+                                <a href="https://github.com/allansli/distributed-timeout" class="glass-button glass-button--compact glass-button--ghost"
                                     target="_blank">
                                     View Code
                                 </a>
@@ -846,7 +945,7 @@
                 <h3 class="category-title">Data Engineering & Analytics</h3>
                 <p class="category-subtitle">High-performance data processing and project assessment tools</p>
                 <div class="projects-grid">
-                    <div class="project-card scroll-reveal">
+                    <div class="project-card glass-card scroll-reveal">
                         <div class="project-header">
                             <span class="project-icon">COMPRESS</span>
                         </div>
@@ -859,14 +958,14 @@
                                 optimization.
                             </p>
                             <div class="project-tech">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Data Compression</span>
-                                <span class="tech-tag">Database Optimization</span>
-                                <span class="tech-tag">Performance Tuning</span>
-                                <span class="tech-tag">Big Data</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Python</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Data Compression</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Database Optimization</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Performance Tuning</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Big Data</span>
                             </div>
                             <div class="project-links">
-                                <a href="https://github.com/allansli/database-records-compressor" class="project-link"
+                                <a href="https://github.com/allansli/database-records-compressor" class="glass-button glass-button--compact glass-button--ghost"
                                     target="_blank">
                                     View Code
                                 </a>
@@ -874,7 +973,7 @@
                         </div>
                     </div>
 
-                    <div class="project-card scroll-reveal">
+                    <div class="project-card glass-card scroll-reveal">
                         <div class="project-header">
                             <span class="project-icon">SCORE</span>
                         </div>
@@ -886,14 +985,14 @@
                                 Provides comprehensive metrics for governance and continuous improvement initiatives.
                             </p>
                             <div class="project-tech">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Analytics</span>
-                                <span class="tech-tag">Project Assessment</span>
-                                <span class="tech-tag">Governance</span>
-                                <span class="tech-tag">Metrics</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Python</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Analytics</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Project Assessment</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Governance</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Metrics</span>
                             </div>
                             <div class="project-links">
-                                <a href="https://github.com/allansli/scorecard" class="project-link" target="_blank">
+                                <a href="https://github.com/allansli/scorecard" class="glass-button glass-button--compact glass-button--ghost" target="_blank">
                                     View Code
                                 </a>
                             </div>
@@ -907,7 +1006,7 @@
                 <h3 class="category-title">Testing & Quality Engineering</h3>
                 <p class="category-subtitle">Modern testing strategies and quality assurance practices</p>
                 <div class="projects-grid">
-                    <div class="project-card scroll-reveal">
+                    <div class="project-card glass-card scroll-reveal">
                         <div class="project-header">
                             <span class="project-icon">TESTING</span>
                         </div>
@@ -920,14 +1019,14 @@
                                 environments.
                             </p>
                             <div class="project-tech">
-                                <span class="tech-tag">Java</span>
-                                <span class="tech-tag">gRPC</span>
-                                <span class="tech-tag">Cucumber</span>
-                                <span class="tech-tag">TestContainers</span>
-                                <span class="tech-tag">BDD</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Java</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">gRPC</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Cucumber</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">TestContainers</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">BDD</span>
                             </div>
                             <div class="project-links">
-                                <a href="https://github.com/allansli/cucumber-integration-testing" class="project-link"
+                                <a href="https://github.com/allansli/cucumber-integration-testing" class="glass-button glass-button--compact glass-button--ghost"
                                     target="_blank">
                                     View Code
                                 </a>
@@ -942,7 +1041,7 @@
                 <h3 class="category-title">Fintech & Specialized Solutions</h3>
                 <p class="category-subtitle">Domain-specific tools for Brazilian financial services</p>
                 <div class="projects-grid">
-                    <div class="project-card scroll-reveal">
+                    <div class="project-card glass-card scroll-reveal">
                         <div class="project-header">
                             <span class="project-icon">BARCODE</span>
                         </div>
@@ -954,14 +1053,14 @@
                                 fintech applications, payment processing, and banking compliance requirements.
                             </p>
                             <div class="project-tech">
-                                <span class="tech-tag">Angular</span>
-                                <span class="tech-tag">Fintech</span>
-                                <span class="tech-tag">Brazilian Standards</span>
-                                <span class="tech-tag">Banking Compliance</span>
-                                <span class="tech-tag">Payment Processing</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Angular</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Fintech</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Brazilian Standards</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Banking Compliance</span>
+                                <span class="tech-tag glass-chip glass-chip--dense">Payment Processing</span>
                             </div>
                             <div class="project-links">
-                                <a href="https://github.com/allansli/angular-barcode-febraban" class="project-link"
+                                <a href="https://github.com/allansli/angular-barcode-febraban" class="glass-button glass-button--compact glass-button--ghost"
                                     target="_blank">
                                     View Code
                                 </a>
@@ -979,7 +1078,7 @@
             <h2 class="section-title scroll-reveal">Professional Journey</h2>
             <div class="timeline">
                 <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content">
+                    <div class="timeline-content glass-card glass-card--compact">
                         <h3>Senior Manager - Lead Architect</h3>
                         <div class="company">Avanade • 2021 - 2025</div>
                         <p><strong>Core Authorizer Modernization (Brazilian Card Network):</strong> Led modernization of
@@ -992,7 +1091,7 @@
                     </div>
                 </div>
                 <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content">
+                    <div class="timeline-content glass-card glass-card--compact">
                         <h3>Manager - Client & Delivery Lead</h3>
                         <div class="company">Avanade • 2019 - 2021</div>
                         <p><strong>US Bank Acquiring & Digital Banking (~$10M):</strong> Led cloud-first acquiring and
@@ -1004,7 +1103,7 @@
                     </div>
                 </div>
                 <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content">
+                    <div class="timeline-content glass-card glass-card--compact">
                         <h3>Senior Consultant - Associate Manager</h3>
                         <div class="company">Avanade • 2013 - 2019</div>
                         <p>Progressed through multiple roles delivering enterprise solutions for major financial
@@ -1014,7 +1113,7 @@
                     </div>
                 </div>
                 <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content">
+                    <div class="timeline-content glass-card glass-card--compact">
                         <h3>System Analyst</h3>
                         <div class="company">Capgemini • 2012 - 2013</div>
                         <p>Developed and maintained administrative systems and integration services. Worked with .NET
@@ -1023,7 +1122,7 @@
                     </div>
                 </div>
                 <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content">
+                    <div class="timeline-content glass-card glass-card--compact">
                         <h3>IT Consultant</h3>
                         <div class="company">Tangram Solutions • 2012</div>
                         <p>Participated in complete lifecycle of E-Commerce (B2B/B2C) and CRM platforms. Contributed to
@@ -1037,18 +1136,20 @@
 
     <!-- Contact Section -->
     <section class="contact" id="contact">
-        <div class="container scroll-reveal">
-            <h2>Let's Build Something Amazing Together</h2>
-            <p>Always open to discussing new opportunities, collaborations, or just talking tech over coffee</p>
-            <div class="cta-buttons">
-                <a href="mailto:allan.mdepaula@gmail.com" class="cta-button primary">Send Email</a>
-                <a href="https://linkedin.com/in/allan-mdp" class="cta-button" target="_blank">LinkedIn</a>
-            </div>
-            <div class="social-links">
-                <a href="https://github.com/allansli" class="social-link" target="_blank" title="GitHub">GH</a>
-                <a href="https://linkedin.com/in/allan-mdp" class="social-link" target="_blank" title="LinkedIn">IN</a>
-                <a href="https://twitter.com/allansli" class="social-link" target="_blank" title="Twitter">TW</a>
-                <a href="mailto:allan.mdepaula@gmail.com" class="social-link" title="Email">EM</a>
+        <div class="container">
+            <div class="contact-card glass-card glass-card--compact scroll-reveal">
+                <h2>Let's Build Something Amazing Together</h2>
+                <p>Always open to discussing new opportunities, collaborations, or just talking tech over coffee</p>
+                <div class="cta-buttons">
+                    <a href="mailto:allan.mdepaula@gmail.com" class="glass-button glass-button--primary">Send Email</a>
+                    <a href="https://linkedin.com/in/allan-mdp" class="glass-button glass-button--ghost" target="_blank">LinkedIn</a>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/allansli" class="glass-button glass-button--icon glass-button--ghost social-link" target="_blank" title="GitHub">GH</a>
+                    <a href="https://linkedin.com/in/allan-mdp" class="glass-button glass-button--icon glass-button--ghost social-link" target="_blank" title="LinkedIn">IN</a>
+                    <a href="https://twitter.com/allansli" class="glass-button glass-button--icon glass-button--ghost social-link" target="_blank" title="Twitter">TW</a>
+                    <a href="mailto:allan.mdepaula@gmail.com" class="glass-button glass-button--icon glass-button--ghost social-link" title="Email">EM</a>
+                </div>
             </div>
         </div>
     </section>
