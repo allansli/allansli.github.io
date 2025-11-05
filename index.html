@@ -41,6 +41,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: var(--glass-text);
+            background-color: #040716;
             background-image: var(--background-gradient), url('night-starry-sky-forest-silhouette-astronomy-cosmos-5k-3840x2160-1679.jpg');
             background-position: center;
             background-size: cover;
@@ -193,6 +194,7 @@
             justify-content: center;
             background: var(--surface);
             position: relative;
+            padding: 120px 0;
         }
 
         .hero-content {
@@ -200,6 +202,19 @@
             max-width: 980px;
             padding: 0 40px;
             animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            body {
+                background-attachment: scroll;
+                background-position: center top;
+                background-size: cover;
+            }
+
+            .hero {
+                padding-top: 140px;
+                padding-bottom: 120px;
+            }
         }
 
         @keyframes fadeIn {
