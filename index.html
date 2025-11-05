@@ -239,7 +239,7 @@
             box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.1), 0 0 30px rgba(255, 255, 255, 0.38);
             background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.35), transparent 65%);
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+            overflow: visible;
         }
 
         .hero-avatar img {
@@ -250,6 +250,27 @@
             display: block;
             border-radius: 50%;
             z-index: 1;
+        }
+
+        .hero-avatar-badge {
+            position: absolute;
+            right: -6px;
+            bottom: -6px;
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            z-index: 2;
+            filter: drop-shadow(0 12px 24px rgba(8, 15, 40, 0.55)) drop-shadow(0 4px 8px rgba(15, 23, 42, 0.35));
+        }
+
+        .hero-avatar-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
         }
 
         .hero-avatar:hover {
@@ -741,6 +762,9 @@
         <div class="hero-content">
             <div class="hero-avatar">
                 <img src="https://github.com/allansli.png" alt="Allan M. de Paula">
+                <div class="hero-avatar-badge">
+                    <img src="https://github.githubassets.com/assets/arctic-code-vault-contributor-default-df8d74122a06.png" alt="Arctic Code Vault Contributor badge">
+                </div>
             </div>
             <h1>Allan M. de Paula</h1>
             <p class="subtitle">Senior Manager & Lead Architect</p>
