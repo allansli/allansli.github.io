@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allan M. de Paula - Full Stack Developer & Fintech Specialist</title>
+    <title>Allan - Senior Technology & Solution Architect | Aligning Strategy & Tech in Financial Services</title>
     <style>
         * {
             margin: 0;
@@ -41,13 +41,29 @@
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: var(--glass-text);
+            background-color: #040716;
+            font-size: 17px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
             background-image: var(--background-gradient), url('night-starry-sky-forest-silhouette-astronomy-cosmos-5k-3840x2160-1679.jpg');
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
-            background-attachment: fixed;
-            font-size: 17px;
-            min-height: 100vh;
+            transform: translateZ(0);
+            pointer-events: none;
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            body::before {
+                background-position: center top;
+            }
         }
 
         .glass-card {
@@ -643,6 +659,10 @@
         @media (max-width: 768px) {
             .container {
                 padding: 0 24px;
+            }
+
+            body::before {
+                background-position: center top;
             }
 
             .hero-content {
