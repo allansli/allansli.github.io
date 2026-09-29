@@ -1,1280 +1,1163 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allan - Senior Technology & Solution Architect | Aligning Strategy & Tech in Financial Services</title>
+    <title>Allan Martins — Head of Architecture, CERC</title>
+    <meta name="description" content="Architecture that cannot go down. Allan Martins, Head of Architecture at CERC. Brazil credit-market infrastructure.">
+    <meta name="theme-color" content="#05060a">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="icon" href="https://github.com/allansli.png">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+            }
+        }
+    </script>
     <style>
+        :root {
+            --void: #05060a;
+            --text: #f5f5f7;
+            --muted: #a1a1a6;
+            --accent: #0071e3;
+            --on-accent: #ffffff;
+            --hairline: rgba(245, 245, 247, 0.16);
+            --ink: rgba(5, 6, 10, 0.78);
+            --space-xl: 64px;
+            --space-lg: 48px;
+            --space-md: 32px;
+            --space-sm: 16px;
+            --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+            --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --focus: #f5f5f7;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #f8fafc;
-            --secondary: rgba(226, 232, 240, 0.72);
-            --accent: #0071e3;
-            --surface: rgba(15, 23, 42, 0.45);
-            --background: rgba(8, 11, 30, 0.18);
-            --background-gradient: linear-gradient(180deg, rgba(4, 7, 22, 0.68) 0%, rgba(15, 23, 42, 0.52) 35%, rgba(30, 27, 75, 0.38) 100%);
-            --border: rgba(148, 163, 184, 0.35);
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.25);
-            --glass-highlight: rgba(255, 255, 255, 0.45);
-            --glass-shadow: 0 24px 50px rgba(8, 15, 40, 0.45);
-            --glass-blur: 18px;
-            --glass-text: rgba(255, 255, 255, 0.9);
-        }
-
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 4.5rem;
+            color-scheme: dark;
+            background: var(--void);
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            overflow-x: clip;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--glass-text);
-            background-color: #040716;
-            font-size: 17px;
             min-height: 100vh;
-            position: relative;
+            background: transparent;
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 1.0625rem;
+            line-height: 1.6;
+            overflow-x: clip;
         }
 
-        body::before {
-            content: '';
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            color: var(--text);
+            text-decoration-line: underline;
+            text-decoration-color: var(--accent);
+            text-decoration-thickness: 1px;
+            text-underline-offset: 0.2em;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 3px;
+        }
+
+        .skip-link {
+            position: absolute;
+            left: var(--space-sm);
+            top: -48px;
+            z-index: 3;
+            padding: 8px 16px;
+            background: var(--text);
+            color: var(--void);
+            text-decoration: none;
+        }
+
+        .skip-link:focus {
+            top: var(--space-sm);
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .wrap {
+            width: min(100% - 10vw, 88rem);
+            margin-inline: auto;
+        }
+
+        /* Galaxy field. The universe is the ground; type sits on fades, not plates. */
+        .galaxy-fallback,
+        #galaxy-field {
             position: fixed;
             inset: 0;
-            z-index: -1;
-            background-image: var(--background-gradient), url('night-starry-sky-forest-silhouette-astronomy-cosmos-5k-3840x2160-1679.jpg');
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            transform: translateZ(0);
+            width: 100%;
+            height: 100%;
+            z-index: 0;
             pointer-events: none;
         }
 
-        @supports (-webkit-touch-callout: none) {
-            body::before {
-                background-position: center top;
-            }
+        .galaxy-fallback {
+            background-color: var(--void);
+            background-image:
+                radial-gradient(ellipse 110% 38% at 50% 46%, rgba(140, 78, 36, 0.55), rgba(5, 6, 10, 0) 70%),
+                radial-gradient(ellipse 75% 60% at 8% 85%, rgba(48, 72, 170, 0.85), rgba(5, 6, 10, 0) 68%),
+                radial-gradient(ellipse 68% 52% at 92% 8%, rgba(120, 48, 150, 0.8), rgba(5, 6, 10, 0) 66%);
+            background-repeat: no-repeat;
         }
 
-        .glass-card {
-            position: relative;
-            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.22), transparent 55%), var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: var(--glass-shadow);
-            backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-            overflow: hidden;
-            isolation: isolate;
+        #galaxy-field {
+            display: none;
         }
 
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent 60%);
-            opacity: 0.6;
-            z-index: 0;
-        }
-
-        .glass-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            mix-blend-mode: screen;
-            opacity: 0.5;
-            z-index: 0;
-        }
-
-        .glass-card > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .glass-card--compact {
-            border-radius: 18px;
-            box-shadow: 0 18px 34px rgba(10, 20, 45, 0.28);
-        }
-
-        .glass-chip {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 999px;
-            padding: 12px 20px;
-            font-weight: 500;
-            font-size: 15px;
-            letter-spacing: 0.01em;
-            color: var(--glass-text);
-            text-transform: none;
-            box-shadow: 0 12px 24px rgba(8, 15, 40, 0.22);
-            backdrop-filter: blur(14px) saturate(120%);
-            -webkit-backdrop-filter: blur(14px) saturate(120%);
-            transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
-        }
-
-        .glass-chip:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 18px 32px rgba(8, 15, 40, 0.35);
-        }
-
-        .glass-chip--dense {
-            padding: 8px 16px;
-            font-size: 13px;
-            min-width: 0;
-        }
-
-        .glass-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 28px;
-            border-radius: 999px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.27), rgba(255, 255, 255, 0.12));
-            color: var(--primary);
-            font-weight: 500;
-            text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 16px 30px rgba(8, 15, 40, 0.26);
-            backdrop-filter: blur(16px) saturate(130%);
-            -webkit-backdrop-filter: blur(16px) saturate(130%);
-            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-        }
-
-        .glass-button:hover {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 20px 40px rgba(8, 15, 40, 0.32);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.18));
-        }
-
-        .glass-button:active {
-            transform: translateY(0);
-        }
-
-        .glass-button--primary {
-            background: linear-gradient(135deg, rgba(0, 113, 227, 0.78), rgba(0, 210, 255, 0.52));
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.58);
-        }
-
-        .glass-button--primary:hover {
-            background: linear-gradient(135deg, rgba(0, 140, 255, 0.86), rgba(0, 210, 255, 0.58));
-        }
-
-        .glass-button--ghost {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--glass-text);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-        }
-
-        .glass-button--ghost:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .glass-button--icon {
-            width: 44px;
-            height: 44px;
-            padding: 0;
-            border-radius: 14px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-        }
-
-        .glass-button--compact {
-            padding: 10px 18px;
-            font-size: 15px;
-            box-shadow: 0 10px 18px rgba(8, 15, 40, 0.2);
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            position: relative;
-        }
-
-        .hero-content {
-            text-align: center;
-            max-width: 980px;
-            padding: 0 40px;
-            animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-avatar {
-            position: relative;
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            margin: 0 auto 48px;
-            border: 3px solid rgba(255, 255, 255, 0.82);
-            box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.1), 0 0 30px rgba(255, 255, 255, 0.38);
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.35), transparent 65%);
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: visible;
-        }
-
-        .hero-avatar img {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        html.webgl #galaxy-field {
             display: block;
-            border-radius: 50%;
+        }
+
+        html.webgl .galaxy-fallback {
+            display: none;
+        }
+
+        .site-header,
+        main,
+        .site-footer {
+            position: relative;
             z-index: 1;
         }
 
-        .hero-avatar-badge {
-            position: absolute;
-            right: -6px;
-            bottom: -6px;
-            width: 75px;
-            height: 75px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
+        /* Name only. The first viewport stays open for the field. */
+        .site-header {
+            position: fixed;
+            top: 1.25rem;
+            left: 6vw;
             z-index: 2;
-            filter: drop-shadow(0 12px 24px rgba(8, 15, 40, 0.55)) drop-shadow(0 4px 8px rgba(15, 23, 42, 0.35));
         }
 
-        .hero-avatar-badge img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-            border-radius: 0%;
+        .brand {
+            color: var(--muted);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            text-decoration: none;
         }
 
-        .hero-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.12), 0 0 45px rgba(255, 255, 255, 0.48);
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.45), transparent 70%);
+        .brand:hover {
+            color: var(--text);
         }
 
-        .hero h1 {
-            font-size: 64px;
-            font-weight: 600;
-            letter-spacing: -0.015em;
-            margin-bottom: 16px;
-            color: var(--primary);
-            line-height: 1.1;
-        }
-
-        .hero .subtitle {
-            font-size: 28px;
-            font-weight: 400;
-            color: var(--secondary);
-            margin-bottom: 24px;
-            letter-spacing: -0.01em;
-        }
-
-        .hero .description {
-            font-size: 21px;
-            color: var(--secondary);
-            margin-bottom: 48px;
-            line-height: 1.6;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-buttons {
+        .site-nav {
             display: flex;
-            gap: 16px;
-            justify-content: center;
             flex-wrap: wrap;
+            gap: 0.4rem 1.15rem;
+            margin-bottom: 0.85rem;
+            letter-spacing: 0;
+            text-transform: none;
         }
 
-        .contact-card .cta-buttons {
-            margin-bottom: 32px;
+        .site-nav a {
+            color: var(--muted);
+            font-size: 0.85rem;
+            text-decoration: none;
         }
 
-        /* Stats Section */
-        .stats {
-            padding: 120px 0;
-            background: var(--surface);
+        .site-nav a:hover {
+            color: var(--text);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 48px;
-            font-weight: 600;
-            margin-bottom: 80px;
-            color: var(--primary);
-            letter-spacing: -0.015em;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 48px;
-            text-align: center;
-        }
-
-        .stat-item {
-            padding: 40px 28px;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-            transform: translateY(30px);
-            color: var(--glass-text);
-        }
-
-        .stat-item.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .stat-item:hover {
-            transform: translateY(-4px);
-        }
-
-        .stat-number {
-            font-size: 64px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
+        /* Shared type */
+        .running {
+            margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
+            color: var(--muted);
+            font-family: var(--serif);
+            font-size: 1.15rem;
+            font-weight: 500;
             letter-spacing: -0.02em;
         }
 
-        .stat-sign {
-            font-size: 64px;
-            font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 8px;
+        .running:has(+ .lede) {
+            margin-bottom: 0;
         }
 
-        .stat-label {
-            font-size: 19px;
-            color: var(--secondary);
+        .lede {
+            margin-top: 0.85rem;
+            margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
+            max-width: 28rem;
+            color: var(--muted);
+            font-size: 1rem;
             font-weight: 400;
+            letter-spacing: 0;
+            text-transform: none;
+            line-height: 1.5;
         }
 
-        /* About Section */
-        .about {
-            padding: 120px 0;
-            background: var(--background);
+        h1,
+        .display,
+        .case h3,
+        .metric-figure,
+        .index {
+            font-family: var(--serif);
+            font-weight: 500;
+            letter-spacing: -0.035em;
         }
 
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: start;
+        /* Hero. The field is the frame. Type sits in one corner. */
+        .hero {
+            position: relative;
+            min-height: 100svh;
         }
 
-        .about-text {
-            padding: 48px;
-        }
-
-        .about-text h2 {
-            font-size: 48px;
-            font-weight: 600;
-            margin-bottom: 32px;
-            letter-spacing: -0.015em;
-        }
-
-        .about-text p {
-            font-size: 19px;
-            line-height: 1.7;
-            margin-bottom: 24px;
-            color: var(--secondary);
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 12px;
-            align-content: start;
-            margin-top: 80px;
-        }
-
-        .skill-tag {
-            min-height: 48px;
-            padding: 0;
-        }
-
-        /* Projects Section */
-        .projects {
-            padding: 120px 0;
-            background: var(--surface);
-        }
-
-        .project-category {
-            margin-bottom: 96px;
-        }
-
-        .category-title {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--primary);
-            letter-spacing: -0.01em;
-        }
-
-        .category-subtitle {
-            font-size: 19px;
-            color: var(--secondary);
-            margin-bottom: 48px;
-            font-weight: 400;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 32px;
-        }
-
-        .project-card {
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .project-card.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px);
-        }
-
-        .project-header {
-            height: 140px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08));
+        .hero .scrub-sticky {
+            position: relative;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 56px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            align-items: flex-end;
+            min-height: 100svh;
+            padding: 0 6vw 9vh;
         }
 
-        .project-icon {
-            font-size: 32px;
+        .hero .scrub-sticky::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(5, 6, 10, 0) 0%, rgba(5, 6, 10, 0) 58%, rgba(5, 6, 10, 0.38) 100%);
+        }
+
+        .hero-copy {
+            position: relative;
+            width: min(100%, 14em);
+            font-size: clamp(3.35rem, 7.4vw, 7.75rem);
+            line-height: 1;
+        }
+
+        h1 {
+            font-size: 1em;
+            line-height: 0.86;
+            letter-spacing: -0.045em;
+            text-wrap: balance;
+            text-shadow: 0 2px 28px rgba(5, 6, 10, 0.72);
+        }
+
+        .hero-role {
+            max-width: 26rem;
+            margin-top: 1.15rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.45;
+            text-shadow: 0 1px 16px rgba(5, 6, 10, 0.8);
+        }
+
+        .talk {
+            display: block;
+            width: fit-content;
+            margin-top: 1.35rem;
+            padding-block: 0.35rem;
+            background: none;
+            color: var(--text);
+            font-size: 1rem;
+            text-decoration-line: underline;
+            text-decoration-color: var(--accent);
+            text-decoration-thickness: 1px;
+            text-underline-offset: 0.28em;
+            text-shadow: 0 1px 16px rgba(5, 6, 10, 0.8);
+        }
+
+        .talk:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        /* Proof. Metrics float. They do not share a box or a column width. */
+        .proof {
+            position: relative;
+            padding-block: clamp(5rem, 14vh, 9rem);
+        }
+
+        .proof::before,
+        .pillars::before,
+        .career::before,
+        .about::before,
+        .contact::before,
+        .oss::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse 90% 80% at 18% 45%, rgba(5, 6, 10, 0.62), rgba(5, 6, 10, 0.18) 62%, rgba(5, 6, 10, 0) 100%);
+        }
+
+        .proof .wrap,
+        .pillars .wrap,
+        .career .wrap,
+        .about .wrap,
+        .contact .wrap,
+        .oss .wrap,
+        .work-intro {
+            position: relative;
+        }
+
+        .proof-list {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            row-gap: clamp(3rem, 8vh, 6rem);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .proof-list li:nth-child(1) {
+            grid-column: 1 / 6;
+            grid-row: 1;
+        }
+
+        .proof-list li:nth-child(2) {
+            grid-column: 8 / 13;
+            grid-row: 1 / 3;
+            align-self: center;
+        }
+
+        .proof-list li:nth-child(3) {
+            grid-column: 1 / 8;
+            grid-row: 2;
+        }
+
+        .proof-list li:nth-child(4) {
+            grid-column: 9 / 13;
+            grid-row: 3;
+        }
+
+        .metric-kicker {
+            margin-bottom: 0.45rem;
+            color: var(--muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .proof-list li:nth-child(1) .metric-kicker {
+            font-family: var(--serif);
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            text-transform: none;
+            color: var(--text);
+        }
+
+        .proof-list li:nth-child(2) .metric-kicker {
+            font-family: var(--serif);
+            font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            text-transform: none;
+            color: var(--text);
+            line-height: 0.9;
+        }
+
+        .metric-figure {
+            font-size: clamp(2.2rem, 4vw, 3.6rem);
+            line-height: 1.02;
+            text-wrap: balance;
+        }
+
+        .proof-list p {
+            color: var(--muted);
+        }
+
+        .proof-list li:nth-child(2) p,
+        .proof-list li:nth-child(4) p {
+            max-width: 22rem;
+            margin-top: 0.75rem;
+        }
+
+        .proof-list li:nth-child(4) .metric-kicker {
+            font-size: 0.75rem;
+        }
+
+        /* Pillars. Numbered type, staggered, no boxes. */
+        .pillars {
+            position: relative;
+            padding-block: clamp(4rem, 12vh, 8rem);
+        }
+
+        .pillar-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: pillar;
+        }
+
+        .pillar-list > li {
+            counter-increment: pillar;
+            padding-block: clamp(1.75rem, 4vh, 2.75rem);
+        }
+
+        .pillar {
+            display: grid;
+            grid-template-columns: auto minmax(0, 34rem);
+            gap: 0.5rem clamp(1rem, 3vw, 2.5rem);
+            align-items: baseline;
+        }
+
+        .pillar-list > li:nth-child(2) .pillar {
+            width: min(78%, 46rem);
+            margin-left: auto;
+        }
+
+        .pillar-list > li:nth-child(3) .pillar {
+            width: min(88%, 48rem);
+        }
+
+        .pillar-list > li:nth-child(4) .pillar {
+            width: min(64%, 42rem);
+            margin-left: auto;
+        }
+
+        .index {
+            font-size: clamp(2.8rem, 6vw, 5.25rem);
+            line-height: 0.8;
+            color: var(--muted);
+        }
+
+        .index::before {
+            content: counter(pillar, decimal-leading-zero);
+        }
+
+        .pillar h3 {
+            margin-bottom: 0.4rem;
+            font-family: var(--serif);
+            font-size: clamp(1.65rem, 2.4vw, 2.35rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .pillar p {
+            max-width: 36rem;
+            color: var(--muted);
+        }
+
+        /* Signature work. Each story is a full-bleed frame. */
+        .work-intro {
+            width: min(100% - 10vw, 88rem);
+            margin-inline: auto;
+            padding-top: clamp(4rem, 10vh, 7rem);
+        }
+
+        .case {
+            position: relative;
+            min-height: 100svh;
+        }
+
+        .case .scrub-sticky {
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            min-height: 100svh;
+            padding: 14vh 6vw 10vh;
+        }
+
+        .case .scrub-sticky::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(90deg, var(--ink) 0%, rgba(5, 6, 10, 0.42) 36%, rgba(5, 6, 10, 0) 64%);
+        }
+
+        .case:nth-of-type(even) .scrub-sticky::before {
+            background: linear-gradient(270deg, var(--ink) 0%, rgba(5, 6, 10, 0.42) 36%, rgba(5, 6, 10, 0) 64%);
+        }
+
+        .case-inner {
+            position: relative;
+            width: min(38rem, 100%);
+        }
+
+        .case:nth-of-type(even) .case-inner {
+            margin-left: auto;
+        }
+
+        .work-kicker {
+            margin-bottom: 0.85rem;
+            color: var(--muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .case h3 {
+            margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
+            font-size: clamp(3rem, 6.5vw, 6rem);
+            line-height: 0.92;
+            text-wrap: balance;
+        }
+
+        .case dl {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .case dt {
+            margin-bottom: 0.3rem;
+            color: var(--muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .press-note {
+            margin-top: 1.25rem;
+            color: var(--muted);
+            font-size: 0.875rem;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem 0.85rem;
+            margin-top: 1.5rem;
+            list-style: none;
+        }
+
+        .tag-list li {
+            color: var(--muted);
+            font-size: 0.8125rem;
+            letter-spacing: 0.04em;
+        }
+
+        /* Open source, secondary */
+        .oss {
+            position: relative;
+            padding-block: clamp(3.5rem, 8vh, 5.5rem);
+        }
+
+        .oss-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem 1.35rem;
+            margin: 1.5rem 0 0;
+            padding: 0;
+            list-style: none;
+            max-width: 46rem;
+        }
+
+        .oss-list a {
+            font-size: 0.95rem;
+        }
+
+        /* Career. Sparse lines, no dots. */
+        .career {
+            position: relative;
+            padding-block: clamp(4rem, 12vh, 8rem);
+        }
+
+        .line {
+            display: grid;
+            grid-template-columns: 9.5rem minmax(0, 36rem);
+            gap: 0.35rem 2rem;
+            align-items: baseline;
+            padding-block: 0.35rem;
+        }
+
+        .when,
+        .line h3 {
+            font-size: 0.95rem;
             font-weight: 600;
             letter-spacing: 0.04em;
-            text-transform: uppercase;
-            color: rgba(15, 23, 42, 0.9);
         }
 
-        .project-content {
-            padding: 32px;
-            color: var(--glass-text);
-        }
-
-        .project-title {
-            font-size: 24px;
+        .when {
+            color: var(--muted);
+            font-size: 0.78rem;
             font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--primary);
-            letter-spacing: -0.01em;
-        }
-
-        .project-description {
-            color: var(--secondary);
-            line-height: 1.6;
-            margin-bottom: 24px;
-            font-size: 17px;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-
-        .tech-tag {
-            padding: 0;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        /* Experience Section */
-        .experience {
-            padding: 120px 0;
-            background: var(--background);
-        }
-
-        .timeline {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .timeline-item {
-            padding: 48px 0;
-            border-left: 2px solid rgba(255, 255, 255, 0.18);
-            padding-left: 48px;
-            position: relative;
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .timeline-item.revealed {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: var(--accent);
-            border: 3px solid var(--surface);
-            left: -7px;
-            top: 52px;
-            border-radius: 50%;
-        }
-
-        .timeline-content {
-            padding: 32px;
-            border-radius: 24px;
-        }
-
-        .timeline-content h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
-        }
-
-        .timeline-content .company {
-            color: var(--secondary);
-            font-weight: 400;
-            margin-bottom: 20px;
-            font-size: 17px;
-        }
-
-        .timeline-content p {
-            color: var(--secondary);
-            line-height: 1.6;
-            margin-bottom: 16px;
-            font-size: 17px;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 120px 0;
-            background: var(--surface);
-        }
-
-        .contact-card {
-            padding: 64px;
-            text-align: center;
-        }
-
-        .contact-card h2 {
-            font-size: 48px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            letter-spacing: -0.015em;
-        }
-
-        .contact-card p {
-            font-size: 21px;
-            color: var(--secondary);
-            margin: 0 auto 40px;
-            max-width: 680px;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 48px;
-            flex-wrap: wrap;
-        }
-
-        .social-link {
             letter-spacing: 0.12em;
-            font-size: 12px;
-            font-weight: 600;
             text-transform: uppercase;
-            color: inherit;
         }
 
-        /* Scroll Reveal */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        .where {
+            margin-top: 0.2rem;
+            color: var(--muted);
+            font-size: 0.95rem;
         }
 
-        .scroll-reveal.revealed {
-            opacity: 1;
-            transform: translateY(0);
+        .line p + p {
+            margin-top: 0.45rem;
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .hero h1 {
-                font-size: 48px;
-            }
-
-            .hero .subtitle {
-                font-size: 24px;
-            }
-
-            .hero .description {
-                font-size: 19px;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 48px;
-            }
-
-            .section-title {
-                font-size: 40px;
-            }
+        .lines {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 24px;
-            }
+        .early-note {
+            color: var(--muted);
+        }
 
-            body::before {
-                background-position: center top;
-            }
+        /* About */
+        .about {
+            position: relative;
+            padding-block: clamp(4rem, 12vh, 8rem);
+        }
 
-            .hero-content {
-                padding: 0 24px;
-            }
+        .about-copy {
+            max-width: 34rem;
+            font-family: var(--serif);
+            font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.35;
+        }
 
-            .hero h1 {
-                font-size: 40px;
-            }
+        .skill-line {
+            display: block;
+            max-width: 34rem;
+            margin-top: 1.75rem;
+            list-style: none;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
 
-            .hero .subtitle {
-                font-size: 21px;
-            }
+        .skill-line li {
+            display: inline;
+        }
 
-            .hero .description {
-                font-size: 17px;
-            }
+        .skill-line li:not(:last-child)::after {
+            content: "  /  ";
+            color: var(--muted);
+        }
 
-            .stats,
-            .about,
-            .projects,
-            .experience,
-            .contact {
-                padding: 80px 0;
-            }
+        /* Contact */
+        .contact {
+            position: relative;
+            padding-block: clamp(5rem, 16vh, 10rem) clamp(4rem, 10vh, 7rem);
+        }
 
-            .about-text {
-                padding: 32px;
-            }
+        .display {
+            max-width: 10em;
+            margin-bottom: 1rem;
+            font-size: clamp(3rem, 7vw, 6.2rem);
+            line-height: 0.92;
+            text-wrap: balance;
+        }
 
-            .contact-card {
-                padding: 40px 24px;
-            }
+        .contact .lede {
+            margin-bottom: 1.75rem;
+        }
 
-            .glass-card {
-                border-radius: 20px;
-            }
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.85rem 1.5rem;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
 
-            .glass-card.glass-card--compact {
-                border-radius: 16px;
-            }
+        .site-footer {
+            padding-block: 1.25rem 3rem;
+            color: var(--muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
-            .section-title {
-                font-size: 32px;
-                margin-bottom: 48px;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .projects-grid {
+        @media (max-width: 860px) {
+            .proof-list,
+            .pillar,
+            .line {
                 grid-template-columns: 1fr;
             }
 
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 32px;
+            .proof-list li:nth-child(1),
+            .proof-list li:nth-child(2),
+            .proof-list li:nth-child(3),
+            .proof-list li:nth-child(4) {
+                grid-column: 1;
+                grid-row: auto;
             }
 
-            .timeline-item {
-                padding-left: 32px;
+            .proof-list li:nth-child(2) {
+                width: 86%;
+                margin-left: auto;
             }
 
-            .timeline-item::before {
-                left: -6px;
+            .proof-list li:nth-child(4) {
+                width: 74%;
+                margin-left: auto;
+            }
+
+            .pillar-list > li:nth-child(n) .pillar {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .pillar-list > li:nth-child(2) .pillar,
+            .pillar-list > li:nth-child(4) .pillar {
+                width: 92%;
+                margin-left: auto;
+            }
+
+            .case,
+            .case:nth-of-type(even) {
+                align-items: flex-end;
+            }
+
+            .case .scrub-sticky::before,
+            .case:nth-of-type(even) .scrub-sticky::before {
+                background: linear-gradient(180deg, rgba(5, 6, 10, 0) 0%, rgba(5, 6, 10, 0.55) 42%, rgba(5, 6, 10, 0.88) 100%);
+            }
+
+            .case:nth-of-type(even) .case-inner {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .wrap,
+            .work-intro {
+                width: min(100% - 2rem, 88rem);
+            }
+
+            .hero .scrub-sticky {
+                padding-inline: 1.25rem;
+            }
+
+            .site-header {
+                left: 1.25rem;
+            }
+
+            .hero-copy {
+                width: 100%;
+                font-size: clamp(3.15rem, 15vw, 4.25rem);
+            }
+
+            .proof-list li:nth-child(2),
+            .proof-list li:nth-child(4),
+            .pillar-list > li:nth-child(2) .pillar,
+            .pillar-list > li:nth-child(4) .pillar {
+                width: 100%;
+                margin-left: 0;
+            }
+
+        }
+
+        /* Pinned scrub. Fragments meet across one viewport, then the line locks. */
+        @media (prefers-reduced-motion: no-preference) {
+            html.motion .scrub.is-pinned {
+                display: block;
+                min-height: 0;
+                padding: 0;
+            }
+
+            html.motion .scrub.is-pinned::after {
+                content: "";
+                display: block;
+                height: 100svh;
+            }
+
+            html.motion .scrub.is-pinned .scrub-sticky {
+                position: sticky;
+                top: 0;
+                height: auto;
+                min-height: 100svh;
+            }
+
+            html.motion .proof.scrub.is-pinned .scrub-sticky {
+                display: flex;
+                align-items: center;
+                padding-block: clamp(4rem, 10vh, 7rem);
+            }
+
+            html.motion .piece {
+                --join: 0;
+                --x: 0;
+                --y: 0;
+                display: inline-block;
+                vertical-align: baseline;
+                transform: translate3d(calc(var(--x) * 1vw * (1 - var(--join))), calc(var(--y) * 1vh * (1 - var(--join))), 0);
+                opacity: calc(0.48 + (0.52 * var(--join)));
+            }
+
+            html.motion .piece.is-locked {
+                transform: none;
+                opacity: 1;
+            }
+
+            html.motion .proof .metric-kicker.piece,
+            html.motion .proof p.piece,
+            html.motion .work-kicker.piece,
+            html.motion .case dl .piece,
+            html.motion a.piece,
+            html.motion .press-note.piece {
+                display: block;
+            }
+
+            html.motion .tag-list.piece {
+                display: flex;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .piece {
+                transform: none;
+                opacity: 1;
             }
         }
     </style>
 </head>
-
 <body>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-avatar">
-                <img src="https://github.com/allansli.png" alt="Allan M. de Paula">
-                <div class="hero-avatar-badge">
-                    <img src="https://github.githubassets.com/assets/arctic-code-vault-contributor-default-df8d74122a06.png" alt="Arctic Code Vault Contributor badge">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="galaxy-fallback" aria-hidden="true"></div>
+    <canvas id="galaxy-field" aria-hidden="true"></canvas>
+
+    <header class="site-header">
+        <a class="brand" href="#top">Allan Martins</a>
+    </header>
+
+    <main id="main">
+        <!-- Hero -->
+        <section class="hero scrub" id="top" aria-labelledby="hero-title">
+            <div class="scrub-sticky">
+                <div class="hero-copy">
+                    <h1 id="hero-title"><span class="piece" style="--x:-8;--y:-26" data-start="0" data-end="0.62">Architecture</span> <span class="piece" style="--x:18;--y:-10" data-start="0.05" data-end="0.68">that</span> <span class="piece" style="--x:-16;--y:12" data-start="0.08" data-end="0.74">cannot</span> <span class="piece" style="--x:14;--y:16" data-start="0.12" data-end="0.8">go down.</span></h1>
+                    <p class="hero-role"><span class="piece" style="--x:-10;--y:8" data-start="0.35" data-end="0.9">Head of Architecture</span> <span class="piece" style="--x:8;--y:-6" data-start="0.42" data-end="0.94">· CERC</span> <span class="piece" style="--x:12;--y:10" data-start="0.48" data-end="1">· Brazil credit-market infrastructure</span></p>
+                    <a class="talk piece" href="#contact" style="--x:0;--y:8" data-start="0.62" data-end="1">Talk architecture</a>
                 </div>
             </div>
-            <h1>Allan M. de Paula</h1>
-            <p class="subtitle">Senior Manager & Lead Architect</p>
-            <p class="description">
-                Award-winning technology leader with 12+ years architecting enterprise fintech solutions. Former Avanade
-                Senior Manager who led modernization of Brazil's largest card network and delivered multi-million dollar
-                digital banking platforms across global markets.
-            </p>
-            <div class="cta-buttons">
-                <a href="#projects" class="glass-button glass-button--primary">View My Work</a>
-                <a href="#contact" class="glass-button glass-button--ghost">Get In Touch</a>
-                <a href="https://github.com/allansli" class="glass-button glass-button--ghost" target="_blank">GitHub Profile</a>
+        </section>
+
+        <!-- Proof -->
+        <section class="proof scrub" id="proof" aria-labelledby="proof-title">
+            <div class="scrub-sticky">
+                <div class="wrap">
+                    <h2 class="running" id="proof-title">Proof</h2>
+                    <ul class="proof-list">
+                        <li>
+                            <h3 class="metric-kicker piece" style="--x:-14;--y:-16" data-start="0" data-end="0.32">CERC now</h3>
+                            <p class="piece" style="--x:8;--y:10" data-start="0.06" data-end="0.4">Head of Architecture since July 2025. The credit-market infrastructure has to stay available.</p>
+                        </li>
+                        <li>
+                            <h3 class="metric-kicker piece" style="--x:18;--y:-12" data-start="0.16" data-end="0.48">SHIFT</h3>
+                            <p class="piece" style="--x:-10;--y:8" data-start="0.22" data-end="0.55">Tens of thousands of tasks. 100% of open pull requests reviewed.</p>
+                        </li>
+                        <li>
+                            <h3 class="metric-kicker piece" style="--x:-8;--y:6" data-start="0.34" data-end="0.66">Elo Lead Architect</h3>
+                            <p class="metric-figure"><span class="piece" style="--x:-16;--y:-8" data-start="0.4" data-end="0.72">Sub-300ms.</span> <span class="piece" style="--x:12;--y:10" data-start="0.46" data-end="0.78">Availability above 99.999%.</span></p>
+                        </li>
+                        <li>
+                            <h3 class="metric-kicker piece" style="--x:10;--y:-8" data-start="0.58" data-end="0.9">US acquiring</h3>
+                            <p class="piece" style="--x:-12;--y:12" data-start="0.64" data-end="1">Delivery Lead. About $10 million.</p>
+                        </li>
+                    </ul>
+                </div>
             </div>
+        </section>
+
+        <!-- Pillars -->
+        <section class="pillars" id="pillars" aria-labelledby="pillars-title">
+            <div class="wrap">
+                <h2 class="running" id="pillars-title">Pillars</h2>
+                <ol class="pillar-list">
+                    <li>
+                        <div class="pillar">
+                            <span class="index" aria-hidden="true"></span>
+                            <div>
+                                <h3>SHIFT</h3>
+                                <p>The agentic SDLC. Tasks come from people, events, and schedules, and land back as pull requests and reviews.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="pillar">
+                            <span class="index" aria-hidden="true"></span>
+                            <div>
+                                <h3>Architecture as a Service</h3>
+                                <p>Architecture owned as a platform the teams consume, for the credit-market infrastructure.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="pillar">
+                            <span class="index" aria-hidden="true"></span>
+                            <div>
+                                <h3>Backstage and Apigee</h3>
+                                <p>The developer portal and the API gateway. Not the receivables ledger.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="pillar">
+                            <span class="index" aria-hidden="true"></span>
+                            <div>
+                                <h3>Patterns and a live scorecard</h3>
+                                <p>Shared architecture patterns, scored in the open. <a href="https://github.com/allansli/scorecard" target="_blank" rel="noopener noreferrer">Live scorecard<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Signature work -->
+        <section id="work" aria-labelledby="work-title">
+            <div class="work-intro">
+                <h2 class="running" id="work-title">Signature work</h2>
+                <p class="lede">Four stories. The seat, the constraint, and what shipped.</p>
+            </div>
+            <article class="case scrub">
+                <div class="scrub-sticky">
+                    <div class="case-inner">
+                        <p class="work-kicker piece" style="--x:-14;--y:-12" data-start="0" data-end="0.32">CERC · Agentic SDLC</p>
+                        <h3><span class="piece" style="--x:18;--y:-20" data-start="0.06" data-end="0.42">SHIFT</span></h3>
+                        <dl>
+                            <div class="piece" style="--x:-18;--y:10" data-start="0.2" data-end="0.64">
+                                <dt>Problem</dt>
+                                <dd>Autocomplete never joined the delivery system. Reviews, fixes, and docs still waited on whoever was free.</dd>
+                            </div>
+                            <div class="piece" style="--x:16;--y:8" data-start="0.32" data-end="0.76">
+                                <dt>Role</dt>
+                                <dd>I designed SHIFT, CERC’s agent platform: ephemeral cloud agents that take work from chat, events, and schedules.</dd>
+                            </div>
+                            <div class="piece" style="--x:-12;--y:12" data-start="0.44" data-end="0.88">
+                                <dt>Result</dt>
+                                <dd>Tens of thousands of tasks. Every open pull request is reviewed, without someone having to ask.</dd>
+                            </div>
+                        </dl>
+                        <p class="press-note piece" style="--x:10;--y:6" data-start="0.58" data-end="0.96">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+                        <ul class="tag-list piece" style="--x:-8;--y:8" data-start="0.66" data-end="1" aria-label="SHIFT tags">
+                            <li>Cloud Run</li>
+                            <li>Agentic SDLC</li>
+                            <li>Code review</li>
+                            <li>Governance</li>
+                            <li>Vertex AI</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+            <article class="case scrub">
+                <div class="scrub-sticky">
+                    <div class="case-inner">
+                        <p class="work-kicker piece" style="--x:14;--y:-10" data-start="0" data-end="0.3">Avanade · Payments</p>
+                        <h3><span class="piece" style="--x:-16;--y:-18" data-start="0.04" data-end="0.38">Elo</span> <span class="piece" style="--x:12;--y:-8" data-start="0.08" data-end="0.42">core</span> <span class="piece" style="--x:-10;--y:6" data-start="0.12" data-end="0.46">authorizer</span></h3>
+                        <dl>
+                            <div class="piece" style="--x:16;--y:10" data-start="0.22" data-end="0.66">
+                                <dt>Problem</dt>
+                                <dd>A national card network needed its authorization core rewritten for cloud without giving up the latency the scheme requires.</dd>
+                            </div>
+                            <div class="piece" style="--x:-14;--y:8" data-start="0.34" data-end="0.78">
+                                <dt>Role</dt>
+                                <dd>Lead Architect at Avanade. The architecture seat, separate from the Safrapay delivery-lead role.</dd>
+                            </div>
+                            <div class="piece" style="--x:12;--y:12" data-start="0.46" data-end="0.9">
+                                <dt>Result</dt>
+                                <dd>Authorization under 300ms and availability above 99.999% on a multicloud core. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported, a year on, about 50% lower unit cost per transaction, 54% faster responses, and an 18× smaller financial impact from incidents.</dd>
+                            </div>
+                        </dl>
+                        <ul class="tag-list piece" style="--x:-8;--y:6" data-start="0.6" data-end="1" aria-label="Elo tags">
+                            <li>Multicloud</li>
+                            <li>Authorization</li>
+                            <li>High availability</li>
+                            <li>Azure</li>
+                            <li>AWS</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+            <article class="case scrub">
+                <div class="scrub-sticky">
+                    <div class="case-inner">
+                        <p class="work-kicker piece" style="--x:-12;--y:-8" data-start="0" data-end="0.3">CERC · Platform</p>
+                        <h3><span class="piece" style="--x:14;--y:-16" data-start="0.04" data-end="0.36">Backstage</span> <span class="piece" style="--x:-8;--y:-6" data-start="0.1" data-end="0.4">and</span> <span class="piece" style="--x:16;--y:8" data-start="0.14" data-end="0.44">Apigee</span></h3>
+                        <dl>
+                            <div class="piece" style="--x:-16;--y:10" data-start="0.2" data-end="0.64">
+                                <dt>Problem</dt>
+                                <dd>Services and APIs at a regulated infrastructure were clear to the teams that owned them and opaque everywhere else.</dd>
+                            </div>
+                            <div class="piece" style="--x:14;--y:8" data-start="0.32" data-end="0.76">
+                                <dt>Role</dt>
+                                <dd>I set the platform architecture: Backstage as the developer portal and Apigee as the API gateway. Not the receivables ledger.</dd>
+                            </div>
+                            <div class="piece" style="--x:-10;--y:12" data-start="0.44" data-end="0.88">
+                                <dt>Result</dt>
+                                <dd>One catalog for engineering, and one governed edge for participants and internal systems, including calls into SHIFT from outside the cluster.</dd>
+                            </div>
+                        </dl>
+                        <ul class="tag-list piece" style="--x:8;--y:6" data-start="0.58" data-end="1" aria-label="Platform tags">
+                            <li>Backstage</li>
+                            <li>Apigee</li>
+                            <li>Developer portal</li>
+                            <li>API gateway</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+            <article class="case scrub">
+                <div class="scrub-sticky">
+                    <div class="case-inner">
+                        <p class="work-kicker piece" style="--x:12;--y:-10" data-start="0" data-end="0.3">Avanade · Private banking</p>
+                        <h3><span class="piece" style="--x:-14;--y:-18" data-start="0.04" data-end="0.36">Swiss</span> <span class="piece" style="--x:16;--y:-6" data-start="0.1" data-end="0.42">private</span> <span class="piece" style="--x:-12;--y:8" data-start="0.14" data-end="0.46">bank</span></h3>
+                        <dl>
+                            <div class="piece" style="--x:16;--y:10" data-start="0.22" data-end="0.66">
+                                <dt>Problem</dt>
+                                <dd>Trading and e-banking needed the same positions, priced now, across business units that did not share a platform.</dd>
+                            </div>
+                            <div class="piece" style="--x:-14;--y:8" data-start="0.34" data-end="0.78">
+                                <dt>Role</dt>
+                                <dd>Lead architect for the trading platform and the e-banking estate.</dd>
+                            </div>
+                            <div class="piece" style="--x:10;--y:12" data-start="0.46" data-end="0.9">
+                                <dt>Result</dt>
+                                <dd>Near-real-time asset pricing and portfolio valuation for 10+ business units across 30+ markets.</dd>
+                            </div>
+                        </dl>
+                        <ul class="tag-list piece" style="--x:-8;--y:6" data-start="0.6" data-end="1" aria-label="Swiss private bank tags">
+                            <li>Trading</li>
+                            <li>E-banking</li>
+                            <li>Real-time pricing</li>
+                            <li>Wealth</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Open source, demoted -->
+        <section class="oss" id="oss" aria-labelledby="oss-title">
+            <div class="wrap">
+                <h2 class="running" id="oss-title">Open-source demos</h2>
+                <p class="lede">Public references. They are not the signature work.</p>
+                <ul class="oss-list">
+                    <li><a href="https://github.com/allansli/canary-argo" target="_blank" rel="noopener noreferrer">Canary deployments with Argo<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/allansli/grpc-load-balancing-k8s" target="_blank" rel="noopener noreferrer">gRPC load balancing<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/allansli/grpc-mock-server" target="_blank" rel="noopener noreferrer">gRPC mock server<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/allansli/distributed-timeout" target="_blank" rel="noopener noreferrer">Distributed timeouts<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/allansli/database-records-compressor" target="_blank" rel="noopener noreferrer">Database records compressor<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/allansli/scorecard" target="_blank" rel="noopener noreferrer">Project scorecard<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/allansli/cucumber-integration-testing" target="_blank" rel="noopener noreferrer">gRPC Cucumber tests<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/allansli/angular-barcode-febraban" target="_blank" rel="noopener noreferrer">Angular barcode Febraban<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Career -->
+        <section class="career" id="career" aria-labelledby="career-title">
+            <div class="wrap">
+                <h2 class="running" id="career-title">Career</h2>
+                <p class="lede">The seats are named on purpose. Lead Architect and Delivery Lead are different jobs.</p>
+                <div class="lines">
+                    <article class="line">
+                        <p class="when">Jul 2025–</p>
+                        <div>
+                            <h3>Head of Architecture</h3>
+                            <p class="where">CERC · São Paulo</p>
+                            <p>Highly available architecture for Brazil’s credit-market infrastructure.</p>
+                            <p>SHIFT, Architecture as a Service, and the platform edge on Backstage and Apigee.</p>
+                        </div>
+                    </article>
+                    <article class="line">
+                        <p class="when">2021–2025</p>
+                        <div>
+                            <h3>Lead Architect</h3>
+                            <p class="where">Avanade</p>
+                            <p>Elo authorization core. Sub-300ms, availability above 99.999%.</p>
+                            <p>Swiss private bank: trading and e-banking, near-real-time pricing for 10+ business units across 30+ markets.</p>
+                        </div>
+                    </article>
+                    <article class="line">
+                        <p class="when">2019–2021</p>
+                        <div>
+                            <h3>Delivery Lead</h3>
+                            <p class="where">Avanade · Safrapay</p>
+                            <p>US acquiring. Delivery Lead for a program of about $10 million.</p>
+                        </div>
+                    </article>
+                    <p class="early-note">Capgemini and Tangram, 2012–2013: systems analysis, e-commerce, and CRM.</p>
+                    <article class="line">
+                        <h3 class="when">Education</h3>
+                        <p>Computer Science, FEI. Master’s, FGV EAESP.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="about" id="about" aria-labelledby="about-title">
+            <div class="wrap">
+                <h2 class="running" id="about-title">About</h2>
+                <p class="about-copy">I live in São Paulo and I like the work when it is specific: a platform that stays up, a service a team can find, a pull request that gets a real review.</p>
+                <ul class="skill-line" aria-label="Skills">
+                    <li>K8s</li>
+                    <li>Distributed Systems</li>
+                    <li>AI/GenAI</li>
+                    <li>GCP</li>
+                    <li>Payment Systems</li>
+                    <li>Cloud-Native/Azure</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="contact" id="contact" aria-labelledby="contact-title">
+            <div class="wrap">
+                <h2 class="display" id="contact-title">Let’s talk architecture</h2>
+                <p class="lede">Open to architecture conversations, advisory, and roles.</p>
+                <div class="contact-links">
+                    <a href="mailto:allan.mdepaula@gmail.com?subject=Let%27s%20talk%20architecture">Email</a>
+                    <a href="https://linkedin.com/in/allan-mdp" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>
+                    <a href="https://github.com/allansli" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (opens in a new tab)</span></a>
+                    <a href="https://building.cerc.com/en/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <nav class="site-nav" aria-label="Primary">
+                <a href="#proof">Proof</a>
+                <a href="#pillars">Pillars</a>
+                <a href="#work">Work</a>
+                <a href="#career">Career</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <p>Allan Martins · Head of Architecture, CERC · São Paulo</p>
         </div>
-    </section>
+    </footer>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item scroll-reveal glass-card glass-card--compact">
-                    <div style="display: table; table-layout: fixed; width:100%">
-                        <div style="display: table-cell; text-align: right;" class="stat-number">15</div>
-                        <div style="display: table-cell; text-align: left;" class="stat-sign">+</div>
-                    </div>
-                    <div class="stat-label">Years of Experience</div>
-                </div>
-                <div class="stat-item scroll-reveal glass-card glass-card--compact">
-                    <div class="stat-number">5</div>
-                    <div class="stat-label">Major Digital Transformations</div>
-                </div>
-                <div class="stat-item scroll-reveal glass-card glass-card--compact">
-                    <div style="display: table;table-layout: fixed; width: 100%">
-                        <div style="display: table-cell; text-align: right;" class="stat-number">30</div>
-                        <div style="display: table-cell; text-align: left;" class="stat-sign">+</div>
-                    </div>
-                    <div class="stat-label">Global Markets Served</div>
-                </div>
-                <div class="stat-item scroll-reveal glass-card glass-card--compact">
-                    <div class="stat-number">4</div>
-                    <div class="stat-label">Different Continents with Distributed Teams</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text glass-card glass-card--compact scroll-reveal">
-                    <h2>About Me</h2>
-                    <p>
-                        I'm a seasoned technology executive with 12+ years transforming complex financial ecosystems
-                        through strategic
-                        architecture and innovative leadership. As a Senior Manager at Avanade, I've orchestrated
-                        multi-million dollar
-                        digital transformations, from modernizing Brazil's largest card network to delivering
-                        next-generation banking platforms
-                        across global markets.
-                    </p>
-                    <p>
-                        My expertise lies in bridging business strategy with technical execution—leading distributed
-                        teams of 20+ professionals,
-                        designing cloud-native architectures that process millions of transactions, and establishing
-                        DevSecOps practices that
-                        ensure zero-incident deployments.
-                    </p>
-                    <p>
-                        What drives me is the intersection of cutting-edge technology and real-world impact. Whether
-                        it's reducing critical
-                        business processes from 20 days to 24 hours or architecting resilient systems that handle
-                        enterprise-scale workloads,
-                        I thrive on solving complex challenges that matter to both businesses and their customers.
-                    </p>
-                </div>
-                <div class="skills-grid scroll-reveal">
-                    <div class="skill-tag glass-chip">Cloud Architecture</div>
-                    <div class="skill-tag glass-chip">Digital Transformation</div>
-                    <div class="skill-tag glass-chip">Technical Leadership</div>
-                    <div class="skill-tag glass-chip">DevSecOps</div>
-                    <div class="skill-tag glass-chip">Microservices</div>
-                    <div class="skill-tag glass-chip">Kubernetes</div>
-                    <div class="skill-tag glass-chip">Azure & AWS</div>
-                    <div class="skill-tag glass-chip">Team Management</div>
-                    <div class="skill-tag glass-chip">gRPC & Service Mesh</div>
-                    <div class="skill-tag glass-chip">Strategic Planning</div>
-                    <div class="skill-tag glass-chip">Client Engagement</div>
-                    <div class="skill-tag glass-chip">Financial Services</div>
-                    <div class="skill-tag glass-chip">Program Management</div>
-                    <div class="skill-tag glass-chip">Innovation Leadership</div>
-                    <div class="skill-tag glass-chip">Risk Management</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section class="projects" id="projects">
-        <div class="container">
-            <h2 class="section-title scroll-reveal">Portfolio & Open Source Contributions</h2>
-
-            <!-- DevOps & Cloud Infrastructure -->
-            <div class="project-category">
-                <h3 class="category-title">DevOps & Cloud Infrastructure</h3>
-                <p class="category-subtitle">Modern deployment strategies and cloud-native architectures</p>
-                <div class="projects-grid">
-                    <div class="project-card glass-card scroll-reveal">
-                        <div class="project-header">
-                            <span class="project-icon">CANARY</span>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Canary Deployments with Argo</h3>
-                            <p class="project-description">
-                                Production-ready implementation of canary deployment strategies using Argo Rollouts and
-                                Istio service mesh on Kubernetes.
-                                Demonstrates enterprise-grade progressive delivery patterns with automated rollback
-                                capabilities.
-                            </p>
-                            <div class="project-tech">
-                                <span class="tech-tag glass-chip glass-chip--dense">Kubernetes</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Argo Rollouts</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Istio</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">GitOps</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Progressive Delivery</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/allansli/canary-argo" class="glass-button glass-button--compact glass-button--ghost" target="_blank">
-                                    View Code
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-card glass-card scroll-reveal">
-                        <div class="project-header">
-                            <span class="project-icon">BALANCE</span>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">gRPC Load Balancing on Kubernetes</h3>
-                            <p class="project-description">
-                                Advanced load balancing implementation for gRPC services in Kubernetes environments.
-                                Features service mesh integration,
-                                health checking, and automatic failover mechanisms for high-availability microservices.
-                            </p>
-                            <div class="project-tech">
-                                <span class="tech-tag glass-chip glass-chip--dense">gRPC</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Kubernetes</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Load Balancing</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Service Mesh</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">High Availability</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/allansli/grpc-load-balancing-k8s" class="glass-button glass-button--compact glass-button--ghost"
-                                    target="_blank">
-                                    View Code
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Microservices & API Development -->
-            <div class="project-category">
-                <h3 class="category-title">Microservices & API Development</h3>
-                <p class="category-subtitle">Tools and patterns for distributed systems architecture</p>
-                <div class="projects-grid">
-                    <div class="project-card glass-card scroll-reveal">
-                        <div class="project-header">
-                            <span class="project-icon">MOCK</span>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">gRPC Mock Server</h3>
-                            <p class="project-description">
-                                Comprehensive mock server for gRPC services, essential for microservices development and
-                                testing workflows.
-                                Supports dynamic response generation, service discovery simulation, and development
-                                environment isolation.
-                            </p>
-                            <div class="project-tech">
-                                <span class="tech-tag glass-chip glass-chip--dense">gRPC</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Mock Server</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Microservices</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Testing</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Development Tools</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/allansli/grpc-mock-server" class="glass-button glass-button--compact glass-button--ghost"
-                                    target="_blank">
-                                    View Code
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-card glass-card scroll-reveal">
-                        <div class="project-header">
-                            <span class="project-icon">TIMEOUT</span>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Distributed Timeout Management</h3>
-                            <p class="project-description">
-                                Sophisticated timeout management system for distributed architectures. Provides reliable
-                                timeout mechanisms,
-                                circuit breaker patterns, and graceful degradation for complex microservices
-                                environments.
-                            </p>
-                            <div class="project-tech">
-                                <span class="tech-tag glass-chip glass-chip--dense">Distributed Systems</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Circuit Breaker</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Resilience</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Timeout Management</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Fault Tolerance</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/allansli/distributed-timeout" class="glass-button glass-button--compact glass-button--ghost"
-                                    target="_blank">
-                                    View Code
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Data Engineering & Analytics -->
-            <div class="project-category">
-                <h3 class="category-title">Data Engineering & Analytics</h3>
-                <p class="category-subtitle">High-performance data processing and project assessment tools</p>
-                <div class="projects-grid">
-                    <div class="project-card glass-card scroll-reveal">
-                        <div class="project-header">
-                            <span class="project-icon">COMPRESS</span>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Database Records Compressor</h3>
-                            <p class="project-description">
-                                Enterprise-grade data compression engine optimized for high-volume grouped data
-                                processing.
-                                Implements advanced algorithms for efficient storage utilization and query performance
-                                optimization.
-                            </p>
-                            <div class="project-tech">
-                                <span class="tech-tag glass-chip glass-chip--dense">Python</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Data Compression</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Database Optimization</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Performance Tuning</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Big Data</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/allansli/database-records-compressor" class="glass-button glass-button--compact glass-button--ghost"
-                                    target="_blank">
-                                    View Code
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-card glass-card scroll-reveal">
-                        <div class="project-header">
-                            <span class="project-icon">SCORE</span>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Project Scorecard System</h3>
-                            <p class="project-description">
-                                Flexible project evaluation framework for assessing repository quality, technical debt,
-                                and development practices.
-                                Provides comprehensive metrics for governance and continuous improvement initiatives.
-                            </p>
-                            <div class="project-tech">
-                                <span class="tech-tag glass-chip glass-chip--dense">Python</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Analytics</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Project Assessment</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Governance</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Metrics</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/allansli/scorecard" class="glass-button glass-button--compact glass-button--ghost" target="_blank">
-                                    View Code
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Testing & Quality Engineering -->
-            <div class="project-category">
-                <h3 class="category-title">Testing & Quality Engineering</h3>
-                <p class="category-subtitle">Modern testing strategies and quality assurance practices</p>
-                <div class="projects-grid">
-                    <div class="project-card glass-card scroll-reveal">
-                        <div class="project-header">
-                            <span class="project-icon">TESTING</span>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Java gRPC API with Cucumber Testing</h3>
-                            <p class="project-description">
-                                Comprehensive testing demonstration using behavior-driven development (BDD) principles.
-                                Features integration testing
-                                with Cucumber, Gherkin syntax, and TestContainers for reliable, isolated test
-                                environments.
-                            </p>
-                            <div class="project-tech">
-                                <span class="tech-tag glass-chip glass-chip--dense">Java</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">gRPC</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Cucumber</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">TestContainers</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">BDD</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/allansli/cucumber-integration-testing" class="glass-button glass-button--compact glass-button--ghost"
-                                    target="_blank">
-                                    View Code
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fintech & Specialized Solutions -->
-            <div class="project-category">
-                <h3 class="category-title">Fintech & Specialized Solutions</h3>
-                <p class="category-subtitle">Domain-specific tools for Brazilian financial services</p>
-                <div class="projects-grid">
-                    <div class="project-card glass-card scroll-reveal">
-                        <div class="project-header">
-                            <span class="project-icon">BARCODE</span>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Angular Barcode Febraban</h3>
-                            <p class="project-description">
-                                Specialized Angular directive for Brazilian FEBRABAN-compliant ITF barcode generation.
-                                Essential tool for Brazilian
-                                fintech applications, payment processing, and banking compliance requirements.
-                            </p>
-                            <div class="project-tech">
-                                <span class="tech-tag glass-chip glass-chip--dense">Angular</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Fintech</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Brazilian Standards</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Banking Compliance</span>
-                                <span class="tech-tag glass-chip glass-chip--dense">Payment Processing</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/allansli/angular-barcode-febraban" class="glass-button glass-button--compact glass-button--ghost"
-                                    target="_blank">
-                                    View Code
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section class="experience">
-        <div class="container">
-            <h2 class="section-title scroll-reveal">Professional Journey</h2>
-            <div class="timeline">
-                <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content glass-card glass-card--compact">
-                        <h3>Senior Manager - Lead Architect</h3>
-                        <div class="company">Avanade • 2021 - 2025</div>
-                        <p><strong>Core Authorizer Modernization (Brazilian Card Network):</strong> Led modernization of
-                            Brazil's largest card network with cloud-native multicloud architecture on Azure and AWS.
-                            Achieved zero critical incidents, sub-300ms transaction processing latency, and cost
-                            reduction while leading 20+ person distributed team.</p>
-                        <p><strong>Swiss Private Bank Digital Transformation:</strong> Delivered Trading Platform and
-                            E-banking solution for 10+ global business units across 30+ markets with near real-time
-                            asset pricing and portfolio valuations.</p>
-                    </div>
-                </div>
-                <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content glass-card glass-card--compact">
-                        <h3>Manager - Client & Delivery Lead</h3>
-                        <div class="company">Avanade • 2019 - 2021</div>
-                        <p><strong>US Bank Acquiring & Digital Banking (~$10M):</strong> Led cloud-first acquiring and
-                            digital banking platform for SMBs. Designed microservices architecture on Azure with
-                            event-driven patterns, deployed to production within one year.</p>
-                        <p><strong>Samsung Pay Integration & Banking Onboarding:</strong> Successfully integrated
-                            Samsung Pay with mobile banking and reduced banking onboarding time from 20 days to 24
-                            hours, achieving full acquiring onboarding in under 2 minutes.</p>
-                    </div>
-                </div>
-                <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content glass-card glass-card--compact">
-                        <h3>Senior Consultant - Associate Manager</h3>
-                        <div class="company">Avanade • 2013 - 2019</div>
-                        <p>Progressed through multiple roles delivering enterprise solutions for major financial
-                            institutions. Specialized in payment systems, mobile banking integrations, and
-                            high-performance architectures with focus on scalability, security, and regulatory
-                            compliance.</p>
-                    </div>
-                </div>
-                <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content glass-card glass-card--compact">
-                        <h3>System Analyst</h3>
-                        <div class="company">Capgemini • 2012 - 2013</div>
-                        <p>Developed and maintained administrative systems and integration services. Worked with .NET
-                            platform, MVC 4, Entity Framework, and SQL Server using SCRUM methodology to deliver client
-                            solutions on time and within scope.</p>
-                    </div>
-                </div>
-                <div class="timeline-item scroll-reveal">
-                    <div class="timeline-content glass-card glass-card--compact">
-                        <h3>IT Consultant</h3>
-                        <div class="company">Tangram Solutions • 2012</div>
-                        <p>Participated in complete lifecycle of E-Commerce (B2B/B2C) and CRM platforms. Contributed to
-                            business rules definition, system planning, database modeling, and development using .NET,
-                            MVC 4, Entity Framework, and WCF.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="contact-card glass-card glass-card--compact scroll-reveal">
-                <h2>Let's Build Something Amazing Together</h2>
-                <p>Always open to discussing new opportunities, collaborations, or just talking tech over coffee</p>
-                <div class="cta-buttons">
-                    <a href="mailto:allan.mdepaula@gmail.com" class="glass-button glass-button--primary">Send Email</a>
-                    <a href="https://linkedin.com/in/allan-mdp" class="glass-button glass-button--ghost" target="_blank">LinkedIn</a>
-                </div>
-                <div class="social-links">
-                    <a href="https://github.com/allansli" class="glass-button glass-button--icon glass-button--ghost social-link" target="_blank" title="GitHub">GH</a>
-                    <a href="https://linkedin.com/in/allan-mdp" class="glass-button glass-button--icon glass-button--ghost social-link" target="_blank" title="LinkedIn">IN</a>
-                    <a href="https://twitter.com/allansli" class="glass-button glass-button--icon glass-button--ghost social-link" target="_blank" title="Twitter">TW</a>
-                    <a href="mailto:allan.mdepaula@gmail.com" class="glass-button glass-button--icon glass-button--ghost social-link" title="Email">EM</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Intersection Observer for scroll reveals
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function (entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        // Observe all scroll reveal elements
-        document.querySelectorAll('.scroll-reveal, .stat-item, .project-card, .timeline-item').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Counter animation for stats
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 40;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                element.textContent = Math.floor(current);
-            }, 30);
-        }
-
-        // Trigger counter animations when stats come into view
-        const statsObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const numberElement = entry.target.querySelector('.stat-number');
-                    if (numberElement) {
-                        const text = numberElement.textContent;
-                        const number = parseFloat(text.replace('+', ''));
-                        numberElement.textContent = '0';
-                        animateCounter(numberElement, number);
-                    }
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.stat-item').forEach(item => {
-            statsObserver.observe(item);
-        });
-    </script>
+    <script type="module" src="assets/js/galaxy-field.js"></script>
+    <script src="assets/js/scroll-motion.js"></script>
 </body>
-
 </html>
