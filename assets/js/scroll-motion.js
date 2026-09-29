@@ -1,65 +1,150 @@
 const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)");
 const CHAPTER_WARMTH = [-0.55, 0.28, -0.18, 0.62];
+const LOCK_PORTION = 0.74;
 
 function boot() {
-    const proofItems = document.querySelectorAll(".proof-list > li");
+    const scrubs = Array.from(document.querySelectorAll(".scrub"));
     const chapters = document.querySelectorAll(".case");
-    const claim = document.querySelector("#hero-title");
     chapters.forEach((chapter, index) => {
         chapter.dataset.chapter = String(index);
     });
 
-    let revealObserver = null;
+    const entries = scrubs.map((scrub) => {
+        const sticky = scrub.querySelector(".scrub-sticky");
+        const pieces = Array.from(scrub.querySelectorAll(".piece"));
+        pieces.forEach((piece) => {
+            piece._x = Number(piece.style.getPropertyValue("--x")) || 0;
+            piece._y = Number(piece.style.getPropertyValue("--y")) || 0;
+        });
+        return { scrub, sticky, pieces, forced: false };
+    });
+
     let chapterObserver = null;
-    let fallbackBound = false;
+    let queued = false;
+    let enabled = false;
 
     function setWarmth(value) {
         document.dispatchEvent(new CustomEvent("galaxy-warmth", { detail: value }));
     }
 
-    function disconnect() {
-        if (revealObserver) {
-            revealObserver.disconnect();
-            revealObserver = null;
+    function pieceJoin(progress, piece) {
+        const start = Number(piece.dataset.start || 0);
+        const end = Number(piece.dataset.end || 1);
+        if (progress <= start || end <= start) {
+            return progress <= start ? 0 : 1;
         }
-        if (chapterObserver) {
-            chapterObserver.disconnect();
-            chapterObserver = null;
+        if (progress >= end) {
+            return 1;
         }
+        return (progress - start) / (end - start);
     }
 
-    function clearMotionStyles() {
-        if (!claim) {
+    function writePiece(piece, join) {
+        const locked = join >= 1;
+        const next = locked ? "1" : join.toFixed(4);
+        if (piece.dataset.join === next) {
             return;
         }
-        claim.style.opacity = "";
-        claim.style.transform = "";
-        claim.style.letterSpacing = "";
+        piece.dataset.join = next;
+        piece.style.setProperty("--join", next);
+        piece.classList.toggle("is-locked", locked);
     }
 
-    function enable() {
-        document.documentElement.classList.add("motion");
-        disconnect();
+    function clearPiece(piece) {
+        delete piece.dataset.join;
+        piece.style.removeProperty("--join");
+        piece.classList.remove("is-locked");
+    }
 
-        revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("is-in");
-                    revealObserver.unobserve(entry.target);
-                }
+    function paint() {
+        if (!enabled) {
+            return;
+        }
+        const tops = entries.map((entry) => entry.scrub.getBoundingClientRect().top);
+        entries.forEach((entry, index) => {
+            const progress = entry.forced
+                ? 1
+                : Math.min(1, Math.max(0, -tops[index] / Math.max(window.innerHeight * LOCK_PORTION, 1)));
+            entry.pieces.forEach((piece) => {
+                writePiece(piece, entry.forced ? 1 : pieceJoin(progress, piece));
             });
-        }, { rootMargin: "0px 0px -8% 0px", threshold: 0.18 });
+        });
+    }
 
-        proofItems.forEach((item) => revealObserver.observe(item));
-        chapters.forEach((chapter) => revealObserver.observe(chapter));
+    function requestPaint() {
+        if (!enabled || queued || document.hidden) {
+            return;
+        }
+        queued = true;
+        requestAnimationFrame(() => {
+            queued = false;
+            if (!document.hidden) {
+                paint();
+            }
+        });
+    }
 
+    function clampPieceOffsets() {
+        const margin = 12;
+        const vw = window.innerWidth / 100;
+        const vh = window.innerHeight / 100;
+        entries.forEach((entry) => {
+            entry.pieces.forEach((piece) => {
+                piece.classList.remove("is-locked");
+                delete piece.dataset.join;
+                piece.style.setProperty("--join", "1");
+            });
+        });
+        const writes = [];
+        entries.forEach((entry) => {
+            if (!entry.sticky) {
+                return;
+            }
+            const sticky = entry.sticky.getBoundingClientRect();
+            entry.pieces.forEach((piece) => {
+                const layout = piece.getBoundingClientRect();
+                const minX = sticky.left + margin - layout.left;
+                const maxX = sticky.right - margin - layout.right;
+                const minY = sticky.top + margin - layout.top;
+                const maxY = sticky.bottom - margin - layout.bottom;
+                const wantX = piece._x * vw;
+                const wantY = piece._y * vh;
+                const x = minX > maxX ? 0 : Math.min(maxX, Math.max(minX, wantX));
+                const y = minY > maxY ? 0 : Math.min(maxY, Math.max(minY, wantY));
+                writes.push([piece, (x / vw).toFixed(3), (y / vh).toFixed(3)]);
+            });
+        });
+        writes.forEach(([piece, x, y]) => {
+            piece.style.setProperty("--x", x);
+            piece.style.setProperty("--y", y);
+        });
+    }
+
+    function pin() {
+        entries.forEach((entry) => {
+            entry.scrub.classList.add("is-pinned");
+        });
+    }
+
+    function unpin() {
+        entries.forEach((entry) => {
+            entry.scrub.classList.remove("is-pinned", "is-forced");
+            entry.forced = false;
+            entry.pieces.forEach(clearPiece);
+        });
+    }
+
+    function watchChapters() {
+        if (chapterObserver) {
+            chapterObserver.disconnect();
+        }
         const seen = new Map();
-        chapterObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    seen.set(entry.target, entry.intersectionRatio);
+        chapterObserver = new IntersectionObserver((records) => {
+            records.forEach((record) => {
+                if (record.isIntersecting) {
+                    seen.set(record.target, record.intersectionRatio);
                 } else {
-                    seen.delete(entry.target);
+                    seen.delete(record.target);
                 }
             });
             let active = null;
@@ -74,57 +159,33 @@ function boot() {
                 setWarmth(0);
                 return;
             }
-            const index = Number(active.dataset.chapter);
-            setWarmth(CHAPTER_WARMTH[index] || 0);
-        }, { threshold: [0.2, 0.45, 0.7] });
-
+            setWarmth(CHAPTER_WARMTH[Number(active.dataset.chapter)] || 0);
+        }, { threshold: [0.12, 0.25, 0.4] });
         chapters.forEach((chapter) => chapterObserver.observe(chapter));
+    }
 
-        if (claim && !fallbackBound && !CSS.supports("animation-timeline", "scroll(root)")) {
-            fallbackBound = true;
-            let queued = false;
-            const onScroll = () => {
-                if (queued || REDUCED.matches) {
-                    return;
-                }
-                queued = true;
-                requestAnimationFrame(() => {
-                    const distance = Math.max(window.innerHeight * 0.42, 1);
-                    const progress = Math.min(1, window.scrollY / distance);
-                    claim.style.opacity = String(1 - progress * 0.48);
-                    claim.style.transform = `translate3d(0, ${(-12 * progress).toFixed(2)}px, 0) scale(${(1 - progress * 0.02).toFixed(4)})`;
-                    claim.style.letterSpacing = `${(-0.045 + progress * 0.012).toFixed(4)}em`;
-                    queued = false;
-                });
-            };
-            window.addEventListener("scroll", onScroll, { passive: true });
-            claim.dataset.scrollFallback = "true";
+    function enable() {
+        if (enabled) {
+            return;
         }
+        enabled = true;
+        document.documentElement.classList.add("motion");
+        pin();
+        clampPieceOffsets();
+        watchChapters();
+        paint();
     }
 
     function disable() {
+        enabled = false;
         document.documentElement.classList.remove("motion");
-        disconnect();
-        document.querySelectorAll(".is-in").forEach((element) => {
-            element.classList.remove("is-in");
-        });
-        clearMotionStyles();
+        if (chapterObserver) {
+            chapterObserver.disconnect();
+            chapterObserver = null;
+        }
+        unpin();
         setWarmth(0);
     }
-
-    document.addEventListener("focusin", (event) => {
-        if (REDUCED.matches || !event.target.closest) {
-            return;
-        }
-        const proof = event.target.closest(".proof-list > li");
-        const chapter = event.target.closest(".case");
-        if (proof) {
-            proof.classList.add("is-in");
-        }
-        if (chapter) {
-            chapter.classList.add("is-in");
-        }
-    });
 
     function sync() {
         if (REDUCED.matches) {
@@ -134,12 +195,47 @@ function boot() {
         enable();
     }
 
+    document.addEventListener("focusin", () => {
+        if (!enabled) {
+            return;
+        }
+        const active = document.activeElement;
+        const scrub = active && active.closest ? active.closest(".scrub") : null;
+        entries.forEach((entry) => {
+            entry.forced = entry.scrub === scrub;
+            entry.scrub.classList.toggle("is-forced", entry.forced);
+        });
+        paint();
+    });
+
+    window.addEventListener("scroll", requestPaint, { passive: true });
+    window.addEventListener("resize", () => {
+        if (!enabled) {
+            return;
+        }
+        clampPieceOffsets();
+        requestPaint();
+    }, { passive: true });
+    if (document.fonts) {
+        document.fonts.ready.then(() => {
+            if (!enabled) {
+                return;
+            }
+            clampPieceOffsets();
+            paint();
+        });
+    }
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+            requestPaint();
+        }
+    });
     REDUCED.addEventListener("change", sync);
     sync();
 }
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
-} else {
+if (document.querySelector(".scrub")) {
     boot();
+} else {
+    document.addEventListener("DOMContentLoaded", boot);
 }

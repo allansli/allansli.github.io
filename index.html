@@ -229,13 +229,18 @@
         /* Hero. The field is the frame. Type sits in one corner. */
         .hero {
             position: relative;
+            min-height: 100svh;
+        }
+
+        .hero .scrub-sticky {
+            position: relative;
             display: flex;
             align-items: flex-end;
             min-height: 100svh;
             padding: 0 6vw 9vh;
         }
 
-        .hero::before {
+        .hero .scrub-sticky::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -465,13 +470,18 @@
 
         .case {
             position: relative;
+            min-height: 100svh;
+        }
+
+        .case .scrub-sticky {
+            position: relative;
             display: flex;
             align-items: flex-end;
             min-height: 100svh;
             padding: 14vh 6vw 10vh;
         }
 
-        .case::before {
+        .case .scrub-sticky::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -479,7 +489,7 @@
             background: linear-gradient(90deg, var(--ink) 0%, rgba(5, 6, 10, 0.42) 36%, rgba(5, 6, 10, 0) 64%);
         }
 
-        .case:nth-of-type(even)::before {
+        .case:nth-of-type(even) .scrub-sticky::before {
             background: linear-gradient(270deg, var(--ink) 0%, rgba(5, 6, 10, 0.42) 36%, rgba(5, 6, 10, 0) 64%);
         }
 
@@ -720,8 +730,8 @@
                 align-items: flex-end;
             }
 
-            .case::before,
-            .case:nth-of-type(even)::before {
+            .case .scrub-sticky::before,
+            .case:nth-of-type(even) .scrub-sticky::before {
                 background: linear-gradient(180deg, rgba(5, 6, 10, 0) 0%, rgba(5, 6, 10, 0.55) 42%, rgba(5, 6, 10, 0.88) 100%);
             }
 
@@ -736,7 +746,7 @@
                 width: min(100% - 2rem, 88rem);
             }
 
-            .hero {
+            .hero .scrub-sticky {
                 padding-inline: 1.25rem;
             }
 
@@ -759,53 +769,53 @@
 
         }
 
-        /* Scroll reveals. Hidden only after JS opts in, and never when motion is reduced. */
+        /* Pinned scrub. Fragments meet across one viewport, then the line locks. */
         @media (prefers-reduced-motion: no-preference) {
-            @supports (animation-timeline: scroll(root)) {
-                h1 {
-                    animation: hero-depart linear both;
-                    animation-timeline: scroll(root);
-                    animation-range: 0vh 85vh;
-                }
+            html.motion .scrub.is-pinned {
+                display: block;
+                min-height: 0;
+                padding: 0 0 100svh;
             }
 
-            html.motion .proof-list > li,
-            html.motion .case-inner {
-                opacity: 0;
-                transform: translate3d(0, 1.75rem, 0);
-                transition: opacity 0.8s ease, transform 0.8s ease;
+            html.motion .scrub.is-pinned .scrub-sticky {
+                position: sticky;
+                top: 0;
+                height: auto;
+                min-height: 100svh;
             }
 
-            html.motion .proof-list > li:nth-child(2) {
-                transition-delay: 0.08s;
+            html.motion .proof.scrub.is-pinned .scrub-sticky {
+                display: flex;
+                align-items: center;
+                padding-block: clamp(4rem, 10vh, 7rem);
             }
 
-            html.motion .proof-list > li:nth-child(3) {
-                transition-delay: 0.16s;
+            html.motion .piece {
+                --join: 0;
+                --x: 0;
+                --y: 0;
+                display: inline-block;
+                vertical-align: baseline;
+                transform: translate3d(calc(var(--x) * 1vw * (1 - var(--join))), calc(var(--y) * 1vh * (1 - var(--join))), 0);
+                opacity: calc(0.48 + (0.52 * var(--join)));
             }
 
-            html.motion .proof-list > li:nth-child(4) {
-                transition-delay: 0.24s;
-            }
-
-            html.motion .proof-list > li.is-in,
-            html.motion .case.is-in .case-inner {
-                opacity: 1;
+            html.motion .piece.is-locked {
                 transform: none;
-            }
-        }
-
-        @keyframes hero-depart {
-            from {
                 opacity: 1;
-                transform: none;
-                letter-spacing: -0.045em;
             }
 
-            to {
-                opacity: 0.5;
-                transform: translate3d(0, -0.75rem, 0) scale(0.98);
-                letter-spacing: -0.032em;
+            html.motion .proof .metric-kicker.piece,
+            html.motion .proof p.piece,
+            html.motion .work-kicker.piece,
+            html.motion .case dl .piece,
+            html.motion a.piece,
+            html.motion .press-note.piece {
+                display: block;
+            }
+
+            html.motion .tag-list.piece {
+                display: flex;
             }
         }
 
@@ -814,13 +824,9 @@
                 scroll-behavior: auto;
             }
 
-            h1,
-            .proof-list > li,
-            .case-inner {
-                animation: none;
-                opacity: 1;
+            .piece {
                 transform: none;
-                transition: none;
+                opacity: 1;
             }
         }
     </style>
@@ -836,36 +842,40 @@
 
     <main id="main">
         <!-- Hero -->
-        <section class="hero" id="top" aria-labelledby="hero-title">
-            <div class="hero-copy">
-                <h1 id="hero-title">Architecture that cannot go down.</h1>
-                <p class="hero-role">Head of Architecture · CERC · Brazil credit-market infrastructure</p>
-                <a class="talk" href="#contact">Talk architecture</a>
+        <section class="hero scrub" id="top" aria-labelledby="hero-title">
+            <div class="scrub-sticky">
+                <div class="hero-copy">
+                    <h1 id="hero-title"><span class="piece" style="--x:-8;--y:-26" data-start="0" data-end="0.62">Architecture</span> <span class="piece" style="--x:18;--y:-10" data-start="0.05" data-end="0.68">that</span> <span class="piece" style="--x:-16;--y:12" data-start="0.08" data-end="0.74">cannot</span> <span class="piece" style="--x:14;--y:16" data-start="0.12" data-end="0.8">go down.</span></h1>
+                    <p class="hero-role"><span class="piece" style="--x:-10;--y:8" data-start="0.35" data-end="0.9">Head of Architecture</span> <span class="piece" style="--x:8;--y:-6" data-start="0.42" data-end="0.94">· CERC</span> <span class="piece" style="--x:12;--y:10" data-start="0.48" data-end="1">· Brazil credit-market infrastructure</span></p>
+                    <a class="talk piece" href="#contact" style="--x:0;--y:8" data-start="0.62" data-end="1">Talk architecture</a>
+                </div>
             </div>
         </section>
 
         <!-- Proof -->
-        <section class="proof" id="proof" aria-labelledby="proof-title">
-            <div class="wrap">
-                <h2 class="running" id="proof-title">Proof</h2>
-                <ul class="proof-list">
-                    <li>
-                        <h3 class="metric-kicker">CERC now</h3>
-                        <p>Head of Architecture since July 2025. The credit-market infrastructure has to stay available.</p>
-                    </li>
-                    <li>
-                        <h3 class="metric-kicker">SHIFT</h3>
-                        <p>Tens of thousands of tasks. 100% of open pull requests reviewed.</p>
-                    </li>
-                    <li>
-                        <h3 class="metric-kicker">Elo Lead Architect</h3>
-                        <p class="metric-figure">Sub-300ms. Availability above 99.999%.</p>
-                    </li>
-                    <li>
-                        <h3 class="metric-kicker">US acquiring</h3>
-                        <p>Delivery Lead. About $10 million.</p>
-                    </li>
-                </ul>
+        <section class="proof scrub" id="proof" aria-labelledby="proof-title">
+            <div class="scrub-sticky">
+                <div class="wrap">
+                    <h2 class="running" id="proof-title">Proof</h2>
+                    <ul class="proof-list">
+                        <li>
+                            <h3 class="metric-kicker piece" style="--x:-14;--y:-16" data-start="0" data-end="0.32">CERC now</h3>
+                            <p class="piece" style="--x:8;--y:10" data-start="0.06" data-end="0.4">Head of Architecture since July 2025. The credit-market infrastructure has to stay available.</p>
+                        </li>
+                        <li>
+                            <h3 class="metric-kicker piece" style="--x:18;--y:-12" data-start="0.16" data-end="0.48">SHIFT</h3>
+                            <p class="piece" style="--x:-10;--y:8" data-start="0.22" data-end="0.55">Tens of thousands of tasks. 100% of open pull requests reviewed.</p>
+                        </li>
+                        <li>
+                            <h3 class="metric-kicker piece" style="--x:-8;--y:6" data-start="0.34" data-end="0.66">Elo Lead Architect</h3>
+                            <p class="metric-figure"><span class="piece" style="--x:-16;--y:-8" data-start="0.4" data-end="0.72">Sub-300ms.</span> <span class="piece" style="--x:12;--y:10" data-start="0.46" data-end="0.78">Availability above 99.999%.</span></p>
+                        </li>
+                        <li>
+                            <h3 class="metric-kicker piece" style="--x:10;--y:-8" data-start="0.58" data-end="0.9">US acquiring</h3>
+                            <p class="piece" style="--x:-12;--y:12" data-start="0.64" data-end="1">Delivery Lead. About $10 million.</p>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </section>
 
@@ -920,87 +930,119 @@
                 <h2 class="running" id="work-title">Signature work</h2>
                 <p class="lede">Four stories. The seat, the constraint, and what shipped.</p>
             </div>
-            <article class="case">
-                <div class="case-inner">
-                    <p class="work-kicker">CERC · Agentic SDLC</p>
-                    <h3>SHIFT</h3>
-                    <dl>
-                        <dt>Problem</dt>
-                        <dd>Autocomplete never joined the delivery system. Reviews, fixes, and docs still waited on whoever was free.</dd>
-                        <dt>Role</dt>
-                        <dd>I designed SHIFT, CERC’s agent platform: ephemeral cloud agents that take work from chat, events, and schedules.</dd>
-                        <dt>Result</dt>
-                        <dd>Tens of thousands of tasks. Every open pull request is reviewed, without someone having to ask.</dd>
-                    </dl>
-                    <p class="press-note">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
-                    <ul class="tag-list" aria-label="SHIFT tags">
-                        <li>Cloud Run</li>
-                        <li>Agentic SDLC</li>
-                        <li>Code review</li>
-                        <li>Governance</li>
-                        <li>Vertex AI</li>
-                    </ul>
+            <article class="case scrub">
+                <div class="scrub-sticky">
+                    <div class="case-inner">
+                        <p class="work-kicker piece" style="--x:-14;--y:-12" data-start="0" data-end="0.32">CERC · Agentic SDLC</p>
+                        <h3><span class="piece" style="--x:18;--y:-20" data-start="0.06" data-end="0.42">SHIFT</span></h3>
+                        <dl>
+                            <div class="piece" style="--x:-18;--y:10" data-start="0.2" data-end="0.64">
+                                <dt>Problem</dt>
+                                <dd>Autocomplete never joined the delivery system. Reviews, fixes, and docs still waited on whoever was free.</dd>
+                            </div>
+                            <div class="piece" style="--x:16;--y:8" data-start="0.32" data-end="0.76">
+                                <dt>Role</dt>
+                                <dd>I designed SHIFT, CERC’s agent platform: ephemeral cloud agents that take work from chat, events, and schedules.</dd>
+                            </div>
+                            <div class="piece" style="--x:-12;--y:12" data-start="0.44" data-end="0.88">
+                                <dt>Result</dt>
+                                <dd>Tens of thousands of tasks. Every open pull request is reviewed, without someone having to ask.</dd>
+                            </div>
+                        </dl>
+                        <p class="press-note piece" style="--x:10;--y:6" data-start="0.58" data-end="0.96">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+                        <ul class="tag-list piece" style="--x:-8;--y:8" data-start="0.66" data-end="1" aria-label="SHIFT tags">
+                            <li>Cloud Run</li>
+                            <li>Agentic SDLC</li>
+                            <li>Code review</li>
+                            <li>Governance</li>
+                            <li>Vertex AI</li>
+                        </ul>
+                    </div>
                 </div>
             </article>
-            <article class="case">
-                <div class="case-inner">
-                    <p class="work-kicker">Avanade · Payments</p>
-                    <h3>Elo core authorizer</h3>
-                    <dl>
-                        <dt>Problem</dt>
-                        <dd>A national card network needed its authorization core rewritten for cloud without giving up the latency the scheme requires.</dd>
-                        <dt>Role</dt>
-                        <dd>Lead Architect at Avanade. The architecture seat, separate from the Safrapay delivery-lead role.</dd>
-                        <dt>Result</dt>
-                        <dd>Authorization under 300ms and availability above 99.999% on a multicloud core. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported, a year on, about 50% lower unit cost per transaction, 54% faster responses, and an 18× smaller financial impact from incidents.</dd>
-                    </dl>
-                    <ul class="tag-list" aria-label="Elo tags">
-                        <li>Multicloud</li>
-                        <li>Authorization</li>
-                        <li>High availability</li>
-                        <li>Azure</li>
-                        <li>AWS</li>
-                    </ul>
+            <article class="case scrub">
+                <div class="scrub-sticky">
+                    <div class="case-inner">
+                        <p class="work-kicker piece" style="--x:14;--y:-10" data-start="0" data-end="0.3">Avanade · Payments</p>
+                        <h3><span class="piece" style="--x:-16;--y:-18" data-start="0.04" data-end="0.38">Elo</span> <span class="piece" style="--x:12;--y:-8" data-start="0.08" data-end="0.42">core</span> <span class="piece" style="--x:-10;--y:6" data-start="0.12" data-end="0.46">authorizer</span></h3>
+                        <dl>
+                            <div class="piece" style="--x:16;--y:10" data-start="0.22" data-end="0.66">
+                                <dt>Problem</dt>
+                                <dd>A national card network needed its authorization core rewritten for cloud without giving up the latency the scheme requires.</dd>
+                            </div>
+                            <div class="piece" style="--x:-14;--y:8" data-start="0.34" data-end="0.78">
+                                <dt>Role</dt>
+                                <dd>Lead Architect at Avanade. The architecture seat, separate from the Safrapay delivery-lead role.</dd>
+                            </div>
+                            <div class="piece" style="--x:12;--y:12" data-start="0.46" data-end="0.9">
+                                <dt>Result</dt>
+                                <dd>Authorization under 300ms and availability above 99.999% on a multicloud core. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported, a year on, about 50% lower unit cost per transaction, 54% faster responses, and an 18× smaller financial impact from incidents.</dd>
+                            </div>
+                        </dl>
+                        <ul class="tag-list piece" style="--x:-8;--y:6" data-start="0.6" data-end="1" aria-label="Elo tags">
+                            <li>Multicloud</li>
+                            <li>Authorization</li>
+                            <li>High availability</li>
+                            <li>Azure</li>
+                            <li>AWS</li>
+                        </ul>
+                    </div>
                 </div>
             </article>
-            <article class="case">
-                <div class="case-inner">
-                    <p class="work-kicker">CERC · Platform</p>
-                    <h3>Backstage and Apigee</h3>
-                    <dl>
-                        <dt>Problem</dt>
-                        <dd>Services and APIs at a regulated infrastructure were clear to the teams that owned them and opaque everywhere else.</dd>
-                        <dt>Role</dt>
-                        <dd>I set the platform architecture: Backstage as the developer portal and Apigee as the API gateway. Not the receivables ledger.</dd>
-                        <dt>Result</dt>
-                        <dd>One catalog for engineering, and one governed edge for participants and internal systems, including calls into SHIFT from outside the cluster.</dd>
-                    </dl>
-                    <ul class="tag-list" aria-label="Platform tags">
-                        <li>Backstage</li>
-                        <li>Apigee</li>
-                        <li>Developer portal</li>
-                        <li>API gateway</li>
-                    </ul>
+            <article class="case scrub">
+                <div class="scrub-sticky">
+                    <div class="case-inner">
+                        <p class="work-kicker piece" style="--x:-12;--y:-8" data-start="0" data-end="0.3">CERC · Platform</p>
+                        <h3><span class="piece" style="--x:14;--y:-16" data-start="0.04" data-end="0.36">Backstage</span> <span class="piece" style="--x:-8;--y:-6" data-start="0.1" data-end="0.4">and</span> <span class="piece" style="--x:16;--y:8" data-start="0.14" data-end="0.44">Apigee</span></h3>
+                        <dl>
+                            <div class="piece" style="--x:-16;--y:10" data-start="0.2" data-end="0.64">
+                                <dt>Problem</dt>
+                                <dd>Services and APIs at a regulated infrastructure were clear to the teams that owned them and opaque everywhere else.</dd>
+                            </div>
+                            <div class="piece" style="--x:14;--y:8" data-start="0.32" data-end="0.76">
+                                <dt>Role</dt>
+                                <dd>I set the platform architecture: Backstage as the developer portal and Apigee as the API gateway. Not the receivables ledger.</dd>
+                            </div>
+                            <div class="piece" style="--x:-10;--y:12" data-start="0.44" data-end="0.88">
+                                <dt>Result</dt>
+                                <dd>One catalog for engineering, and one governed edge for participants and internal systems, including calls into SHIFT from outside the cluster.</dd>
+                            </div>
+                        </dl>
+                        <ul class="tag-list piece" style="--x:8;--y:6" data-start="0.58" data-end="1" aria-label="Platform tags">
+                            <li>Backstage</li>
+                            <li>Apigee</li>
+                            <li>Developer portal</li>
+                            <li>API gateway</li>
+                        </ul>
+                    </div>
                 </div>
             </article>
-            <article class="case">
-                <div class="case-inner">
-                    <p class="work-kicker">Avanade · Private banking</p>
-                    <h3>Swiss private bank</h3>
-                    <dl>
-                        <dt>Problem</dt>
-                        <dd>Trading and e-banking needed the same positions, priced now, across business units that did not share a platform.</dd>
-                        <dt>Role</dt>
-                        <dd>Lead architect for the trading platform and the e-banking estate.</dd>
-                        <dt>Result</dt>
-                        <dd>Near-real-time asset pricing and portfolio valuation for 10+ business units across 30+ markets.</dd>
-                    </dl>
-                    <ul class="tag-list" aria-label="Swiss private bank tags">
-                        <li>Trading</li>
-                        <li>E-banking</li>
-                        <li>Real-time pricing</li>
-                        <li>Wealth</li>
-                    </ul>
+            <article class="case scrub">
+                <div class="scrub-sticky">
+                    <div class="case-inner">
+                        <p class="work-kicker piece" style="--x:12;--y:-10" data-start="0" data-end="0.3">Avanade · Private banking</p>
+                        <h3><span class="piece" style="--x:-14;--y:-18" data-start="0.04" data-end="0.36">Swiss</span> <span class="piece" style="--x:16;--y:-6" data-start="0.1" data-end="0.42">private</span> <span class="piece" style="--x:-12;--y:8" data-start="0.14" data-end="0.46">bank</span></h3>
+                        <dl>
+                            <div class="piece" style="--x:16;--y:10" data-start="0.22" data-end="0.66">
+                                <dt>Problem</dt>
+                                <dd>Trading and e-banking needed the same positions, priced now, across business units that did not share a platform.</dd>
+                            </div>
+                            <div class="piece" style="--x:-14;--y:8" data-start="0.34" data-end="0.78">
+                                <dt>Role</dt>
+                                <dd>Lead architect for the trading platform and the e-banking estate.</dd>
+                            </div>
+                            <div class="piece" style="--x:10;--y:12" data-start="0.46" data-end="0.9">
+                                <dt>Result</dt>
+                                <dd>Near-real-time asset pricing and portfolio valuation for 10+ business units across 30+ markets.</dd>
+                            </div>
+                        </dl>
+                        <ul class="tag-list piece" style="--x:-8;--y:6" data-start="0.6" data-end="1" aria-label="Swiss private bank tags">
+                            <li>Trading</li>
+                            <li>E-banking</li>
+                            <li>Real-time pricing</li>
+                            <li>Wealth</li>
+                        </ul>
+                    </div>
                 </div>
             </article>
         </section>
@@ -1110,6 +1152,6 @@
     </footer>
 
     <script type="module" src="assets/js/galaxy-field.js"></script>
-    <script type="module" src="assets/js/scroll-motion.js"></script>
+    <script src="assets/js/scroll-motion.js"></script>
 </body>
 </html>
