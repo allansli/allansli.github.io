@@ -23,6 +23,7 @@
             --accent: #0071e3;
             --on-accent: #ffffff;
             --hairline: rgba(245, 245, 247, 0.16);
+            --wash-fade: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.22) 16%, rgba(0, 0, 0, 0.78) 36%, #000 50%, rgba(0, 0, 0, 0.78) 64%, rgba(0, 0, 0, 0.22) 84%, transparent 100%);
             --ink: rgba(5, 6, 10, 0.78);
             --space-xl: 64px;
             --space-lg: 48px;
@@ -255,9 +256,12 @@
         .hero-stage::before {
             content: "";
             position: absolute;
-            inset: 0;
+            left: 0;
+            right: 0;
+            bottom: -22vh;
+            height: 58%;
             pointer-events: none;
-            background: linear-gradient(180deg, rgba(5, 6, 10, 0) 0%, rgba(5, 6, 10, 0) 58%, rgba(5, 6, 10, 0.38) 100%);
+            background: linear-gradient(180deg, rgba(5, 6, 10, 0) 0%, rgba(5, 6, 10, 0.16) 28%, rgba(5, 6, 10, 0.38) 50%, rgba(5, 6, 10, 0.16) 74%, rgba(5, 6, 10, 0) 100%);
         }
 
         .hero-copy {
@@ -317,9 +321,14 @@
         .oss::before {
             content: "";
             position: absolute;
-            inset: 0;
+            left: 0;
+            right: 0;
+            top: -22vh;
+            bottom: -22vh;
             pointer-events: none;
-            background: radial-gradient(ellipse 90% 80% at 18% 45%, rgba(5, 6, 10, 0.62), rgba(5, 6, 10, 0.18) 62%, rgba(5, 6, 10, 0) 100%);
+            background: radial-gradient(ellipse 78% 62% at 18% 50%, rgba(5, 6, 10, 0.55), rgba(5, 6, 10, 0) 72%);
+            -webkit-mask-image: var(--wash-fade);
+            mask-image: var(--wash-fade);
         }
 
         .proof .wrap,
@@ -496,9 +505,14 @@
         .case-stage::before {
             content: "";
             position: absolute;
-            inset: 0;
+            left: 0;
+            right: 0;
+            top: -18vh;
+            bottom: -18vh;
             pointer-events: none;
             background: linear-gradient(90deg, var(--ink) 0%, rgba(5, 6, 10, 0.42) 36%, rgba(5, 6, 10, 0) 64%);
+            -webkit-mask-image: var(--wash-fade);
+            mask-image: var(--wash-fade);
         }
 
         .case:nth-of-type(even) .case-stage::before {
@@ -766,7 +780,7 @@
 
             .case .case-stage::before,
             .case:nth-of-type(even) .case-stage::before {
-                background: linear-gradient(180deg, rgba(5, 6, 10, 0) 0%, rgba(5, 6, 10, 0.55) 42%, rgba(5, 6, 10, 0.88) 100%);
+                background: linear-gradient(180deg, rgba(5, 6, 10, 0) 0%, rgba(5, 6, 10, 0.28) 32%, rgba(5, 6, 10, 0.7) 58%, rgba(5, 6, 10, 0.28) 82%, rgba(5, 6, 10, 0) 100%);
             }
 
             .case:nth-of-type(even) .case-inner {
