@@ -18,19 +18,18 @@
     <style>
         :root {
             --void: #05060a;
-            --band: rgba(5, 6, 10, 0.92);
             --text: #f5f5f7;
             --muted: #a1a1a6;
             --accent: #0071e3;
             --on-accent: #ffffff;
             --hairline: rgba(245, 245, 247, 0.16);
+            --ink: rgba(5, 6, 10, 0.78);
             --space-xl: 64px;
             --space-lg: 48px;
             --space-md: 32px;
             --space-sm: 16px;
-            --prose: 46rem;
-            --page: 68rem;
-            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+            --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             --focus: #f5f5f7;
         }
 
@@ -42,18 +41,21 @@
 
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 72px;
+            scroll-padding-top: 4.5rem;
             color-scheme: dark;
+            background: var(--void);
             -webkit-font-smoothing: antialiased;
+            overflow-x: clip;
         }
 
         body {
             min-height: 100vh;
-            background: var(--void);
+            background: transparent;
             color: var(--text);
-            font-family: var(--font);
+            font-family: var(--sans);
             font-size: 1.0625rem;
             line-height: 1.6;
+            overflow-x: clip;
         }
 
         img {
@@ -66,7 +68,7 @@
             text-decoration-line: underline;
             text-decoration-color: var(--accent);
             text-decoration-thickness: 1px;
-            text-underline-offset: 0.18em;
+            text-underline-offset: 0.2em;
         }
 
         a:hover {
@@ -106,15 +108,11 @@
         }
 
         .wrap {
-            width: min(100% - 32px, var(--page));
+            width: min(100% - 10vw, 88rem);
             margin-inline: auto;
         }
 
-        .prose {
-            max-width: var(--prose);
-        }
-
-        /* Galaxy field. Readability comes from solid-dark bands, not from dimming the universe. */
+        /* Galaxy field. The universe is the ground; type sits on fades, not plates. */
         .galaxy-fallback,
         #galaxy-field {
             position: fixed;
@@ -155,124 +153,171 @@
 
         /* Header */
         .site-header {
-            position: sticky;
-            top: 0;
+            position: fixed;
+            inset: 0 0 auto 0;
             z-index: 2;
-            background: var(--band);
-            border-bottom: 1px solid var(--hairline);
+            background: linear-gradient(180deg, rgba(5, 6, 10, 0.78), rgba(5, 6, 10, 0));
         }
 
         .header-bar {
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
+            align-items: baseline;
             justify-content: space-between;
-            gap: var(--space-sm) var(--space-md);
-            width: min(100% - 32px, var(--page));
+            gap: 0.75rem 1.5rem;
+            width: min(100% - 10vw, 88rem);
             margin-inline: auto;
-            padding-block: var(--space-sm);
+            padding-block: 1.1rem 1.4rem;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 0.75rem;
             color: var(--text);
             text-decoration: none;
-            font-weight: 600;
-            letter-spacing: -0.01em;
+            font-family: var(--serif);
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
         }
 
         .brand img {
-            width: 40px;
-            height: 40px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1px solid var(--hairline);
         }
 
         .site-nav {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px 16px;
+            gap: 0.35rem 1.15rem;
         }
 
         .site-nav a {
             color: var(--muted);
             text-decoration: none;
-            font-size: 0.9375rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
         }
 
         .site-nav a:hover {
             color: var(--text);
         }
 
-        /* Hero */
-        .hero {
-            padding-block: var(--space-xl) var(--space-lg);
+        /* Shared type */
+        .running {
+            margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
+            padding-top: 0.85rem;
+            border-top: 1px solid var(--hairline);
+            color: var(--muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
         }
 
-        .hero .prose {
-            background: var(--band);
-            padding: var(--space-md);
+        .running:has(+ .lede) {
+            margin-bottom: 0;
+        }
+
+        .lede {
+            margin-top: 0.85rem;
+            margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
+            max-width: 28rem;
+            color: var(--muted);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0;
+            text-transform: none;
+            line-height: 1.5;
+        }
+
+        h1,
+        .display,
+        .case h3,
+        .metric-figure,
+        .index {
+            font-family: var(--serif);
+            font-weight: 500;
+            letter-spacing: -0.035em;
+        }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            min-height: 100svh;
+            padding-bottom: clamp(3rem, 8vh, 6rem);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(5, 6, 10, 0.08) 0%, rgba(5, 6, 10, 0) 28%, rgba(5, 6, 10, 0.55) 68%, rgba(5, 6, 10, 0.88) 100%),
+                linear-gradient(90deg, rgba(5, 6, 10, 0.5) 0%, rgba(5, 6, 10, 0) 58%);
+        }
+
+        .hero-layout {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(12rem, 0.55fr);
+            column-gap: clamp(1.5rem, 4vw, 4.5rem);
+            row-gap: 1.35rem;
+            align-items: end;
+            width: min(100% - 10vw, 88rem);
+            margin-inline: auto;
         }
 
         .eyebrow {
-            margin-bottom: var(--space-sm);
+            grid-column: 1 / -1;
             color: var(--muted);
-            font-size: 0.8125rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
         }
 
         h1 {
-            max-width: 18ch;
-            margin-bottom: var(--space-md);
-            font-size: clamp(2.5rem, 4vw, 3rem);
-            font-weight: 600;
-            letter-spacing: -0.03em;
-            line-height: 1.12;
-        }
-
-        h2 {
-            margin-bottom: var(--space-md);
-            font-size: 1.75rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-        }
-
-        h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: -0.015em;
-            line-height: 1.3;
+            grid-column: 1;
+            max-width: 11em;
+            font-size: clamp(2.7rem, 6.4vw, 6.6rem);
+            line-height: 0.92;
+            text-wrap: balance;
         }
 
         .support {
-            margin-bottom: var(--space-md);
+            grid-column: 2;
+            align-self: end;
+            max-width: 16rem;
+            padding-bottom: 0.35rem;
             color: var(--muted);
-            font-size: 1.125rem;
-            line-height: 1.5;
+            font-size: 1.05rem;
+            line-height: 1.45;
         }
 
-        .proof-chip {
-            display: block;
-            margin-bottom: var(--space-md);
-            padding-block: 12px;
-            border-top: 1px solid var(--hairline);
-            border-bottom: 1px solid var(--hairline);
-            color: var(--text);
-            font-size: 0.9375rem;
-            font-weight: 600;
+        .proof-line {
+            grid-column: 1 / -1;
+            margin-top: 0.5rem;
+            font-size: clamp(1.15rem, 2vw, 1.45rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.35;
         }
 
         .cta-row {
+            grid-column: 1 / -1;
             display: flex;
             flex-wrap: wrap;
-            gap: var(--space-sm);
-            margin: 0;
+            align-items: center;
+            gap: 1.25rem 1.75rem;
+            margin-top: 0.35rem;
         }
 
         .button {
@@ -280,267 +325,520 @@
             align-items: center;
             justify-content: center;
             min-height: 44px;
-            padding: 10px 18px;
-            border-radius: 999px;
+            padding: 0.7rem 1.15rem;
+            background: var(--accent);
+            color: var(--on-accent);
             font-weight: 600;
+            letter-spacing: 0.01em;
             text-decoration: none;
         }
 
-        .button-primary {
-            background: var(--accent);
-            color: var(--on-accent);
-        }
-
-        .button-primary:hover {
+        .button:hover {
             text-decoration: none;
             filter: brightness(1.08);
         }
 
-        .button-secondary {
-            border: 1px solid var(--accent);
-            background: transparent;
-            color: var(--text);
+        .text-cta {
+            font-size: 1rem;
         }
 
-        .button-secondary:hover {
-            text-decoration: none;
-            background: rgba(0, 113, 227, 0.12);
+        /* Proof. Metrics float. They do not share a box or a column width. */
+        .proof {
+            position: relative;
+            padding-block: clamp(5rem, 14vh, 9rem);
         }
 
-        /* Sections. Bands are solid-dark strips. Hairlines separate items. */
-        .band {
-            padding-block: var(--space-xl);
-            background: transparent;
+        .proof::before,
+        .pillars::before,
+        .career::before,
+        .about::before,
+        .contact::before,
+        .oss::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse 90% 80% at 18% 45%, rgba(5, 6, 10, 0.62), rgba(5, 6, 10, 0.18) 62%, rgba(5, 6, 10, 0) 100%);
         }
 
-        .band .wrap {
-            background: var(--band);
-            padding: var(--space-md);
+        .proof .wrap,
+        .pillars .wrap,
+        .career .wrap,
+        .about .wrap,
+        .contact .wrap,
+        .oss .wrap,
+        .work-intro {
+            position: relative;
         }
 
-        .lede {
-            margin-bottom: var(--space-lg);
-            color: var(--muted);
-        }
-
-        /* Proof and pillars */
-        .proof-list,
-        .pillar-list {
+        .proof-list {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--space-md);
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            row-gap: clamp(3rem, 8vh, 6rem);
             margin: 0;
             padding: 0;
             list-style: none;
         }
 
-        .proof-list li,
-        .pillar-list li {
-            padding-top: var(--space-sm);
-            border-top: 1px solid var(--hairline);
+        .proof-list li:nth-child(1) {
+            grid-column: 1 / 6;
+            grid-row: 1;
         }
 
-        .proof-list h3,
-        .pillar-list h3 {
-            margin-bottom: 8px;
+        .proof-list li:nth-child(2) {
+            grid-column: 8 / 13;
+            grid-row: 1 / 3;
+            align-self: center;
         }
 
-        .proof-list p,
-        .pillar-list p,
-        .press-note {
-            color: var(--muted);
+        .proof-list li:nth-child(3) {
+            grid-column: 1 / 8;
+            grid-row: 2;
         }
 
-        .press-note {
-            margin-top: var(--space-sm);
-            font-size: 0.875rem;
+        .proof-list li:nth-child(4) {
+            grid-column: 9 / 13;
+            grid-row: 3;
         }
 
-        /* Signature work */
-        .work-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            column-gap: var(--space-lg);
-        }
-
-        .work-card {
-            padding-block: var(--space-md);
-            border-top: 1px solid var(--hairline);
-            background: transparent;
-        }
-
-        .work-kicker {
-            margin-bottom: 8px;
-            color: var(--muted);
-            font-size: 0.8125rem;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
-
-        .work-card h3 {
-            margin-bottom: var(--space-sm);
-        }
-
-        .work-card dl {
-            display: grid;
-            gap: var(--space-sm);
-        }
-
-        .work-card dt {
+        .metric-kicker {
+            margin-bottom: 0.45rem;
             color: var(--muted);
             font-size: 0.75rem;
             font-weight: 600;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
         }
 
-        .work-card dd {
-            margin-top: 4px;
+        .proof-list li:nth-child(1) .metric-kicker {
+            font-family: var(--serif);
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            text-transform: none;
+            color: var(--text);
+        }
+
+        .proof-list li:nth-child(2) .metric-kicker {
+            font-family: var(--serif);
+            font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            text-transform: none;
+            color: var(--text);
+            line-height: 0.9;
+        }
+
+        .metric-figure {
+            font-size: clamp(2.2rem, 4vw, 3.6rem);
+            line-height: 1.02;
+            text-wrap: balance;
+        }
+
+        .proof-list p {
+            color: var(--muted);
+        }
+
+        .proof-list li:nth-child(2) p,
+        .proof-list li:nth-child(4) p {
+            max-width: 22rem;
+            margin-top: 0.75rem;
+        }
+
+        .proof-list li:nth-child(4) .metric-kicker {
+            font-size: 0.75rem;
+        }
+
+        /* Pillars. Numbered type, staggered, no boxes. */
+        .pillars {
+            position: relative;
+            padding-block: clamp(4rem, 12vh, 8rem);
+        }
+
+        .pillar-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: pillar;
+        }
+
+        .pillar-list > li {
+            counter-increment: pillar;
+            padding-block: clamp(1.75rem, 4vh, 2.75rem);
+            border-top: 1px solid var(--hairline);
+        }
+
+        .pillar {
+            display: grid;
+            grid-template-columns: auto minmax(0, 34rem);
+            gap: 0.5rem clamp(1rem, 3vw, 2.5rem);
+            align-items: baseline;
+        }
+
+        .pillar-list > li:nth-child(2) .pillar {
+            width: min(78%, 46rem);
+            margin-left: auto;
+        }
+
+        .pillar-list > li:nth-child(3) .pillar {
+            width: min(88%, 48rem);
+        }
+
+        .pillar-list > li:nth-child(4) .pillar {
+            width: min(64%, 42rem);
+            margin-left: auto;
+        }
+
+        .index {
+            font-size: clamp(2.8rem, 6vw, 5.25rem);
+            line-height: 0.8;
+            color: var(--muted);
+        }
+
+        .index::before {
+            content: counter(pillar, decimal-leading-zero);
+        }
+
+        .pillar h3 {
+            margin-bottom: 0.4rem;
+            font-family: var(--serif);
+            font-size: clamp(1.65rem, 2.4vw, 2.35rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .pillar p {
+            max-width: 36rem;
+            color: var(--muted);
+        }
+
+        /* Signature work. Each story is a full-bleed frame. */
+        .work-intro {
+            width: min(100% - 10vw, 88rem);
+            margin-inline: auto;
+            padding-top: clamp(4rem, 10vh, 7rem);
+        }
+
+        .case {
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            min-height: 100svh;
+            padding: 14vh 6vw 10vh;
+        }
+
+        .case::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(90deg, var(--ink) 0%, rgba(5, 6, 10, 0.42) 36%, rgba(5, 6, 10, 0) 64%);
+        }
+
+        .case:nth-of-type(even)::before {
+            background: linear-gradient(270deg, var(--ink) 0%, rgba(5, 6, 10, 0.42) 36%, rgba(5, 6, 10, 0) 64%);
+        }
+
+        .case-inner {
+            position: relative;
+            width: min(38rem, 100%);
+        }
+
+        .case:nth-of-type(even) .case-inner {
+            margin-left: auto;
+        }
+
+        .work-kicker {
+            margin-bottom: 0.85rem;
+            color: var(--muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .case h3 {
+            margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
+            font-size: clamp(3rem, 6.5vw, 6rem);
+            line-height: 0.92;
+            text-wrap: balance;
+        }
+
+        .case dl {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .case dt {
+            margin-bottom: 0.3rem;
+            color: var(--muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .press-note {
+            margin-top: 1.25rem;
+            color: var(--muted);
+            font-size: 0.875rem;
         }
 
         .tag-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: var(--space-sm);
-            padding: 0;
+            gap: 0.35rem 0.85rem;
+            margin-top: 1.5rem;
+            padding-top: 0.85rem;
+            border-top: 1px solid var(--hairline);
             list-style: none;
         }
 
         .tag-list li {
             color: var(--muted);
             font-size: 0.8125rem;
-        }
-
-        .tag-list li:not(:last-child)::after {
-            content: "·";
-            margin-left: 8px;
+            letter-spacing: 0.04em;
         }
 
         /* Open source, secondary */
-        .oss .lede {
-            margin-bottom: var(--space-md);
+        .oss {
+            position: relative;
+            padding-block: clamp(3.5rem, 8vh, 5.5rem);
         }
 
         .oss-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px 16px;
-            margin: 0;
+            gap: 0.65rem 1.35rem;
+            margin: 1.5rem 0 0;
             padding: 0;
             list-style: none;
+            max-width: 46rem;
         }
 
         .oss-list a {
-            font-size: 0.9375rem;
+            font-size: 0.95rem;
         }
 
-        /* Career */
-        .era-list {
-            max-width: var(--prose);
+        /* Career. Sparse lines, no dots. */
+        .career {
+            position: relative;
+            padding-block: clamp(4rem, 12vh, 8rem);
         }
 
-        .era-list > * + * {
-            margin-top: var(--space-lg);
-            padding-top: var(--space-lg);
+        .line {
+            display: grid;
+            grid-template-columns: 9.5rem minmax(0, 36rem);
+            gap: 0.35rem 2rem;
+            align-items: baseline;
+            padding-block: 1.35rem;
             border-top: 1px solid var(--hairline);
         }
 
-        .era h3 {
-            margin-bottom: 4px;
+        .when,
+        .line h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
         }
 
-        .era-meta {
-            margin-bottom: var(--space-sm);
+        .when {
             color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
         }
 
-        .era ol {
-            padding-left: 1.25rem;
+        .where {
+            margin-top: 0.2rem;
+            color: var(--muted);
+            font-size: 0.95rem;
         }
 
-        .era li + li {
-            margin-top: var(--space-sm);
+        .line p + p {
+            margin-top: 0.45rem;
         }
 
         .early-note {
-            max-width: var(--prose);
+            padding-block: 1.35rem;
+            border-top: 1px solid var(--hairline);
             color: var(--muted);
         }
 
         /* About */
-        .about p {
-            margin-bottom: var(--space-md);
+        .about {
+            position: relative;
+            padding-block: clamp(4rem, 12vh, 8rem);
         }
 
-        .skill-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 0;
-            padding: 0;
+        .about-copy {
+            max-width: 34rem;
+            font-family: var(--serif);
+            font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.35;
+        }
+
+        .skill-line {
+            display: block;
+            max-width: 34rem;
+            margin-top: 1.75rem;
+            padding-top: 0.85rem;
+            border-top: 1px solid var(--hairline);
             list-style: none;
-        }
-
-        .skill-list li {
             color: var(--muted);
-            font-size: 0.875rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
         }
 
-        .skill-list li:not(:last-child)::after {
-            content: "·";
-            margin-left: 8px;
+        .skill-line li {
+            display: inline;
+        }
+
+        .skill-line li:not(:last-child)::after {
+            content: "  /  ";
+            color: var(--muted);
         }
 
         /* Contact */
+        .contact {
+            position: relative;
+            padding-block: clamp(5rem, 16vh, 10rem) clamp(4rem, 10vh, 7rem);
+        }
+
+        .display {
+            max-width: 10em;
+            margin-bottom: 1rem;
+            font-size: clamp(3rem, 7vw, 6.2rem);
+            line-height: 0.92;
+            text-wrap: balance;
+        }
+
+        .contact .lede {
+            margin-bottom: 1.75rem;
+        }
+
         .contact-links {
             display: flex;
             flex-wrap: wrap;
-            gap: var(--space-sm) var(--space-md);
+            gap: 0.85rem 1.5rem;
             align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--hairline);
         }
 
         .site-footer {
-            padding-block: var(--space-md) var(--space-xl);
-            background: var(--band);
+            padding-block: 1.25rem 3rem;
+            border-top: 1px solid var(--hairline);
             color: var(--muted);
-            font-size: 0.9375rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
-        @media (min-width: 768px) {
+        @media (max-width: 860px) {
+            .hero-layout,
             .proof-list,
-            .pillar-list {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (min-width: 1100px) {
-            .proof-list,
-            .pillar-list {
-                grid-template-columns: repeat(4, 1fr);
+            .pillar,
+            .line {
+                grid-template-columns: 1fr;
             }
 
-            .work-grid {
-                grid-template-columns: 1fr 1fr;
+            h1,
+            .support,
+            .proof-line,
+            .cta-row,
+            .proof-list li:nth-child(1),
+            .proof-list li:nth-child(2),
+            .proof-list li:nth-child(3),
+            .proof-list li:nth-child(4) {
+                grid-column: 1;
+                grid-row: auto;
             }
-        }
 
-        @media (max-width: 900px) {
-            .hero {
-                padding-top: 96px;
+            .support {
+                max-width: 28rem;
+                padding-bottom: 0;
+            }
+
+            .proof-list li:nth-child(2) {
+                width: 86%;
+                margin-left: auto;
+            }
+
+            .proof-list li:nth-child(4) {
+                width: 74%;
+                margin-left: auto;
+            }
+
+            .pillar-list > li:nth-child(n) .pillar {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .pillar-list > li:nth-child(2) .pillar,
+            .pillar-list > li:nth-child(4) .pillar {
+                width: 92%;
+                margin-left: auto;
+            }
+
+            .case,
+            .case:nth-of-type(even) {
+                align-items: flex-end;
+            }
+
+            .case::before,
+            .case:nth-of-type(even)::before {
+                background: linear-gradient(180deg, rgba(5, 6, 10, 0) 0%, rgba(5, 6, 10, 0.55) 42%, rgba(5, 6, 10, 0.88) 100%);
+            }
+
+            .case:nth-of-type(even) .case-inner {
+                margin-left: 0;
             }
         }
 
         @media (max-width: 480px) {
-            .hero .prose,
-            .band .wrap {
-                padding: var(--space-sm);
+            .wrap,
+            .header-bar,
+            .hero-layout,
+            .work-intro {
+                width: min(100% - 2rem, 88rem);
+            }
+
+            html {
+                scroll-padding-top: 8rem;
+            }
+
+            .site-nav {
+                gap: 0.35rem 0.7rem;
+            }
+
+            .site-nav a {
+                letter-spacing: 0.08em;
+            }
+
+            .hero-layout {
+                row-gap: 0.85rem;
+            }
+
+            h1 {
+                font-size: 2.35rem;
+            }
+
+            .proof-list li:nth-child(2),
+            .proof-list li:nth-child(4),
+            .pillar-list > li:nth-child(2) .pillar,
+            .pillar-list > li:nth-child(4) .pillar {
+                width: 100%;
+                margin-left: 0;
             }
 
             .cta-row {
-                flex-direction: column;
-                align-items: stretch;
+                align-items: flex-start;
             }
         }
 
@@ -549,7 +847,7 @@
                 scroll-behavior: auto;
             }
 
-            .button-primary:hover {
+            .button:hover {
                 filter: none;
             }
         }
@@ -563,7 +861,7 @@
     <header class="site-header">
         <div class="header-bar">
             <a class="brand" href="#top">
-                <img src="https://github.com/allansli.png" width="40" height="40" alt="Portrait of Allan Martins">
+                <img src="https://github.com/allansli.png" width="28" height="28" alt="Portrait of Allan Martins">
                 <span aria-hidden="true">Allan Martins</span>
             </a>
             <nav class="site-nav" aria-label="Primary">
@@ -580,37 +878,37 @@
     <main id="main">
         <!-- Hero -->
         <section class="hero" id="top" aria-labelledby="hero-title">
-            <div class="wrap prose">
+            <div class="hero-layout">
                 <p class="eyebrow">Head of Architecture · CERC · São Paulo</p>
                 <h1 id="hero-title">Highly available architecture for Brazil’s credit-market infrastructure</h1>
                 <p class="support">Architecture as a Service, owned platforms, AI-driven SDLC.</p>
-                <p class="proof-chip">Elo Lead Architect — sub-300ms, &gt;99.999%</p>
+                <p class="proof-line">Elo Lead Architect — sub-300ms, &gt;99.999%</p>
                 <div class="cta-row">
-                    <a class="button button-primary" href="#contact">Talk architecture</a>
-                    <a class="button button-secondary" href="#work">View signature work</a>
+                    <a class="button" href="#contact">Talk architecture</a>
+                    <a class="text-cta" href="#work">View signature work</a>
                 </div>
             </div>
         </section>
 
         <!-- Proof -->
-        <section class="band" id="proof" aria-labelledby="proof-title">
+        <section class="proof" id="proof" aria-labelledby="proof-title">
             <div class="wrap">
-                <h2 id="proof-title">Proof</h2>
+                <h2 class="running" id="proof-title">Proof</h2>
                 <ul class="proof-list">
                     <li>
-                        <h3>CERC now</h3>
+                        <h3 class="metric-kicker">CERC now</h3>
                         <p>Head of Architecture since July 2025. The credit-market infrastructure has to stay available.</p>
                     </li>
                     <li>
-                        <h3>SHIFT</h3>
+                        <h3 class="metric-kicker">SHIFT</h3>
                         <p>Tens of thousands of tasks. 100% of open pull requests reviewed.</p>
                     </li>
                     <li>
-                        <h3>Elo Lead Architect</h3>
-                        <p>Sub-300ms. Availability above 99.999%.</p>
+                        <h3 class="metric-kicker">Elo Lead Architect</h3>
+                        <p class="metric-figure">Sub-300ms. Availability above 99.999%.</p>
                     </li>
                     <li>
-                        <h3>US acquiring</h3>
+                        <h3 class="metric-kicker">US acquiring</h3>
                         <p>Delivery Lead. About $10 million.</p>
                     </li>
                 </ul>
@@ -618,121 +916,145 @@
         </section>
 
         <!-- Pillars -->
-        <section class="band" id="pillars" aria-labelledby="pillars-title">
+        <section class="pillars" id="pillars" aria-labelledby="pillars-title">
             <div class="wrap">
-                <h2 id="pillars-title">Pillars</h2>
-                <ul class="pillar-list">
+                <h2 class="running" id="pillars-title">Pillars</h2>
+                <ol class="pillar-list">
                     <li>
-                        <h3>SHIFT</h3>
-                        <p>The agentic SDLC. Tasks come from people, events, and schedules, and land back as pull requests and reviews.</p>
+                        <div class="pillar">
+                            <span class="index" aria-hidden="true"></span>
+                            <div>
+                                <h3>SHIFT</h3>
+                                <p>The agentic SDLC. Tasks come from people, events, and schedules, and land back as pull requests and reviews.</p>
+                            </div>
+                        </div>
                     </li>
                     <li>
-                        <h3>Architecture as a Service</h3>
-                        <p>Architecture owned as a platform the teams consume, for the credit-market infrastructure.</p>
+                        <div class="pillar">
+                            <span class="index" aria-hidden="true"></span>
+                            <div>
+                                <h3>Architecture as a Service</h3>
+                                <p>Architecture owned as a platform the teams consume, for the credit-market infrastructure.</p>
+                            </div>
+                        </div>
                     </li>
                     <li>
-                        <h3>Backstage and Apigee</h3>
-                        <p>The developer portal and the API gateway. Not the receivables ledger.</p>
+                        <div class="pillar">
+                            <span class="index" aria-hidden="true"></span>
+                            <div>
+                                <h3>Backstage and Apigee</h3>
+                                <p>The developer portal and the API gateway. Not the receivables ledger.</p>
+                            </div>
+                        </div>
                     </li>
                     <li>
-                        <h3>Patterns and a live scorecard</h3>
-                        <p>Shared architecture patterns, scored in the open. <a href="https://github.com/allansli/scorecard" target="_blank" rel="noopener noreferrer">Live scorecard<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+                        <div class="pillar">
+                            <span class="index" aria-hidden="true"></span>
+                            <div>
+                                <h3>Patterns and a live scorecard</h3>
+                                <p>Shared architecture patterns, scored in the open. <a href="https://github.com/allansli/scorecard" target="_blank" rel="noopener noreferrer">Live scorecard<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+                            </div>
+                        </div>
                     </li>
-                </ul>
+                </ol>
             </div>
         </section>
 
         <!-- Signature work -->
-        <section class="band" id="work" aria-labelledby="work-title">
-            <div class="wrap">
-                <div class="prose">
-                    <h2 id="work-title">Signature work</h2>
-                    <p class="lede">Four stories. The seat, the constraint, and what shipped.</p>
-                </div>
-                <div class="work-grid">
-                    <article class="work-card">
-                        <p class="work-kicker">CERC · Agentic SDLC</p>
-                        <h3>SHIFT</h3>
-                        <dl>
-                            <dt>Problem</dt>
-                            <dd>Autocomplete never joined the delivery system. Reviews, fixes, and docs still waited on whoever was free.</dd>
-                            <dt>Role</dt>
-                            <dd>I designed SHIFT, CERC’s agent platform: ephemeral cloud agents that take work from chat, events, and schedules.</dd>
-                            <dt>Result</dt>
-                            <dd>Tens of thousands of tasks. Every open pull request is reviewed, without someone having to ask.</dd>
-                        </dl>
-                        <p class="press-note">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
-                        <ul class="tag-list" aria-label="SHIFT tags">
-                            <li>Cloud Run</li>
-                            <li>Agentic SDLC</li>
-                            <li>Code review</li>
-                            <li>Governance</li>
-                            <li>Vertex AI</li>
-                        </ul>
-                    </article>
-                    <article class="work-card">
-                        <p class="work-kicker">Avanade · Payments</p>
-                        <h3>Elo core authorizer</h3>
-                        <dl>
-                            <dt>Problem</dt>
-                            <dd>A national card network needed its authorization core rewritten for cloud without giving up the latency the scheme requires.</dd>
-                            <dt>Role</dt>
-                            <dd>Lead Architect at Avanade. The architecture seat, separate from the Safrapay delivery-lead role.</dd>
-                            <dt>Result</dt>
-                            <dd>Authorization under 300ms and availability above 99.999% on a multicloud core. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported, a year on, about 50% lower unit cost per transaction, 54% faster responses, and an 18× smaller financial impact from incidents.</dd>
-                        </dl>
-                        <ul class="tag-list" aria-label="Elo tags">
-                            <li>Multicloud</li>
-                            <li>Authorization</li>
-                            <li>High availability</li>
-                            <li>Azure</li>
-                            <li>AWS</li>
-                        </ul>
-                    </article>
-                    <article class="work-card">
-                        <p class="work-kicker">CERC · Platform</p>
-                        <h3>Backstage and Apigee</h3>
-                        <dl>
-                            <dt>Problem</dt>
-                            <dd>Services and APIs at a regulated infrastructure were clear to the teams that owned them and opaque everywhere else.</dd>
-                            <dt>Role</dt>
-                            <dd>I set the platform architecture: Backstage as the developer portal and Apigee as the API gateway. Not the receivables ledger.</dd>
-                            <dt>Result</dt>
-                            <dd>One catalog for engineering, and one governed edge for participants and internal systems, including calls into SHIFT from outside the cluster.</dd>
-                        </dl>
-                        <ul class="tag-list" aria-label="Platform tags">
-                            <li>Backstage</li>
-                            <li>Apigee</li>
-                            <li>Developer portal</li>
-                            <li>API gateway</li>
-                        </ul>
-                    </article>
-                    <article class="work-card">
-                        <p class="work-kicker">Avanade · Private banking</p>
-                        <h3>Swiss private bank</h3>
-                        <dl>
-                            <dt>Problem</dt>
-                            <dd>Trading and e-banking needed the same positions, priced now, across business units that did not share a platform.</dd>
-                            <dt>Role</dt>
-                            <dd>Lead architect for the trading platform and the e-banking estate.</dd>
-                            <dt>Result</dt>
-                            <dd>Near-real-time asset pricing and portfolio valuation for 10+ business units across 30+ markets.</dd>
-                        </dl>
-                        <ul class="tag-list" aria-label="Swiss private bank tags">
-                            <li>Trading</li>
-                            <li>E-banking</li>
-                            <li>Real-time pricing</li>
-                            <li>Wealth</li>
-                        </ul>
-                    </article>
-                </div>
+        <section id="work" aria-labelledby="work-title">
+            <div class="work-intro">
+                <h2 class="running" id="work-title">Signature work</h2>
+                <p class="lede">Four stories. The seat, the constraint, and what shipped.</p>
             </div>
+            <article class="case">
+                <div class="case-inner">
+                    <p class="work-kicker">CERC · Agentic SDLC</p>
+                    <h3>SHIFT</h3>
+                    <dl>
+                        <dt>Problem</dt>
+                        <dd>Autocomplete never joined the delivery system. Reviews, fixes, and docs still waited on whoever was free.</dd>
+                        <dt>Role</dt>
+                        <dd>I designed SHIFT, CERC’s agent platform: ephemeral cloud agents that take work from chat, events, and schedules.</dd>
+                        <dt>Result</dt>
+                        <dd>Tens of thousands of tasks. Every open pull request is reviewed, without someone having to ask.</dd>
+                    </dl>
+                    <p class="press-note">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+                    <ul class="tag-list" aria-label="SHIFT tags">
+                        <li>Cloud Run</li>
+                        <li>Agentic SDLC</li>
+                        <li>Code review</li>
+                        <li>Governance</li>
+                        <li>Vertex AI</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="case">
+                <div class="case-inner">
+                    <p class="work-kicker">Avanade · Payments</p>
+                    <h3>Elo core authorizer</h3>
+                    <dl>
+                        <dt>Problem</dt>
+                        <dd>A national card network needed its authorization core rewritten for cloud without giving up the latency the scheme requires.</dd>
+                        <dt>Role</dt>
+                        <dd>Lead Architect at Avanade. The architecture seat, separate from the Safrapay delivery-lead role.</dd>
+                        <dt>Result</dt>
+                        <dd>Authorization under 300ms and availability above 99.999% on a multicloud core. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported, a year on, about 50% lower unit cost per transaction, 54% faster responses, and an 18× smaller financial impact from incidents.</dd>
+                    </dl>
+                    <ul class="tag-list" aria-label="Elo tags">
+                        <li>Multicloud</li>
+                        <li>Authorization</li>
+                        <li>High availability</li>
+                        <li>Azure</li>
+                        <li>AWS</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="case">
+                <div class="case-inner">
+                    <p class="work-kicker">CERC · Platform</p>
+                    <h3>Backstage and Apigee</h3>
+                    <dl>
+                        <dt>Problem</dt>
+                        <dd>Services and APIs at a regulated infrastructure were clear to the teams that owned them and opaque everywhere else.</dd>
+                        <dt>Role</dt>
+                        <dd>I set the platform architecture: Backstage as the developer portal and Apigee as the API gateway. Not the receivables ledger.</dd>
+                        <dt>Result</dt>
+                        <dd>One catalog for engineering, and one governed edge for participants and internal systems, including calls into SHIFT from outside the cluster.</dd>
+                    </dl>
+                    <ul class="tag-list" aria-label="Platform tags">
+                        <li>Backstage</li>
+                        <li>Apigee</li>
+                        <li>Developer portal</li>
+                        <li>API gateway</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="case">
+                <div class="case-inner">
+                    <p class="work-kicker">Avanade · Private banking</p>
+                    <h3>Swiss private bank</h3>
+                    <dl>
+                        <dt>Problem</dt>
+                        <dd>Trading and e-banking needed the same positions, priced now, across business units that did not share a platform.</dd>
+                        <dt>Role</dt>
+                        <dd>Lead architect for the trading platform and the e-banking estate.</dd>
+                        <dt>Result</dt>
+                        <dd>Near-real-time asset pricing and portfolio valuation for 10+ business units across 30+ markets.</dd>
+                    </dl>
+                    <ul class="tag-list" aria-label="Swiss private bank tags">
+                        <li>Trading</li>
+                        <li>E-banking</li>
+                        <li>Real-time pricing</li>
+                        <li>Wealth</li>
+                    </ul>
+                </div>
+            </article>
         </section>
 
         <!-- Open source, demoted -->
-        <section class="band oss" id="oss" aria-labelledby="oss-title">
-            <div class="wrap prose">
-                <h2 id="oss-title">Open-source demos</h2>
+        <section class="oss" id="oss" aria-labelledby="oss-title">
+            <div class="wrap">
+                <h2 class="running" id="oss-title">Open-source demos</h2>
                 <p class="lede">Public references. They are not the signature work.</p>
                 <ul class="oss-list">
                     <li><a href="https://github.com/allansli/canary-argo" target="_blank" rel="noopener noreferrer">Canary deployments with Argo<span class="visually-hidden"> (opens in a new tab)</span></a></li>
@@ -748,39 +1070,40 @@
         </section>
 
         <!-- Career -->
-        <section class="band" id="career" aria-labelledby="career-title">
+        <section class="career" id="career" aria-labelledby="career-title">
             <div class="wrap">
-                <div class="prose">
-                    <h2 id="career-title">Career</h2>
-                    <p class="lede">The seats are named on purpose. Lead Architect and Delivery Lead are different jobs.</p>
-                </div>
-                <div class="era-list">
-                    <article class="era">
-                        <h3>Head of Architecture</h3>
-                        <p class="era-meta">CERC · São Paulo · Jul 2025–</p>
-                        <ol>
-                            <li>Highly available architecture for Brazil’s credit-market infrastructure.</li>
-                            <li>SHIFT, Architecture as a Service, and the platform edge on Backstage and Apigee.</li>
-                        </ol>
+                <h2 class="running" id="career-title">Career</h2>
+                <p class="lede">The seats are named on purpose. Lead Architect and Delivery Lead are different jobs.</p>
+                <div class="lines">
+                    <article class="line">
+                        <p class="when">Jul 2025–</p>
+                        <div>
+                            <h3>Head of Architecture</h3>
+                            <p class="where">CERC · São Paulo</p>
+                            <p>Highly available architecture for Brazil’s credit-market infrastructure.</p>
+                            <p>SHIFT, Architecture as a Service, and the platform edge on Backstage and Apigee.</p>
+                        </div>
                     </article>
-                    <article class="era">
-                        <h3>Lead Architect</h3>
-                        <p class="era-meta">Avanade · 2021–2025</p>
-                        <ol>
-                            <li>Elo authorization core. Sub-300ms, availability above 99.999%.</li>
-                            <li>Swiss private bank: trading and e-banking, near-real-time pricing for 10+ business units across 30+ markets.</li>
-                        </ol>
+                    <article class="line">
+                        <p class="when">2021–2025</p>
+                        <div>
+                            <h3>Lead Architect</h3>
+                            <p class="where">Avanade</p>
+                            <p>Elo authorization core. Sub-300ms, availability above 99.999%.</p>
+                            <p>Swiss private bank: trading and e-banking, near-real-time pricing for 10+ business units across 30+ markets.</p>
+                        </div>
                     </article>
-                    <article class="era">
-                        <h3>Delivery Lead</h3>
-                        <p class="era-meta">Avanade · Safrapay · 2019–2021</p>
-                        <ol>
-                            <li>US acquiring. Delivery Lead for a program of about $10 million.</li>
-                        </ol>
+                    <article class="line">
+                        <p class="when">2019–2021</p>
+                        <div>
+                            <h3>Delivery Lead</h3>
+                            <p class="where">Avanade · Safrapay</p>
+                            <p>US acquiring. Delivery Lead for a program of about $10 million.</p>
+                        </div>
                     </article>
                     <p class="early-note">Capgemini and Tangram, 2012–2013: systems analysis, e-commerce, and CRM.</p>
-                    <article class="era">
-                        <h3>Education</h3>
+                    <article class="line">
+                        <h3 class="when">Education</h3>
                         <p>Computer Science, FEI. Master’s, FGV EAESP.</p>
                     </article>
                 </div>
@@ -788,11 +1111,11 @@
         </section>
 
         <!-- About -->
-        <section class="band" id="about" aria-labelledby="about-title">
-            <div class="wrap prose about">
-                <h2 id="about-title">About</h2>
-                <p>I live in São Paulo and I like the work when it is specific: a platform that stays up, a service a team can find, a pull request that gets a real review.</p>
-                <ul class="skill-list" aria-label="Skills">
+        <section class="about" id="about" aria-labelledby="about-title">
+            <div class="wrap">
+                <h2 class="running" id="about-title">About</h2>
+                <p class="about-copy">I live in São Paulo and I like the work when it is specific: a platform that stays up, a service a team can find, a pull request that gets a real review.</p>
+                <ul class="skill-line" aria-label="Skills">
                     <li>K8s</li>
                     <li>Distributed Systems</li>
                     <li>AI/GenAI</li>
@@ -804,12 +1127,12 @@
         </section>
 
         <!-- Contact -->
-        <section class="band" id="contact" aria-labelledby="contact-title">
-            <div class="wrap prose">
-                <h2 id="contact-title">Let’s talk architecture</h2>
+        <section class="contact" id="contact" aria-labelledby="contact-title">
+            <div class="wrap">
+                <h2 class="display" id="contact-title">Let’s talk architecture</h2>
                 <p class="lede">Open to architecture conversations, advisory, and roles.</p>
+                <a class="button" href="mailto:allan.mdepaula@gmail.com?subject=Let%27s%20talk%20architecture">Email</a>
                 <div class="contact-links">
-                    <a class="button button-primary" href="mailto:allan.mdepaula@gmail.com?subject=Let%27s%20talk%20architecture">Email</a>
                     <a href="https://linkedin.com/in/allan-mdp" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>
                     <a href="https://github.com/allansli" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (opens in a new tab)</span></a>
                     <a href="https://building.cerc.com/en/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>
