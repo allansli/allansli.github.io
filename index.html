@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Allan Martins — Head of Architecture, CERC</title>
-    <meta name="description" content="Architecture that cannot go down. Allan Martins, Head of Architecture at CERC. Brazil credit-market infrastructure.">
+    <meta name="description" content="Architecture that cannot go down. Allan Martins, Head of Architecture at CERC. Highly available architecture for Brazil’s credit-market infrastructure.">
     <meta name="theme-color" content="#05060a">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="icon" href="https://github.com/allansli.png">
@@ -244,7 +244,7 @@
             min-height: 100svh;
         }
 
-        .hero .scrub-sticky {
+        .hero-stage {
             position: relative;
             display: flex;
             align-items: flex-end;
@@ -252,7 +252,7 @@
             padding: 0 6vw 9vh;
         }
 
-        .hero .scrub-sticky::before {
+        .hero-stage::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -485,7 +485,7 @@
             min-height: 100svh;
         }
 
-        .case .scrub-sticky {
+        .case-stage {
             position: relative;
             display: flex;
             align-items: flex-end;
@@ -493,7 +493,7 @@
             padding: 14vh 6vw 10vh;
         }
 
-        .case .scrub-sticky::before {
+        .case-stage::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -501,7 +501,7 @@
             background: linear-gradient(90deg, var(--ink) 0%, rgba(5, 6, 10, 0.42) 36%, rgba(5, 6, 10, 0) 64%);
         }
 
-        .case:nth-of-type(even) .scrub-sticky::before {
+        .case:nth-of-type(even) .case-stage::before {
             background: linear-gradient(270deg, var(--ink) 0%, rgba(5, 6, 10, 0.42) 36%, rgba(5, 6, 10, 0) 64%);
         }
 
@@ -648,6 +648,14 @@
             line-height: 1.35;
         }
 
+        .about-note {
+            max-width: 34rem;
+            margin-top: 1.25rem;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
         .skill-line {
             display: block;
             max-width: 34rem;
@@ -742,8 +750,8 @@
                 align-items: flex-end;
             }
 
-            .case .scrub-sticky::before,
-            .case:nth-of-type(even) .scrub-sticky::before {
+            .case .case-stage::before,
+            .case:nth-of-type(even) .case-stage::before {
                 background: linear-gradient(180deg, rgba(5, 6, 10, 0) 0%, rgba(5, 6, 10, 0.55) 42%, rgba(5, 6, 10, 0.88) 100%);
             }
 
@@ -758,7 +766,7 @@
                 width: min(100% - 2rem, 88rem);
             }
 
-            .hero .scrub-sticky {
+            .hero-stage {
                 padding-inline: 1.25rem;
             }
 
@@ -781,65 +789,9 @@
 
         }
 
-        /* Pinned scrub. Fragment offsets track scroll progress across the whole pin. */
-        @media (prefers-reduced-motion: no-preference) {
-            html.motion .scrub.is-pinned {
-                display: block;
-                min-height: 0;
-                padding: 0;
-            }
-
-            html.motion .scrub.is-pinned::after {
-                content: "";
-                display: block;
-                height: 100svh;
-            }
-
-            html.motion .scrub.is-pinned .scrub-sticky {
-                position: sticky;
-                top: 0;
-                height: auto;
-                min-height: 100svh;
-            }
-
-            html.motion .proof.scrub.is-pinned .scrub-sticky {
-                display: flex;
-                align-items: center;
-                padding-block: clamp(4rem, 10vh, 7rem);
-            }
-
-            html.motion .piece {
-                --join: 0;
-                --x: 0;
-                --y: 0;
-                display: inline-block;
-                vertical-align: baseline;
-                transform: translate3d(calc(var(--x) * 1vw * (1 - var(--join))), calc(var(--y) * 1vh * (1 - var(--join))), 0);
-                opacity: calc(0.48 + (0.52 * var(--join)));
-            }
-
-            html.motion .proof .metric-kicker.piece,
-            html.motion .proof p.piece,
-            html.motion .work-kicker.piece,
-            html.motion .case dl .piece,
-            html.motion a.piece,
-            html.motion .press-note.piece {
-                display: block;
-            }
-
-            html.motion .tag-list.piece {
-                display: flex;
-            }
-        }
-
         @media (prefers-reduced-motion: reduce) {
             html {
                 scroll-behavior: auto;
-            }
-
-            .piece {
-                transform: none;
-                opacity: 1;
             }
         }
     </style>
@@ -849,49 +801,47 @@
     <div class="galaxy-fallback" aria-hidden="true"></div>
     <canvas id="galaxy-field" aria-hidden="true"></canvas>
 
-    <header class="site-header">
+        <header class="site-header">
         <a class="brand" href="#top">
-            <img class="brand-portrait" src="https://github.com/allansli.png" alt="Allan M. de Paula" width="48" height="48">
+            <img class="brand-portrait" src="https://github.com/allansli.png" alt="" width="48" height="48">
             <span>Allan Martins</span>
         </a>
     </header>
 
     <main id="main">
         <!-- Hero -->
-        <section class="hero scrub" id="top" aria-labelledby="hero-title">
-            <div class="scrub-sticky">
+        <section class="hero" id="top" aria-labelledby="hero-title">
+            <div class="hero-stage">
                 <div class="hero-copy">
-                    <h1 id="hero-title"><span class="piece" style="--x:-8;--y:-26">Architecture</span> <span class="piece" style="--x:18;--y:-10">that</span> <span class="piece" style="--x:-16;--y:12">cannot</span> <span class="piece" style="--x:14;--y:16">go down.</span></h1>
-                    <p class="hero-role"><span class="piece" style="--x:-10;--y:8">Head of Architecture</span> <span class="piece" style="--x:8;--y:-6">· CERC</span> <span class="piece" style="--x:12;--y:10">· Brazil credit-market infrastructure</span></p>
-                    <a class="talk piece" href="#contact" style="--x:0;--y:8">Talk architecture</a>
+                    <h1 id="hero-title">Architecture that cannot go down.</h1>
+                    <p class="hero-role">Head of Architecture at CERC. Highly available architecture for Brazil’s credit-market infrastructure.</p>
+                    <a class="talk" href="#contact">Talk architecture</a>
                 </div>
             </div>
         </section>
 
         <!-- Proof -->
-        <section class="proof scrub" id="proof" aria-labelledby="proof-title">
-            <div class="scrub-sticky">
-                <div class="wrap">
-                    <h2 class="running" id="proof-title">Proof</h2>
-                    <ul class="proof-list">
-                        <li>
-                            <h3 class="metric-kicker piece" style="--x:-14;--y:-16">CERC now</h3>
-                            <p class="piece" style="--x:8;--y:10">Head of Architecture since July 2025. The credit-market infrastructure has to stay available.</p>
-                        </li>
-                        <li>
-                            <h3 class="metric-kicker piece" style="--x:18;--y:-12">SHIFT</h3>
-                            <p class="piece" style="--x:-10;--y:8">Tens of thousands of tasks. 100% of open pull requests reviewed.</p>
-                        </li>
-                        <li>
-                            <h3 class="metric-kicker piece" style="--x:-8;--y:6">Elo Lead Architect</h3>
-                            <p class="metric-figure"><span class="piece" style="--x:-16;--y:-8">Sub-300ms.</span> <span class="piece" style="--x:12;--y:10">Availability above 99.999%.</span></p>
-                        </li>
-                        <li>
-                            <h3 class="metric-kicker piece" style="--x:10;--y:-8">US acquiring</h3>
-                            <p class="piece" style="--x:-12;--y:12">Delivery Lead. About $10 million.</p>
-                        </li>
-                    </ul>
-                </div>
+        <section class="proof" id="proof" aria-labelledby="proof-title">
+            <div class="wrap">
+                <h2 class="running" id="proof-title">Proof</h2>
+                <ul class="proof-list">
+                    <li>
+                        <h3 class="metric-kicker">CERC now</h3>
+                        <p>Head of Architecture since July 2025. Highly available architecture for Brazil’s credit-market infrastructure.</p>
+                    </li>
+                    <li>
+                        <h3 class="metric-kicker">SHIFT</h3>
+                        <p>Tens of thousands of tasks, model-optimized by task. 100% of open pull requests reviewed.</p>
+                    </li>
+                    <li>
+                        <h3 class="metric-kicker">Elo Lead Architect</h3>
+                        <p class="metric-figure">Sub-300ms. Availability above 99.999%.</p>
+                    </li>
+                    <li>
+                        <h3 class="metric-kicker">Safrapay USA</h3>
+                        <p>Delivery Lead. A cloud-first US acquiring program of about $10 million.</p>
+                    </li>
+                </ul>
             </div>
         </section>
 
@@ -905,7 +855,7 @@
                             <span class="index" aria-hidden="true"></span>
                             <div>
                                 <h3>SHIFT</h3>
-                                <p>The agentic SDLC. Tasks come from people, events, and schedules, and land back as pull requests and reviews.</p>
+                                <p>AI-driven SDLC. Dozens of agents, tens of thousands of tasks, model-optimized by task, and 100% of open pull requests reviewed.</p>
                             </div>
                         </div>
                     </li>
@@ -914,7 +864,7 @@
                             <span class="index" aria-hidden="true"></span>
                             <div>
                                 <h3>Architecture as a Service</h3>
-                                <p>Architecture owned as a platform the teams consume, for the credit-market infrastructure.</p>
+                                <p>Design, sustainment, ARB reviews, and assessments for every technology and data team.</p>
                             </div>
                         </div>
                     </li>
@@ -923,7 +873,7 @@
                             <span class="index" aria-hidden="true"></span>
                             <div>
                                 <h3>Backstage and Apigee</h3>
-                                <p>The developer portal and the API gateway. Not the receivables ledger.</p>
+                                <p>Platforms I own, and the reference for how CERC platformizes: the developer portal and the API gateway.</p>
                             </div>
                         </div>
                     </li>
@@ -931,8 +881,8 @@
                         <div class="pillar">
                             <span class="index" aria-hidden="true"></span>
                             <div>
-                                <h3>Patterns and a live scorecard</h3>
-                                <p>Shared architecture patterns, scored in the open. <a href="https://github.com/allansli/scorecard" target="_blank" rel="noopener noreferrer">Live scorecard<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+                                <h3>Patterns and a scorecard</h3>
+                                <p>Patterns, building blocks, and a scorecard monitoring every application. <a href="https://github.com/allansli/scorecard" target="_blank" rel="noopener noreferrer">Live scorecard<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
                             </div>
                         </div>
                     </li>
@@ -946,27 +896,27 @@
                 <h2 class="running" id="work-title">Signature work</h2>
                 <p class="lede">Four stories. The seat, the constraint, and what shipped.</p>
             </div>
-            <article class="case scrub">
-                <div class="scrub-sticky">
+            <article class="case">
+                <div class="case-stage">
                     <div class="case-inner">
-                        <p class="work-kicker piece" style="--x:-14;--y:-12">CERC · Agentic SDLC</p>
-                        <h3><span class="piece" style="--x:18;--y:-20">SHIFT</span></h3>
+                        <p class="work-kicker">CERC · Agentic engineering</p>
+                        <h3>SHIFT</h3>
                         <dl>
-                            <div class="piece" style="--x:-18;--y:10">
+                            <div>
                                 <dt>Problem</dt>
                                 <dd>Autocomplete never joined the delivery system. Reviews, fixes, and docs still waited on whoever was free.</dd>
                             </div>
-                            <div class="piece" style="--x:16;--y:8">
+                            <div>
                                 <dt>Role</dt>
                                 <dd>I designed SHIFT, CERC’s agent platform: ephemeral cloud agents that take work from chat, events, and schedules.</dd>
                             </div>
-                            <div class="piece" style="--x:-12;--y:12">
+                            <div>
                                 <dt>Result</dt>
-                                <dd>Tens of thousands of tasks. Every open pull request is reviewed, without someone having to ask.</dd>
+                                <dd>Tens of thousands of tasks, model-optimized by task. 100% of open pull requests are reviewed.</dd>
                             </div>
                         </dl>
-                        <p class="press-note piece" style="--x:10;--y:6">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
-                        <ul class="tag-list piece" style="--x:-8;--y:8" aria-label="SHIFT tags">
+                        <p class="press-note">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+                        <ul class="tag-list" aria-label="SHIFT tags">
                             <li>Cloud Run</li>
                             <li>Agentic SDLC</li>
                             <li>Code review</li>
@@ -976,27 +926,27 @@
                     </div>
                 </div>
             </article>
-            <article class="case scrub">
-                <div class="scrub-sticky">
+            <article class="case">
+                <div class="case-stage">
                     <div class="case-inner">
-                        <p class="work-kicker piece" style="--x:14;--y:-10">Avanade · Payments</p>
-                        <h3><span class="piece" style="--x:-16;--y:-18">Elo</span> <span class="piece" style="--x:12;--y:-8">core</span> <span class="piece" style="--x:-10;--y:6">authorizer</span></h3>
+                        <p class="work-kicker">Avanade · Lead Architect</p>
+                        <h3>Elo authorization core</h3>
                         <dl>
-                            <div class="piece" style="--x:16;--y:10">
+                            <div>
                                 <dt>Problem</dt>
                                 <dd>A national card network needed its authorization core rewritten for cloud without giving up the latency the scheme requires.</dd>
                             </div>
-                            <div class="piece" style="--x:-14;--y:8">
+                            <div>
                                 <dt>Role</dt>
-                                <dd>Lead Architect at Avanade. The architecture seat, separate from the Safrapay delivery-lead role.</dd>
+                                <dd>Lead Architect. Cloud-native Azure and AWS, ISO 8583, technical leadership of 20+ engineers.</dd>
                             </div>
-                            <div class="piece" style="--x:12;--y:12">
+                            <div>
                                 <dt>Result</dt>
-                                <dd>Authorization under 300ms and availability above 99.999% on a multicloud core. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported, a year on, about 50% lower unit cost per transaction, 54% faster responses, and an 18× smaller financial impact from incidents.</dd>
+                                <dd>Authorization under 300ms and availability above 99.999%. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported, a year on, about 50% lower unit processing cost, 54% faster responses, and an 18× smaller financial impact from incidents.</dd>
                             </div>
                         </dl>
-                        <ul class="tag-list piece" style="--x:-8;--y:6" aria-label="Elo tags">
-                            <li>Multicloud</li>
+                        <ul class="tag-list" aria-label="Elo tags">
+                            <li>ISO 8583</li>
                             <li>Authorization</li>
                             <li>High availability</li>
                             <li>Azure</li>
@@ -1005,26 +955,26 @@
                     </div>
                 </div>
             </article>
-            <article class="case scrub">
-                <div class="scrub-sticky">
+            <article class="case">
+                <div class="case-stage">
                     <div class="case-inner">
-                        <p class="work-kicker piece" style="--x:-12;--y:-8">CERC · Platform</p>
-                        <h3><span class="piece" style="--x:14;--y:-16">Backstage</span> <span class="piece" style="--x:-8;--y:-6">and</span> <span class="piece" style="--x:16;--y:8">Apigee</span></h3>
+                        <p class="work-kicker">CERC · Platform</p>
+                        <h3>Backstage and Apigee</h3>
                         <dl>
-                            <div class="piece" style="--x:-16;--y:10">
+                            <div>
                                 <dt>Problem</dt>
-                                <dd>Services and APIs at a regulated infrastructure were clear to the teams that owned them and opaque everywhere else.</dd>
+                                <dd>Services and APIs were clear to the teams that owned them and opaque everywhere else.</dd>
                             </div>
-                            <div class="piece" style="--x:14;--y:8">
+                            <div>
                                 <dt>Role</dt>
-                                <dd>I set the platform architecture: Backstage as the developer portal and Apigee as the API gateway. Not the receivables ledger.</dd>
+                                <dd>I own Backstage and Apigee as the reference for platformization: the developer portal and the API gateway.</dd>
                             </div>
-                            <div class="piece" style="--x:-10;--y:12">
+                            <div>
                                 <dt>Result</dt>
                                 <dd>One catalog for engineering, and one governed edge for participants and internal systems, including calls into SHIFT from outside the cluster.</dd>
                             </div>
                         </dl>
-                        <ul class="tag-list piece" style="--x:8;--y:6" aria-label="Platform tags">
+                        <ul class="tag-list" aria-label="Platform tags">
                             <li>Backstage</li>
                             <li>Apigee</li>
                             <li>Developer portal</li>
@@ -1033,26 +983,26 @@
                     </div>
                 </div>
             </article>
-            <article class="case scrub">
-                <div class="scrub-sticky">
+            <article class="case">
+                <div class="case-stage">
                     <div class="case-inner">
-                        <p class="work-kicker piece" style="--x:12;--y:-10">Avanade · Private banking</p>
-                        <h3><span class="piece" style="--x:-14;--y:-18">Swiss</span> <span class="piece" style="--x:16;--y:-6">private</span> <span class="piece" style="--x:-12;--y:8">bank</span></h3>
+                        <p class="work-kicker">Avanade · Private banking</p>
+                        <h3>Swiss private bank</h3>
                         <dl>
-                            <div class="piece" style="--x:16;--y:10">
+                            <div>
                                 <dt>Problem</dt>
                                 <dd>Trading and e-banking needed the same positions, priced now, across business units that did not share a platform.</dd>
                             </div>
-                            <div class="piece" style="--x:-14;--y:8">
+                            <div>
                                 <dt>Role</dt>
-                                <dd>Lead architect for the trading platform and the e-banking estate.</dd>
+                                <dd>Architecture for the trading and e-banking platform.</dd>
                             </div>
-                            <div class="piece" style="--x:10;--y:12">
+                            <div>
                                 <dt>Result</dt>
-                                <dd>Near-real-time asset pricing and portfolio valuation for 10+ business units across 30+ markets.</dd>
+                                <dd>Near-real-time asset pricing and portfolio valuation across 10+ business units.</dd>
                             </div>
                         </dl>
-                        <ul class="tag-list piece" style="--x:-8;--y:6" aria-label="Swiss private bank tags">
+                        <ul class="tag-list" aria-label="Swiss private bank tags">
                             <li>Trading</li>
                             <li>E-banking</li>
                             <li>Real-time pricing</li>
@@ -1085,38 +1035,31 @@
         <section class="career" id="career" aria-labelledby="career-title">
             <div class="wrap">
                 <h2 class="running" id="career-title">Career</h2>
-                <p class="lede">The seats are named on purpose. Lead Architect and Delivery Lead are different jobs.</p>
+                <p class="lede">Head of Architecture at CERC. Before that, about twelve years at Avanade as Senior Manager and Lead Architect.</p>
                 <div class="lines">
                     <article class="line">
                         <p class="when">Jul 2025–</p>
                         <div>
                             <h3>Head of Architecture</h3>
-                            <p class="where">CERC · São Paulo</p>
-                            <p>Highly available architecture for Brazil’s credit-market infrastructure.</p>
-                            <p>SHIFT, Architecture as a Service, and the platform edge on Backstage and Apigee.</p>
+                            <p class="where">CERC · São Paulo · Hybrid</p>
+                            <p>Highly available architecture for Brazil’s credit-market infrastructure. I hire and develop the Architecture team: staff, solutions, platform, and AI-driven SDLC.</p>
+                            <p>Four pillars: SHIFT, Architecture as a Service, Backstage and Apigee, and patterns with a scorecard on every application.</p>
                         </div>
                     </article>
                     <article class="line">
-                        <p class="when">2021–2025</p>
+                        <p class="when">2013–2025</p>
                         <div>
-                            <h3>Lead Architect</h3>
-                            <p class="where">Avanade</p>
-                            <p>Elo authorization core. Sub-300ms, availability above 99.999%.</p>
-                            <p>Swiss private bank: trading and e-banking, near-real-time pricing for 10+ business units across 30+ markets.</p>
-                        </div>
-                    </article>
-                    <article class="line">
-                        <p class="when">2019–2021</p>
-                        <div>
-                            <h3>Delivery Lead</h3>
-                            <p class="where">Avanade · Safrapay</p>
-                            <p>US acquiring. Delivery Lead for a program of about $10 million.</p>
+                            <h3>Senior Manager / Lead Architect</h3>
+                            <p class="where">Avanade · about 12 years</p>
+                            <p>Elo authorization-core modernization, as Lead Architect. Cloud-native Azure and AWS, ISO 8583, technical leadership of 20+ engineers. Sub-300ms. Availability above 99.999%. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported about 50% lower unit processing cost.</p>
+                            <p>Swiss private bank: architecture for trading and e-banking across 10+ business units.</p>
+                            <p>Safrapay USA: Delivery Lead on a cloud-first US acquiring program of about $10 million.</p>
                         </div>
                     </article>
                     <p class="early-note">Capgemini and Tangram, 2012–2013: systems analysis, e-commerce, and CRM.</p>
                     <article class="line">
                         <h3 class="when">Education</h3>
-                        <p>Computer Science, FEI. Master’s, FGV EAESP.</p>
+                        <p>Computer Science, FEI, with honors. Master in Business and Management, FGV EAESP.</p>
                     </article>
                 </div>
             </div>
@@ -1126,14 +1069,17 @@
         <section class="about" id="about" aria-labelledby="about-title">
             <div class="wrap">
                 <h2 class="running" id="about-title">About</h2>
-                <p class="about-copy">I live in São Paulo and I like the work when it is specific: a platform that stays up, a service a team can find, a pull request that gets a real review.</p>
+                <p class="about-copy">Head of Architecture at CERC. Highly available architecture for Brazil’s credit-market infrastructure.</p>
+                <p class="about-note">Twelve years at Avanade as Senior Manager and Lead Architect, including Lead Architect on Elo’s authorization core and Delivery Lead on Safrapay USA. Native Portuguese. English, native bilingual.</p>
                 <ul class="skill-line" aria-label="Skills">
-                    <li>K8s</li>
+                    <li>Kubernetes</li>
                     <li>Distributed Systems</li>
-                    <li>AI/GenAI</li>
+                    <li>AI</li>
+                    <li>Generative AI</li>
                     <li>GCP</li>
                     <li>Payment Systems</li>
-                    <li>Cloud-Native/Azure</li>
+                    <li>Cloud-Native</li>
+                    <li>Azure</li>
                 </ul>
             </div>
         </section>
@@ -1142,10 +1088,10 @@
         <section class="contact" id="contact" aria-labelledby="contact-title">
             <div class="wrap">
                 <h2 class="display" id="contact-title">Let’s talk architecture</h2>
-                <p class="lede">Open to architecture conversations, advisory, and roles.</p>
+                <p class="lede">Conversations on highly available architecture for credit-market infrastructure.</p>
                 <div class="contact-links">
                     <a href="mailto:allan.mdepaula@gmail.com?subject=Let%27s%20talk%20architecture">Email</a>
-                    <a href="https://linkedin.com/in/allan-mdp" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>
+                    <a href="https://www.linkedin.com/in/allan-mdp" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>
                     <a href="https://github.com/allansli" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (opens in a new tab)</span></a>
                     <a href="https://building.cerc.com/en/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>
                 </div>
@@ -1168,6 +1114,5 @@
     </footer>
 
     <script type="module" src="assets/js/galaxy-field.js"></script>
-    <script src="assets/js/scroll-motion.js"></script>
 </body>
 </html>
