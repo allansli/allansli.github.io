@@ -47,10 +47,10 @@ function mountField(THREE, canvas) {
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x05060a);
-    scene.fog = new THREE.FogExp2(0x05060a, 0.055);
+    scene.fog = new THREE.FogExp2(0x05060a, 0.02);
 
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 40);
-    camera.position.set(0, 0.15, 8.4);
+    const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 40);
+    camera.position.set(0, 0, 8);
 
     const glowMap = createGlowTexture(THREE);
     const field = new THREE.Group();
@@ -58,28 +58,22 @@ function mountField(THREE, canvas) {
 
     const haze = new THREE.Sprite(new THREE.SpriteMaterial({
         map: glowMap,
-        color: 0x8ea0b8,
+        color: 0x9aabC4,
         transparent: true,
-        opacity: 0.16,
+        opacity: 0.22,
         depthWrite: false
     }));
-    haze.scale.set(13.5, 9.5, 1);
-    haze.position.set(0.6, 0.7, -1.6);
     field.add(haze);
 
     const luna = createBody(THREE, glowMap, {
-        sprite: 0xc5d4e6,
-        core: 0xe7eef6,
-        spriteScale: 5.4,
-        spriteOpacity: 0.72,
-        coreRadius: 0.46
+        sprite: 0xc4e7ff,
+        core: 0xc4e7ff,
+        spriteOpacity: 0.72
     });
     const sol = createBody(THREE, glowMap, {
-        sprite: 0xe8a84a,
-        core: 0xffe3b5,
-        spriteScale: 4.5,
-        spriteOpacity: 0.8,
-        coreRadius: 0.4
+        sprite: 0xff9f40,
+        core: 0xff9f40,
+        spriteOpacity: 0.78
     });
     field.add(luna, sol);
 
@@ -110,21 +104,33 @@ function mountField(THREE, canvas) {
     }
 
     function draw(time) {
-        const aspect = camera.aspect;
-        const xAmp = aspect > 1.05 ? 2.15 : 1.05;
-        const yAmp = aspect > 1.05 ? 0.78 : 0.95;
+        const halfH = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
+        const halfW = halfH * camera.aspect;
+        const wide = camera.aspect >= 1;
         const lunaAngle = (time / LUNA_PERIOD) * Math.PI * 2;
-        const solAngle = (time / SOL_PERIOD) * Math.PI * 2 + 2.05;
+        const solAngle = (time / SOL_PERIOD) * Math.PI * 2 + 0.9;
+        const ampX = halfW * (wide ? 0.07 : 0.05);
+        const ampY = halfH * 0.06;
+
+        haze.position.set(halfW * 0.15, halfH * 0.2, -1.2);
+        haze.scale.set(halfW * 1.4, halfH * 1.3, 1);
+
+        const lunaScale = halfH * (wide ? 0.78 : 0.7);
+        const solScale = halfH * (wide ? 0.62 : 0.56);
+        luna.userData.sprite.scale.set(lunaScale, lunaScale, 1);
+        sol.userData.sprite.scale.set(solScale, solScale, 1);
+        luna.userData.core.scale.setScalar(lunaScale * 0.2);
+        sol.userData.core.scale.setScalar(solScale * 0.22);
 
         luna.position.set(
-            1.15 + Math.cos(lunaAngle) * xAmp + Math.sin(lunaAngle * 2) * 0.16,
-            0.85 + Math.sin(lunaAngle) * yAmp * 0.72 + Math.cos(lunaAngle * 0.47) * 0.1,
-            Math.sin(lunaAngle * 0.73) * 0.4
+            halfW * (wide ? 0.42 : -0.16) + Math.cos(lunaAngle) * ampX + Math.sin(lunaAngle * 2) * ampX * 0.35,
+            halfH * (wide ? -0.2 : 0.28) + Math.sin(lunaAngle) * ampY,
+            0
         );
         sol.position.set(
-            1.45 + Math.cos(solAngle) * xAmp * 0.9 + Math.sin(solAngle * 3) * 0.1,
-            1.15 + Math.sin(solAngle) * yAmp * 0.62,
-            Math.cos(solAngle * 0.81) * 0.32
+            halfW * (wide ? 0.78 : 0.28) + Math.cos(solAngle) * ampX * 0.8,
+            halfH * (wide ? 0.48 : 0.62) + Math.sin(solAngle) * ampY * 0.85,
+            0.15
         );
 
         if (!reduced) {
@@ -220,13 +226,13 @@ function createBody(THREE, glowMap, spec) {
         blending: THREE.AdditiveBlending,
         depthWrite: false
     }));
-    sprite.scale.set(spec.spriteScale, spec.spriteScale, 1);
-
     const core = new THREE.Mesh(
-        new THREE.SphereGeometry(spec.coreRadius, 32, 24),
+        new THREE.SphereGeometry(1, 32, 24),
         new THREE.MeshBasicMaterial({ color: spec.core })
     );
     group.add(sprite, core);
+    group.userData.sprite = sprite;
+    group.userData.core = core;
     return group;
 }
 
@@ -236,9 +242,9 @@ function createGlowTexture(THREE) {
     surface.height = 128;
     const context = surface.getContext("2d");
     const gradient = context.createRadialGradient(64, 64, 0, 64, 64, 64);
-    gradient.addColorStop(0, "rgba(255,255,255,0.95)");
-    gradient.addColorStop(0.18, "rgba(255,255,255,0.62)");
-    gradient.addColorStop(0.42, "rgba(255,255,255,0.16)");
+    gradient.addColorStop(0, "rgba(255,255,255,1)");
+    gradient.addColorStop(0.2, "rgba(255,255,255,0.82)");
+    gradient.addColorStop(0.46, "rgba(255,255,255,0.22)");
     gradient.addColorStop(1, "rgba(255,255,255,0)");
     context.fillStyle = gradient;
     context.fillRect(0, 0, 128, 128);

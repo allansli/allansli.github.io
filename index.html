@@ -132,9 +132,9 @@
         .luna-sol-fallback {
             background-color: var(--void);
             background-image:
-                radial-gradient(closest-side at 30% 36%, rgba(197, 212, 230, 0.95), rgba(197, 212, 230, 0) 70%),
-                radial-gradient(closest-side at 74% 30%, rgba(232, 168, 74, 0.92), rgba(232, 168, 74, 0) 68%),
-                radial-gradient(ellipse at 52% 42%, rgba(90, 108, 132, 0.28), rgba(5, 6, 10, 0) 60%);
+                radial-gradient(circle 150px at 88% 18%, #ff9f40 0%, rgba(255, 159, 64, 0.45) 28%, rgba(255, 159, 64, 0) 72%),
+                radial-gradient(circle 190px at 74% 58%, #c4e7ff 0%, rgba(196, 231, 255, 0.42) 26%, rgba(196, 231, 255, 0) 72%),
+                radial-gradient(ellipse at 68% 40%, rgba(70, 90, 120, 0.45), rgba(5, 6, 10, 0) 64%);
             background-repeat: no-repeat;
         }
 
@@ -237,8 +237,8 @@
             content: "";
             position: absolute;
             z-index: -1;
-            inset: -64px -40px;
-            background: radial-gradient(ellipse at 18% 40%, rgba(5, 6, 10, 0.94), rgba(5, 6, 10, 0.72) 58%, rgba(5, 6, 10, 0) 80%);
+            inset: -40px -28px;
+            background: linear-gradient(90deg, rgba(5, 6, 10, 0.92) 0%, rgba(5, 6, 10, 0.84) 76%, rgba(5, 6, 10, 0) 100%);
             pointer-events: none;
         }
 
@@ -528,6 +528,17 @@
 
             .work-grid {
                 grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                padding-top: 168px;
+            }
+
+            .hero .prose::before {
+                inset: -24px -16px;
+                background: rgba(5, 6, 10, 0.9);
             }
         }
 
