@@ -2,6 +2,12 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)");
 const STATIC_TIME = 6.5;
 const MAX_PIXEL_RATIO = 1.5;
 const DUST_COUNT = 840;
+let targetWarmth = 0;
+
+document.addEventListener("galaxy-warmth", (event) => {
+    const value = Number(event.detail);
+    targetWarmth = Number.isFinite(value) ? Math.max(-1, Math.min(1, value)) : 0;
+});
 
 function boot() {
     const canvas = document.getElementById("galaxy-field");
@@ -48,7 +54,11 @@ function mountField(THREE, canvas) {
     camera.position.set(0, 0, 8);
 
     const nebulaMaterial = new THREE.ShaderMaterial({
-        uniforms: { uTime: { value: STATIC_TIME } },
+        uniforms: {
+            uTime: { value: STATIC_TIME },
+            uScroll: { value: 0 },
+            uWarmth: { value: 0 }
+        },
         vertexShader: nebulaVertex,
         fragmentShader: nebulaFragment,
         depthWrite: false,
@@ -68,6 +78,22 @@ function mountField(THREE, canvas) {
     let pausedAt = 0;
     let pausedTotal = 0;
     let reduced = REDUCED_MOTION.matches;
+    let warmth = 0;
+    let scrollY = window.scrollY;
+    let maxScroll = 1;
+    let scrollQueued = false;
+
+    function rememberScroll() {
+        scrollY = window.scrollY;
+        maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    }
+
+    function scrollProgress() {
+        if (reduced) {
+            return 0;
+        }
+        return Math.min(1, Math.max(0, scrollY / maxScroll));
+    }
 
     function elapsedSeconds() {
         if (reduced) {
@@ -91,15 +117,21 @@ function mountField(THREE, canvas) {
     }
 
     function draw(time) {
+        const progress = scrollProgress();
+        const goal = reduced ? 0 : targetWarmth;
+        warmth += (goal - warmth) * (reduced ? 1 : 0.045);
         nebulaMaterial.uniforms.uTime.value = time;
+        nebulaMaterial.uniforms.uScroll.value = progress;
+        nebulaMaterial.uniforms.uWarmth.value = warmth;
         dust.material.uniforms.uTime.value = time;
+        dust.material.uniforms.uScroll.value = progress;
         if (reduced) {
             camera.position.set(0, 0, 8);
         } else {
             camera.position.set(
-                Math.sin(time * 0.045) * 0.55,
-                Math.cos(time * 0.031) * 0.28,
-                8 + Math.sin(time * 0.02) * 0.3
+                Math.sin(time * 0.045) * 0.55 + progress * 0.85,
+                Math.cos(time * 0.031) * 0.28 + progress * 0.42,
+                8 + Math.sin(time * 0.02) * 0.3 - progress * 1.35
             );
         }
         camera.lookAt(0, 0, 0);
@@ -126,7 +158,21 @@ function mountField(THREE, canvas) {
         tick();
     }
 
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", () => {
+        rememberScroll();
+        resize();
+    });
+
+    window.addEventListener("scroll", () => {
+        if (reduced || scrollQueued) {
+            return;
+        }
+        scrollQueued = true;
+        requestAnimationFrame(() => {
+            rememberScroll();
+            scrollQueued = false;
+        });
+    }, { passive: true });
 
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
@@ -146,7 +192,9 @@ function mountField(THREE, canvas) {
         if (reduced) {
             origin = performance.now();
             pausedTotal = 0;
+            warmth = 0;
         }
+        rememberScroll();
         loop();
     });
 
@@ -156,6 +204,7 @@ function mountField(THREE, canvas) {
         document.documentElement.classList.remove("webgl");
     });
 
+    rememberScroll();
     resize();
     document.documentElement.classList.add("webgl");
     loop();
@@ -189,7 +238,10 @@ function createDust(THREE) {
     geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
 
     const material = new THREE.ShaderMaterial({
-        uniforms: { uTime: { value: STATIC_TIME } },
+        uniforms: {
+            uTime: { value: STATIC_TIME },
+            uScroll: { value: 0 }
+        },
         vertexShader: dustVertex,
         fragmentShader: dustFragment,
         transparent: true,
@@ -212,6 +264,8 @@ void main() {
 const nebulaFragment = `
 precision mediump float;
 uniform float uTime;
+uniform float uScroll;
+uniform float uWarmth;
 varying vec2 vUv;
 
 float hash(vec2 p) {
@@ -243,7 +297,7 @@ float fbm(vec2 p) {
 void main() {
     vec2 uv = vUv;
     float t = uTime * 0.018;
-    vec2 drift = vec2(t * 0.35, t * 0.12);
+    vec2 drift = vec2(t * 0.35 + uScroll * 0.85, t * 0.12 - uScroll * 0.4);
     float broad = fbm(uv * vec2(1.6, 2.4) + drift);
     float lane = fbm(vec2(uv.x * 0.8 + broad, uv.y * 3.4 - t * 0.2));
     float veil = fbm(uv * 3.2 + vec2(-t * 0.15, broad));
@@ -260,6 +314,8 @@ void main() {
 
     float vignette = smoothstep(1.35, 0.15, length((uv - vec2(0.5, 0.46)) * vec2(1.1, 0.95)));
     color *= mix(0.82, 1.0, vignette);
+    color = mix(color, vec3(0.20, 0.34, 0.72), clamp(-uWarmth, 0.0, 1.0) * 0.22);
+    color = mix(color, vec3(0.62, 0.40, 0.22), clamp(uWarmth, 0.0, 1.0) * 0.2);
     gl_FragColor = vec4(color, 1.0);
 }
 `;
@@ -268,13 +324,15 @@ const dustVertex = `
 attribute float aSize;
 attribute vec3 aColor;
 uniform float uTime;
+uniform float uScroll;
 varying vec3 vColor;
 
 void main() {
     vColor = aColor;
     vec3 drifted = position;
-    drifted.x += sin(uTime * 0.05 + position.y * 0.17) * 0.45;
-    drifted.y += cos(uTime * 0.04 + position.x * 0.11) * 0.28;
+    drifted.x += sin(uTime * 0.05 + position.y * 0.17) * 0.45 + uScroll * 2.2;
+    drifted.y += cos(uTime * 0.04 + position.x * 0.11) * 0.28 - uScroll * 1.15;
+    drifted.z += uScroll * 1.4;
     vec4 viewPosition = modelViewMatrix * vec4(drifted, 1.0);
     gl_Position = projectionMatrix * viewPosition;
     gl_PointSize = aSize * (150.0 / max(1.0, -viewPosition.z));

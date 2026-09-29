@@ -759,9 +759,68 @@
 
         }
 
+        /* Scroll reveals. Hidden only after JS opts in, and never when motion is reduced. */
+        @media (prefers-reduced-motion: no-preference) {
+            @supports (animation-timeline: scroll(root)) {
+                h1 {
+                    animation: hero-depart linear both;
+                    animation-timeline: scroll(root);
+                    animation-range: 0vh 40vh;
+                }
+            }
+
+            html.motion .proof-list > li,
+            html.motion .case-inner {
+                opacity: 0;
+                transform: translate3d(0, 1.75rem, 0);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+
+            html.motion .proof-list > li:nth-child(2) {
+                transition-delay: 0.08s;
+            }
+
+            html.motion .proof-list > li:nth-child(3) {
+                transition-delay: 0.16s;
+            }
+
+            html.motion .proof-list > li:nth-child(4) {
+                transition-delay: 0.24s;
+            }
+
+            html.motion .proof-list > li.is-in,
+            html.motion .case.is-in .case-inner {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @keyframes hero-depart {
+            from {
+                opacity: 1;
+                transform: none;
+                letter-spacing: -0.045em;
+            }
+
+            to {
+                opacity: 0.5;
+                transform: translate3d(0, -0.75rem, 0) scale(0.98);
+                letter-spacing: -0.032em;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             html {
                 scroll-behavior: auto;
+            }
+
+            h1,
+            .proof-list > li,
+            .case-inner {
+                animation: none;
+                opacity: 1;
+                transform: none;
+                transition: none;
             }
         }
     </style>
@@ -1051,5 +1110,6 @@
     </footer>
 
     <script type="module" src="assets/js/galaxy-field.js"></script>
+    <script type="module" src="assets/js/scroll-motion.js"></script>
 </body>
 </html>
