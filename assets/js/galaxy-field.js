@@ -290,7 +290,7 @@ void main() {
     vec3 color = voidColor;
     color = mix(color, indigo, smoothstep(0.22, 0.68, broad));
     color = mix(color, violet, smoothstep(0.38, 0.76, lane) * 0.9);
-    color += dust * smoothstep(0.5, 0.88, lane) * veil * 0.55;
+    color += dust * smoothstep(0.5, 0.88, lane) * veil * 0.28;
 
     float vignette = smoothstep(1.35, 0.15, length((uv - vec2(0.5, 0.46)) * vec2(1.1, 0.95)));
     color *= mix(0.82, 1.0, vignette);
@@ -328,7 +328,7 @@ void main() {
     if (dist > 0.5) {
         discard;
     }
-    float alpha = smoothstep(0.5, 0.08, dist) * 0.7;
+    float alpha = smoothstep(0.5, 0.08, dist) * 0.35;
     gl_FragColor = vec4(vColor, alpha);
 }
 `;

@@ -126,7 +126,7 @@
         .galaxy-fallback {
             background-color: var(--void);
             background-image:
-                radial-gradient(ellipse 110% 38% at 50% 46%, rgba(140, 78, 36, 0.55), rgba(5, 6, 10, 0) 70%),
+                radial-gradient(ellipse 110% 38% at 50% 46%, rgba(140, 78, 36, 0.28), rgba(5, 6, 10, 0) 70%),
                 radial-gradient(ellipse 75% 60% at 8% 85%, rgba(48, 72, 170, 0.85), rgba(5, 6, 10, 0) 68%),
                 radial-gradient(ellipse 68% 52% at 92% 8%, rgba(120, 48, 150, 0.8), rgba(5, 6, 10, 0) 66%);
             background-repeat: no-repeat;
@@ -151,7 +151,7 @@
             z-index: 1;
         }
 
-        /* Name only. The first viewport stays open for the field. */
+        /* Name and portrait. The first viewport stays open for the field. */
         .site-header {
             position: fixed;
             top: 1.25rem;
@@ -160,11 +160,23 @@
         }
 
         .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
             color: var(--muted);
             font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.02em;
             text-decoration: none;
+        }
+
+        .brand-portrait {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            object-fit: cover;
+            flex: none;
+            box-shadow: 0 0 0 1px rgba(245, 245, 247, 0.32);
         }
 
         .brand:hover {
@@ -769,7 +781,7 @@
 
         }
 
-        /* Pinned scrub. Fragments meet across one viewport, then the line locks. */
+        /* Pinned scrub. Fragment offsets track scroll progress across the whole pin. */
         @media (prefers-reduced-motion: no-preference) {
             html.motion .scrub.is-pinned {
                 display: block;
@@ -806,11 +818,6 @@
                 opacity: calc(0.48 + (0.52 * var(--join)));
             }
 
-            html.motion .piece.is-locked {
-                transform: none;
-                opacity: 1;
-            }
-
             html.motion .proof .metric-kicker.piece,
             html.motion .proof p.piece,
             html.motion .work-kicker.piece,
@@ -843,7 +850,10 @@
     <canvas id="galaxy-field" aria-hidden="true"></canvas>
 
     <header class="site-header">
-        <a class="brand" href="#top">Allan Martins</a>
+        <a class="brand" href="#top">
+            <img class="brand-portrait" src="https://github.com/allansli.png" alt="Allan M. de Paula" width="48" height="48">
+            <span>Allan Martins</span>
+        </a>
     </header>
 
     <main id="main">
@@ -851,9 +861,9 @@
         <section class="hero scrub" id="top" aria-labelledby="hero-title">
             <div class="scrub-sticky">
                 <div class="hero-copy">
-                    <h1 id="hero-title"><span class="piece" style="--x:-8;--y:-26" data-start="0" data-end="0.62">Architecture</span> <span class="piece" style="--x:18;--y:-10" data-start="0.05" data-end="0.68">that</span> <span class="piece" style="--x:-16;--y:12" data-start="0.08" data-end="0.74">cannot</span> <span class="piece" style="--x:14;--y:16" data-start="0.12" data-end="0.8">go down.</span></h1>
-                    <p class="hero-role"><span class="piece" style="--x:-10;--y:8" data-start="0.35" data-end="0.9">Head of Architecture</span> <span class="piece" style="--x:8;--y:-6" data-start="0.42" data-end="0.94">· CERC</span> <span class="piece" style="--x:12;--y:10" data-start="0.48" data-end="1">· Brazil credit-market infrastructure</span></p>
-                    <a class="talk piece" href="#contact" style="--x:0;--y:8" data-start="0.62" data-end="1">Talk architecture</a>
+                    <h1 id="hero-title"><span class="piece" style="--x:-8;--y:-26">Architecture</span> <span class="piece" style="--x:18;--y:-10">that</span> <span class="piece" style="--x:-16;--y:12">cannot</span> <span class="piece" style="--x:14;--y:16">go down.</span></h1>
+                    <p class="hero-role"><span class="piece" style="--x:-10;--y:8">Head of Architecture</span> <span class="piece" style="--x:8;--y:-6">· CERC</span> <span class="piece" style="--x:12;--y:10">· Brazil credit-market infrastructure</span></p>
+                    <a class="talk piece" href="#contact" style="--x:0;--y:8">Talk architecture</a>
                 </div>
             </div>
         </section>
@@ -865,20 +875,20 @@
                     <h2 class="running" id="proof-title">Proof</h2>
                     <ul class="proof-list">
                         <li>
-                            <h3 class="metric-kicker piece" style="--x:-14;--y:-16" data-start="0" data-end="0.32">CERC now</h3>
-                            <p class="piece" style="--x:8;--y:10" data-start="0.06" data-end="0.4">Head of Architecture since July 2025. The credit-market infrastructure has to stay available.</p>
+                            <h3 class="metric-kicker piece" style="--x:-14;--y:-16">CERC now</h3>
+                            <p class="piece" style="--x:8;--y:10">Head of Architecture since July 2025. The credit-market infrastructure has to stay available.</p>
                         </li>
                         <li>
-                            <h3 class="metric-kicker piece" style="--x:18;--y:-12" data-start="0.16" data-end="0.48">SHIFT</h3>
-                            <p class="piece" style="--x:-10;--y:8" data-start="0.22" data-end="0.55">Tens of thousands of tasks. 100% of open pull requests reviewed.</p>
+                            <h3 class="metric-kicker piece" style="--x:18;--y:-12">SHIFT</h3>
+                            <p class="piece" style="--x:-10;--y:8">Tens of thousands of tasks. 100% of open pull requests reviewed.</p>
                         </li>
                         <li>
-                            <h3 class="metric-kicker piece" style="--x:-8;--y:6" data-start="0.34" data-end="0.66">Elo Lead Architect</h3>
-                            <p class="metric-figure"><span class="piece" style="--x:-16;--y:-8" data-start="0.4" data-end="0.72">Sub-300ms.</span> <span class="piece" style="--x:12;--y:10" data-start="0.46" data-end="0.78">Availability above 99.999%.</span></p>
+                            <h3 class="metric-kicker piece" style="--x:-8;--y:6">Elo Lead Architect</h3>
+                            <p class="metric-figure"><span class="piece" style="--x:-16;--y:-8">Sub-300ms.</span> <span class="piece" style="--x:12;--y:10">Availability above 99.999%.</span></p>
                         </li>
                         <li>
-                            <h3 class="metric-kicker piece" style="--x:10;--y:-8" data-start="0.58" data-end="0.9">US acquiring</h3>
-                            <p class="piece" style="--x:-12;--y:12" data-start="0.64" data-end="1">Delivery Lead. About $10 million.</p>
+                            <h3 class="metric-kicker piece" style="--x:10;--y:-8">US acquiring</h3>
+                            <p class="piece" style="--x:-12;--y:12">Delivery Lead. About $10 million.</p>
                         </li>
                     </ul>
                 </div>
@@ -939,24 +949,24 @@
             <article class="case scrub">
                 <div class="scrub-sticky">
                     <div class="case-inner">
-                        <p class="work-kicker piece" style="--x:-14;--y:-12" data-start="0" data-end="0.32">CERC · Agentic SDLC</p>
-                        <h3><span class="piece" style="--x:18;--y:-20" data-start="0.06" data-end="0.42">SHIFT</span></h3>
+                        <p class="work-kicker piece" style="--x:-14;--y:-12">CERC · Agentic SDLC</p>
+                        <h3><span class="piece" style="--x:18;--y:-20">SHIFT</span></h3>
                         <dl>
-                            <div class="piece" style="--x:-18;--y:10" data-start="0.2" data-end="0.64">
+                            <div class="piece" style="--x:-18;--y:10">
                                 <dt>Problem</dt>
                                 <dd>Autocomplete never joined the delivery system. Reviews, fixes, and docs still waited on whoever was free.</dd>
                             </div>
-                            <div class="piece" style="--x:16;--y:8" data-start="0.32" data-end="0.76">
+                            <div class="piece" style="--x:16;--y:8">
                                 <dt>Role</dt>
                                 <dd>I designed SHIFT, CERC’s agent platform: ephemeral cloud agents that take work from chat, events, and schedules.</dd>
                             </div>
-                            <div class="piece" style="--x:-12;--y:12" data-start="0.44" data-end="0.88">
+                            <div class="piece" style="--x:-12;--y:12">
                                 <dt>Result</dt>
                                 <dd>Tens of thousands of tasks. Every open pull request is reviewed, without someone having to ask.</dd>
                             </div>
                         </dl>
-                        <p class="press-note piece" style="--x:10;--y:6" data-start="0.58" data-end="0.96">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
-                        <ul class="tag-list piece" style="--x:-8;--y:8" data-start="0.66" data-end="1" aria-label="SHIFT tags">
+                        <p class="press-note piece" style="--x:10;--y:6">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+                        <ul class="tag-list piece" style="--x:-8;--y:8" aria-label="SHIFT tags">
                             <li>Cloud Run</li>
                             <li>Agentic SDLC</li>
                             <li>Code review</li>
@@ -969,23 +979,23 @@
             <article class="case scrub">
                 <div class="scrub-sticky">
                     <div class="case-inner">
-                        <p class="work-kicker piece" style="--x:14;--y:-10" data-start="0" data-end="0.3">Avanade · Payments</p>
-                        <h3><span class="piece" style="--x:-16;--y:-18" data-start="0.04" data-end="0.38">Elo</span> <span class="piece" style="--x:12;--y:-8" data-start="0.08" data-end="0.42">core</span> <span class="piece" style="--x:-10;--y:6" data-start="0.12" data-end="0.46">authorizer</span></h3>
+                        <p class="work-kicker piece" style="--x:14;--y:-10">Avanade · Payments</p>
+                        <h3><span class="piece" style="--x:-16;--y:-18">Elo</span> <span class="piece" style="--x:12;--y:-8">core</span> <span class="piece" style="--x:-10;--y:6">authorizer</span></h3>
                         <dl>
-                            <div class="piece" style="--x:16;--y:10" data-start="0.22" data-end="0.66">
+                            <div class="piece" style="--x:16;--y:10">
                                 <dt>Problem</dt>
                                 <dd>A national card network needed its authorization core rewritten for cloud without giving up the latency the scheme requires.</dd>
                             </div>
-                            <div class="piece" style="--x:-14;--y:8" data-start="0.34" data-end="0.78">
+                            <div class="piece" style="--x:-14;--y:8">
                                 <dt>Role</dt>
                                 <dd>Lead Architect at Avanade. The architecture seat, separate from the Safrapay delivery-lead role.</dd>
                             </div>
-                            <div class="piece" style="--x:12;--y:12" data-start="0.46" data-end="0.9">
+                            <div class="piece" style="--x:12;--y:12">
                                 <dt>Result</dt>
                                 <dd>Authorization under 300ms and availability above 99.999% on a multicloud core. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported, a year on, about 50% lower unit cost per transaction, 54% faster responses, and an 18× smaller financial impact from incidents.</dd>
                             </div>
                         </dl>
-                        <ul class="tag-list piece" style="--x:-8;--y:6" data-start="0.6" data-end="1" aria-label="Elo tags">
+                        <ul class="tag-list piece" style="--x:-8;--y:6" aria-label="Elo tags">
                             <li>Multicloud</li>
                             <li>Authorization</li>
                             <li>High availability</li>
@@ -998,23 +1008,23 @@
             <article class="case scrub">
                 <div class="scrub-sticky">
                     <div class="case-inner">
-                        <p class="work-kicker piece" style="--x:-12;--y:-8" data-start="0" data-end="0.3">CERC · Platform</p>
-                        <h3><span class="piece" style="--x:14;--y:-16" data-start="0.04" data-end="0.36">Backstage</span> <span class="piece" style="--x:-8;--y:-6" data-start="0.1" data-end="0.4">and</span> <span class="piece" style="--x:16;--y:8" data-start="0.14" data-end="0.44">Apigee</span></h3>
+                        <p class="work-kicker piece" style="--x:-12;--y:-8">CERC · Platform</p>
+                        <h3><span class="piece" style="--x:14;--y:-16">Backstage</span> <span class="piece" style="--x:-8;--y:-6">and</span> <span class="piece" style="--x:16;--y:8">Apigee</span></h3>
                         <dl>
-                            <div class="piece" style="--x:-16;--y:10" data-start="0.2" data-end="0.64">
+                            <div class="piece" style="--x:-16;--y:10">
                                 <dt>Problem</dt>
                                 <dd>Services and APIs at a regulated infrastructure were clear to the teams that owned them and opaque everywhere else.</dd>
                             </div>
-                            <div class="piece" style="--x:14;--y:8" data-start="0.32" data-end="0.76">
+                            <div class="piece" style="--x:14;--y:8">
                                 <dt>Role</dt>
                                 <dd>I set the platform architecture: Backstage as the developer portal and Apigee as the API gateway. Not the receivables ledger.</dd>
                             </div>
-                            <div class="piece" style="--x:-10;--y:12" data-start="0.44" data-end="0.88">
+                            <div class="piece" style="--x:-10;--y:12">
                                 <dt>Result</dt>
                                 <dd>One catalog for engineering, and one governed edge for participants and internal systems, including calls into SHIFT from outside the cluster.</dd>
                             </div>
                         </dl>
-                        <ul class="tag-list piece" style="--x:8;--y:6" data-start="0.58" data-end="1" aria-label="Platform tags">
+                        <ul class="tag-list piece" style="--x:8;--y:6" aria-label="Platform tags">
                             <li>Backstage</li>
                             <li>Apigee</li>
                             <li>Developer portal</li>
@@ -1026,23 +1036,23 @@
             <article class="case scrub">
                 <div class="scrub-sticky">
                     <div class="case-inner">
-                        <p class="work-kicker piece" style="--x:12;--y:-10" data-start="0" data-end="0.3">Avanade · Private banking</p>
-                        <h3><span class="piece" style="--x:-14;--y:-18" data-start="0.04" data-end="0.36">Swiss</span> <span class="piece" style="--x:16;--y:-6" data-start="0.1" data-end="0.42">private</span> <span class="piece" style="--x:-12;--y:8" data-start="0.14" data-end="0.46">bank</span></h3>
+                        <p class="work-kicker piece" style="--x:12;--y:-10">Avanade · Private banking</p>
+                        <h3><span class="piece" style="--x:-14;--y:-18">Swiss</span> <span class="piece" style="--x:16;--y:-6">private</span> <span class="piece" style="--x:-12;--y:8">bank</span></h3>
                         <dl>
-                            <div class="piece" style="--x:16;--y:10" data-start="0.22" data-end="0.66">
+                            <div class="piece" style="--x:16;--y:10">
                                 <dt>Problem</dt>
                                 <dd>Trading and e-banking needed the same positions, priced now, across business units that did not share a platform.</dd>
                             </div>
-                            <div class="piece" style="--x:-14;--y:8" data-start="0.34" data-end="0.78">
+                            <div class="piece" style="--x:-14;--y:8">
                                 <dt>Role</dt>
                                 <dd>Lead architect for the trading platform and the e-banking estate.</dd>
                             </div>
-                            <div class="piece" style="--x:10;--y:12" data-start="0.46" data-end="0.9">
+                            <div class="piece" style="--x:10;--y:12">
                                 <dt>Result</dt>
                                 <dd>Near-real-time asset pricing and portfolio valuation for 10+ business units across 30+ markets.</dd>
                             </div>
                         </dl>
-                        <ul class="tag-list piece" style="--x:-8;--y:6" data-start="0.6" data-end="1" aria-label="Swiss private bank tags">
+                        <ul class="tag-list piece" style="--x:-8;--y:6" aria-label="Swiss private bank tags">
                             <li>Trading</li>
                             <li>E-banking</li>
                             <li>Real-time pricing</li>
