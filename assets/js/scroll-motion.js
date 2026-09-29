@@ -1,6 +1,5 @@
 const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)");
 const CHAPTER_WARMTH = [-0.55, 0.28, -0.18, 0.62];
-const LOCK_PORTION = 0.74;
 
 function boot() {
     const scrubs = Array.from(document.querySelectorAll(".scrub"));
@@ -27,27 +26,22 @@ function boot() {
         document.dispatchEvent(new CustomEvent("galaxy-warmth", { detail: value }));
     }
 
-    function pieceJoin(progress, piece) {
-        const start = Number(piece.dataset.start || 0);
-        const end = Number(piece.dataset.end || 1);
-        if (progress <= start || end <= start) {
-            return progress <= start ? 0 : 1;
+    function sectionProgress(scrub) {
+        const rect = scrub.getBoundingClientRect();
+        const travel = rect.height - window.innerHeight;
+        if (travel <= 1) {
+            return rect.top <= 0 ? 1 : 0;
         }
-        if (progress >= end) {
-            return 1;
-        }
-        return (progress - start) / (end - start);
+        return Math.min(1, Math.max(0, -rect.top / travel));
     }
 
     function writePiece(piece, join) {
-        const locked = join >= 1;
-        const next = locked ? "1" : join.toFixed(4);
+        const next = Math.min(1, Math.max(0, join)).toFixed(4);
         if (piece.dataset.join === next) {
             return;
         }
         piece.dataset.join = next;
         piece.style.setProperty("--join", next);
-        piece.classList.toggle("is-locked", locked);
     }
 
     function clearPiece(piece) {
@@ -60,13 +54,10 @@ function boot() {
         if (!enabled) {
             return;
         }
-        const tops = entries.map((entry) => entry.scrub.getBoundingClientRect().top);
-        entries.forEach((entry, index) => {
-            const progress = entry.forced
-                ? 1
-                : Math.min(1, Math.max(0, -tops[index] / Math.max(window.innerHeight * LOCK_PORTION, 1)));
+        entries.forEach((entry) => {
+            const progress = entry.forced ? 1 : sectionProgress(entry.scrub);
             entry.pieces.forEach((piece) => {
-                writePiece(piece, entry.forced ? 1 : pieceJoin(progress, piece));
+                writePiece(piece, progress);
             });
         });
     }
@@ -90,7 +81,6 @@ function boot() {
         const vh = window.innerHeight / 100;
         entries.forEach((entry) => {
             entry.pieces.forEach((piece) => {
-                piece.classList.remove("is-locked");
                 delete piece.dataset.join;
                 piece.style.setProperty("--join", "1");
             });
