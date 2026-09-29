@@ -18,21 +18,18 @@
     <style>
         :root {
             --void: #05060a;
-            --surface: #0b0d10;
-            --surface-raised: #141820;
+            --band: rgba(5, 6, 10, 0.92);
             --text: #f5f5f7;
             --muted: #a1a1a6;
             --accent: #0071e3;
             --on-accent: #ffffff;
-            --border: rgba(245, 245, 247, 0.14);
-            --shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+            --hairline: rgba(245, 245, 247, 0.16);
             --space-xl: 64px;
             --space-lg: 48px;
             --space-md: 32px;
             --space-sm: 16px;
             --prose: 46rem;
             --page: 68rem;
-            --field-opacity: 0.55;
             --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             --focus: #f5f5f7;
         }
@@ -88,7 +85,7 @@
             z-index: 3;
             padding: 8px 16px;
             background: var(--text);
-            color: var(--surface);
+            color: var(--void);
             text-decoration: none;
         }
 
@@ -117,36 +114,35 @@
             max-width: var(--prose);
         }
 
-        /* Luna/Sol field. Canvas stays at 0.55; body sections are opaque so type never sits on the orbs. */
-        .luna-sol-fallback,
-        #luna-sol-field {
+        /* Galaxy field. Readability comes from solid-dark bands, not from dimming the universe. */
+        .galaxy-fallback,
+        #galaxy-field {
             position: fixed;
             inset: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: var(--field-opacity);
         }
 
-        .luna-sol-fallback {
+        .galaxy-fallback {
             background-color: var(--void);
             background-image:
-                radial-gradient(circle 150px at 88% 18%, #ff9f40 0%, rgba(255, 159, 64, 0.45) 28%, rgba(255, 159, 64, 0) 72%),
-                radial-gradient(circle 190px at 74% 58%, #c4e7ff 0%, rgba(196, 231, 255, 0.42) 26%, rgba(196, 231, 255, 0) 72%),
-                radial-gradient(ellipse at 68% 40%, rgba(70, 90, 120, 0.45), rgba(5, 6, 10, 0) 64%);
+                radial-gradient(ellipse 110% 38% at 50% 46%, rgba(140, 78, 36, 0.55), rgba(5, 6, 10, 0) 70%),
+                radial-gradient(ellipse 75% 60% at 8% 85%, rgba(48, 72, 170, 0.85), rgba(5, 6, 10, 0) 68%),
+                radial-gradient(ellipse 68% 52% at 92% 8%, rgba(120, 48, 150, 0.8), rgba(5, 6, 10, 0) 66%);
             background-repeat: no-repeat;
         }
 
-        #luna-sol-field {
+        #galaxy-field {
             display: none;
         }
 
-        html.webgl #luna-sol-field {
+        html.webgl #galaxy-field {
             display: block;
         }
 
-        html.webgl .luna-sol-fallback {
+        html.webgl .galaxy-fallback {
             display: none;
         }
 
@@ -162,8 +158,8 @@
             position: sticky;
             top: 0;
             z-index: 2;
-            background: var(--void);
-            border-bottom: 1px solid var(--border);
+            background: var(--band);
+            border-bottom: 1px solid var(--hairline);
         }
 
         .header-bar {
@@ -192,7 +188,7 @@
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1px solid var(--border);
+            border: 1px solid var(--hairline);
         }
 
         .site-nav {
@@ -213,33 +209,12 @@
 
         /* Hero */
         .hero {
-            position: relative;
             padding-block: var(--space-xl) var(--space-lg);
         }
 
-        .hero::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 96px;
-            background: linear-gradient(to bottom, transparent, var(--void));
-            pointer-events: none;
-        }
-
         .hero .prose {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero .prose::before {
-            content: "";
-            position: absolute;
-            z-index: -1;
-            inset: -40px -28px;
-            background: linear-gradient(90deg, rgba(5, 6, 10, 0.92) 0%, rgba(5, 6, 10, 0.84) 76%, rgba(5, 6, 10, 0) 100%);
-            pointer-events: none;
+            background: var(--band);
+            padding: var(--space-md);
         }
 
         .eyebrow {
@@ -283,12 +258,11 @@
         }
 
         .proof-chip {
-            display: inline-block;
+            display: block;
             margin-bottom: var(--space-md);
-            padding: 8px 12px;
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            background: var(--surface);
+            padding-block: 12px;
+            border-top: 1px solid var(--hairline);
+            border-bottom: 1px solid var(--hairline);
             color: var(--text);
             font-size: 0.9375rem;
             font-weight: 600;
@@ -298,7 +272,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: var(--space-sm);
-            margin-bottom: var(--space-lg);
+            margin: 0;
         }
 
         .button {
@@ -333,15 +307,15 @@
             background: rgba(0, 113, 227, 0.12);
         }
 
-        .field-caption {
-            color: var(--muted);
-            font-size: 0.9375rem;
-        }
-
-        /* Sections */
+        /* Sections. Bands are solid-dark strips. Hairlines separate items. */
         .band {
             padding-block: var(--space-xl);
-            background: var(--void);
+            background: transparent;
+        }
+
+        .band .wrap {
+            background: var(--band);
+            padding: var(--space-md);
         }
 
         .lede {
@@ -349,22 +323,19 @@
             color: var(--muted);
         }
 
-        .card {
-            background: var(--surface-raised);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            padding: var(--space-md);
-        }
-
         /* Proof */
         .proof-list {
             display: grid;
             grid-template-columns: 1fr;
-            gap: var(--space-sm);
+            gap: var(--space-md);
             margin: 0;
             padding: 0;
             list-style: none;
+        }
+
+        .proof-list li {
+            padding-top: var(--space-sm);
+            border-top: 1px solid var(--hairline);
         }
 
         .proof-list h3 {
@@ -379,7 +350,13 @@
         .work-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: var(--space-md);
+            column-gap: var(--space-lg);
+        }
+
+        .work-card {
+            padding-block: var(--space-md);
+            border-top: 1px solid var(--hairline);
+            background: transparent;
         }
 
         .work-kicker {
@@ -422,11 +399,13 @@
         }
 
         .tag-list li {
-            padding: 4px 10px;
-            border: 1px solid var(--border);
-            border-radius: 999px;
             color: var(--muted);
             font-size: 0.8125rem;
+        }
+
+        .tag-list li:not(:last-child)::after {
+            content: "·";
+            margin-left: 8px;
         }
 
         /* Open source, secondary */
@@ -449,9 +428,13 @@
 
         /* Career */
         .era-list {
-            display: grid;
-            gap: var(--space-lg);
             max-width: var(--prose);
+        }
+
+        .era + .era {
+            margin-top: var(--space-lg);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--hairline);
         }
 
         .era h3 {
@@ -474,6 +457,8 @@
         .early-note {
             max-width: var(--prose);
             margin-top: var(--space-lg);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--hairline);
             color: var(--muted);
         }
 
@@ -492,12 +477,13 @@
         }
 
         .skill-list li {
-            padding: 6px 10px;
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            background: var(--surface);
             color: var(--muted);
             font-size: 0.875rem;
+        }
+
+        .skill-list li:not(:last-child)::after {
+            content: "·";
+            margin-left: 8px;
         }
 
         /* Contact */
@@ -510,7 +496,7 @@
 
         .site-footer {
             padding-block: var(--space-md) var(--space-xl);
-            background: var(--void);
+            background: var(--band);
             color: var(--muted);
             font-size: 0.9375rem;
         }
@@ -533,17 +519,13 @@
 
         @media (max-width: 900px) {
             .hero {
-                padding-top: 168px;
-            }
-
-            .hero .prose::before {
-                inset: -24px -16px;
-                background: rgba(5, 6, 10, 0.9);
+                padding-top: 96px;
             }
         }
 
         @media (max-width: 480px) {
-            .card {
+            .hero .prose,
+            .band .wrap {
                 padding: var(--space-sm);
             }
 
@@ -566,8 +548,8 @@
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="luna-sol-fallback" aria-hidden="true"></div>
-    <canvas id="luna-sol-field" aria-hidden="true"></canvas>
+    <div class="galaxy-fallback" aria-hidden="true"></div>
+    <canvas id="galaxy-field" aria-hidden="true"></canvas>
 
     <header class="site-header">
         <div class="header-bar">
@@ -597,7 +579,6 @@
                     <a class="button button-primary" href="#contact">Talk architecture</a>
                     <a class="button button-secondary" href="#work">View signature work</a>
                 </div>
-                <p class="field-caption">Luna is high-availability infrastructure. Sol is the agentic SDLC — SHIFT.</p>
             </div>
         </section>
 
@@ -606,19 +587,19 @@
             <div class="wrap">
                 <h2 id="proof-title">Proof</h2>
                 <ul class="proof-list">
-                    <li class="card">
+                    <li>
                         <h3>CERC HA</h3>
                         <p>Highly available architecture for Brazil’s credit-market infrastructure.</p>
                     </li>
-                    <li class="card">
+                    <li>
                         <h3>SHIFT</h3>
                         <p>Tens of thousands of tasks. 100% of open pull requests reviewed.</p>
                     </li>
-                    <li class="card">
+                    <li>
                         <h3>Elo Lead Architect</h3>
                         <p>Sub-300ms authorization. Availability above 99.999%.</p>
                     </li>
-                    <li class="card">
+                    <li>
                         <h3>US acquiring</h3>
                         <p>Delivery Lead. A program of about $10 million.</p>
                     </li>
@@ -634,7 +615,7 @@
                     <p class="lede">Four systems. Each one is a problem, the seat I held, and the result that shipped.</p>
                 </div>
                 <div class="work-grid">
-                    <article class="card work-card">
+                    <article class="work-card">
                         <p class="work-kicker">CERC · Agentic SDLC</p>
                         <h3>SHIFT</h3>
                         <dl>
@@ -653,7 +634,7 @@
                             <li>Vertex AI</li>
                         </ul>
                     </article>
-                    <article class="card work-card">
+                    <article class="work-card">
                         <p class="work-kicker">Avanade · Payments</p>
                         <h3>Elo core authorizer</h3>
                         <dl>
@@ -672,7 +653,7 @@
                             <li>AWS</li>
                         </ul>
                     </article>
-                    <article class="card work-card">
+                    <article class="work-card">
                         <p class="work-kicker">CERC · Platform</p>
                         <h3>Backstage and Apigee</h3>
                         <dl>
@@ -690,7 +671,7 @@
                             <li>API gateway</li>
                         </ul>
                     </article>
-                    <article class="card work-card">
+                    <article class="work-card">
                         <p class="work-kicker">Avanade · Private banking</p>
                         <h3>Swiss private bank</h3>
                         <dl>
@@ -803,6 +784,6 @@
         </div>
     </footer>
 
-    <script type="module" src="assets/js/luna-sol-field.js"></script>
+    <script type="module" src="assets/js/galaxy-field.js"></script>
 </body>
 </html>
