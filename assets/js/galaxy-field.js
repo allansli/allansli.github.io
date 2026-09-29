@@ -81,11 +81,12 @@ function mountField(THREE, canvas) {
     let warmth = 0;
     let scrollY = window.scrollY;
     let maxScroll = 1;
-    let scrollQueued = false;
+    let measuredAt = 0;
 
     function rememberScroll() {
         scrollY = window.scrollY;
         maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        measuredAt = performance.now();
     }
 
     function scrollProgress() {
@@ -117,6 +118,14 @@ function mountField(THREE, canvas) {
     }
 
     function draw(time) {
+        if (!reduced) {
+            scrollY = window.scrollY;
+            const now = performance.now();
+            if (now - measuredAt > 400) {
+                maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+                measuredAt = now;
+            }
+        }
         const progress = scrollProgress();
         const goal = reduced ? 0 : targetWarmth;
         warmth += (goal - warmth) * (reduced ? 1 : 0.045);
@@ -129,9 +138,9 @@ function mountField(THREE, canvas) {
             camera.position.set(0, 0, 8);
         } else {
             camera.position.set(
-                Math.sin(time * 0.045) * 0.55 + progress * 0.85,
-                Math.cos(time * 0.031) * 0.28 + progress * 0.42,
-                8 + Math.sin(time * 0.02) * 0.3 - progress * 1.35
+                Math.sin(time * 0.045) * 0.55 + progress * 1.35,
+                Math.cos(time * 0.031) * 0.28 + progress * 0.7,
+                8 + Math.sin(time * 0.02) * 0.3 - progress * 2.1
             );
         }
         camera.lookAt(0, 0, 0);
@@ -162,17 +171,6 @@ function mountField(THREE, canvas) {
         rememberScroll();
         resize();
     });
-
-    window.addEventListener("scroll", () => {
-        if (reduced || scrollQueued) {
-            return;
-        }
-        scrollQueued = true;
-        requestAnimationFrame(() => {
-            rememberScroll();
-            scrollQueued = false;
-        });
-    }, { passive: true });
 
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
@@ -297,7 +295,7 @@ float fbm(vec2 p) {
 void main() {
     vec2 uv = vUv;
     float t = uTime * 0.018;
-    vec2 drift = vec2(t * 0.35 + uScroll * 0.85, t * 0.12 - uScroll * 0.4);
+    vec2 drift = vec2(t * 0.35 + uScroll * 1.6, t * 0.12 - uScroll * 0.85);
     float broad = fbm(uv * vec2(1.6, 2.4) + drift);
     float lane = fbm(vec2(uv.x * 0.8 + broad, uv.y * 3.4 - t * 0.2));
     float veil = fbm(uv * 3.2 + vec2(-t * 0.15, broad));
@@ -330,9 +328,9 @@ varying vec3 vColor;
 void main() {
     vColor = aColor;
     vec3 drifted = position;
-    drifted.x += sin(uTime * 0.05 + position.y * 0.17) * 0.45 + uScroll * 2.2;
-    drifted.y += cos(uTime * 0.04 + position.x * 0.11) * 0.28 - uScroll * 1.15;
-    drifted.z += uScroll * 1.4;
+    drifted.x += sin(uTime * 0.05 + position.y * 0.17) * 0.45 + uScroll * 3.4;
+    drifted.y += cos(uTime * 0.04 + position.x * 0.11) * 0.28 - uScroll * 1.8;
+    drifted.z += uScroll * 2.2;
     vec4 viewPosition = modelViewMatrix * vec4(drifted, 1.0);
     gl_Position = projectionMatrix * viewPosition;
     gl_PointSize = aSize * (150.0 / max(1.0, -viewPosition.z));
