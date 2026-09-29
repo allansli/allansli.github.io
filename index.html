@@ -623,6 +623,20 @@
             margin-top: 0.45rem;
         }
 
+        .highlights {
+            margin: 0.85rem 0 0;
+            padding-left: 1.15rem;
+            list-style: disc;
+        }
+
+        .highlights li + li {
+            margin-top: 0.7rem;
+        }
+
+        .highlights li::marker {
+            color: var(--muted);
+        }
+
         .lines {
             display: flex;
             flex-direction: column;
@@ -991,22 +1005,20 @@
                         <dl>
                             <div>
                                 <dt>Problem</dt>
-                                <dd>Trading and e-banking needed the same positions, priced now, across business units that did not share a platform.</dd>
+                                <dd>Trading and e-banking architecture had to cover more than ten business units.</dd>
                             </div>
                             <div>
                                 <dt>Role</dt>
-                                <dd>Architecture for the trading and e-banking platform.</dd>
+                                <dd>Architecture for trading and e-banking across 10+ business units.</dd>
                             </div>
                             <div>
                                 <dt>Result</dt>
-                                <dd>Near-real-time asset pricing and portfolio valuation across 10+ business units.</dd>
+                                <dd>Architecture for trading and e-banking across those business units.</dd>
                             </div>
                         </dl>
                         <ul class="tag-list" aria-label="Swiss private bank tags">
                             <li>Trading</li>
                             <li>E-banking</li>
-                            <li>Real-time pricing</li>
-                            <li>Wealth</li>
                         </ul>
                     </div>
                 </div>
@@ -1051,9 +1063,11 @@
                         <div>
                             <h3>Senior Manager / Lead Architect</h3>
                             <p class="where">Avanade · about 12 years</p>
-                            <p>Elo authorization-core modernization, as Lead Architect. Cloud-native Azure and AWS, ISO 8583, technical leadership of 20+ engineers. Sub-300ms. Availability above 99.999%. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported about 50% lower unit processing cost.</p>
-                            <p>Swiss private bank: architecture for trading and e-banking across 10+ business units.</p>
-                            <p>Safrapay USA: Delivery Lead on a cloud-first US acquiring program of about $10 million.</p>
+                            <ul class="highlights">
+                                <li>Elo authorization-core modernization, as Lead Architect. Cloud-native Azure and AWS, ISO 8583, technical leadership of 20+ engineers. Sub-300ms. Availability above 99.999%. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported about 50% lower unit processing cost.</li>
+                                <li>Swiss private bank: architecture for trading and e-banking across 10+ business units.</li>
+                                <li>Safrapay USA: Delivery Lead on a cloud-first US acquiring program of about $10 million.</li>
+                            </ul>
                         </div>
                     </article>
                     <p class="early-note">Capgemini and Tangram, 2012–2013: systems analysis, e-commerce, and CRM.</p>
