@@ -80,20 +80,12 @@ function mountField(THREE, canvas) {
     let reduced = REDUCED_MOTION.matches;
     let warmth = 0;
     let scrollY = window.scrollY;
-    let maxScroll = 1;
-    let measuredAt = 0;
 
-    function rememberScroll() {
-        scrollY = window.scrollY;
-        maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        measuredAt = performance.now();
-    }
-
-    function scrollProgress() {
+    function scrollDepth() {
         if (reduced) {
             return 0;
         }
-        return Math.min(1, Math.max(0, scrollY / maxScroll));
+        return scrollY / Math.max(window.innerHeight, 1);
     }
 
     function elapsedSeconds() {
@@ -120,27 +112,22 @@ function mountField(THREE, canvas) {
     function draw(time) {
         if (!reduced) {
             scrollY = window.scrollY;
-            const now = performance.now();
-            if (now - measuredAt > 400) {
-                maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-                measuredAt = now;
-            }
         }
-        const progress = scrollProgress();
+        const depth = scrollDepth();
         const goal = reduced ? 0 : targetWarmth;
         warmth += (goal - warmth) * (reduced ? 1 : 0.045);
         nebulaMaterial.uniforms.uTime.value = time;
-        nebulaMaterial.uniforms.uScroll.value = progress;
+        nebulaMaterial.uniforms.uScroll.value = depth * 0.34;
         nebulaMaterial.uniforms.uWarmth.value = warmth;
         dust.material.uniforms.uTime.value = time;
-        dust.material.uniforms.uScroll.value = progress;
+        dust.material.uniforms.uScroll.value = depth * 0.34;
         if (reduced) {
             camera.position.set(0, 0, 8);
         } else {
             camera.position.set(
-                Math.sin(time * 0.045) * 0.55 + progress * 1.35,
-                Math.cos(time * 0.031) * 0.28 + progress * 0.7,
-                8 + Math.sin(time * 0.02) * 0.3 - progress * 2.1
+                Math.sin(time * 0.045) * 0.55 + depth * 0.28,
+                Math.cos(time * 0.031) * 0.28 + depth * 0.12,
+                8 + Math.sin(time * 0.02) * 0.3 - depth * 0.42
             );
         }
         camera.lookAt(0, 0, 0);
@@ -167,10 +154,7 @@ function mountField(THREE, canvas) {
         tick();
     }
 
-    window.addEventListener("resize", () => {
-        rememberScroll();
-        resize();
-    });
+    window.addEventListener("resize", resize);
 
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
@@ -192,7 +176,6 @@ function mountField(THREE, canvas) {
             pausedTotal = 0;
             warmth = 0;
         }
-        rememberScroll();
         loop();
     });
 
@@ -202,7 +185,6 @@ function mountField(THREE, canvas) {
         document.documentElement.classList.remove("webgl");
     });
 
-    rememberScroll();
     resize();
     document.documentElement.classList.add("webgl");
     loop();
