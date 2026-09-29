@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Allan Martins — Head of Architecture, CERC</title>
-    <meta name="description" content="Allan Martins, Head of Architecture at CERC. Highly available architecture for Brazil’s credit-market infrastructure, platforms, and an AI-driven SDLC.">
+    <meta name="description" content="Allan Martins, Head of Architecture at CERC in São Paulo. Highly available architecture for Brazil’s credit-market infrastructure. Architecture as a Service, owned platforms, AI-driven SDLC.">
     <meta name="theme-color" content="#05060a">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="icon" href="https://github.com/allansli.png">
@@ -323,8 +323,9 @@
             color: var(--muted);
         }
 
-        /* Proof */
-        .proof-list {
+        /* Proof and pillars */
+        .proof-list,
+        .pillar-list {
             display: grid;
             grid-template-columns: 1fr;
             gap: var(--space-md);
@@ -333,17 +334,26 @@
             list-style: none;
         }
 
-        .proof-list li {
+        .proof-list li,
+        .pillar-list li {
             padding-top: var(--space-sm);
             border-top: 1px solid var(--hairline);
         }
 
-        .proof-list h3 {
+        .proof-list h3,
+        .pillar-list h3 {
             margin-bottom: 8px;
         }
 
-        .proof-list p {
+        .proof-list p,
+        .pillar-list p,
+        .press-note {
             color: var(--muted);
+        }
+
+        .press-note {
+            margin-top: var(--space-sm);
+            font-size: 0.875rem;
         }
 
         /* Signature work */
@@ -431,7 +441,7 @@
             max-width: var(--prose);
         }
 
-        .era + .era {
+        .era-list > * + * {
             margin-top: var(--space-lg);
             padding-top: var(--space-lg);
             border-top: 1px solid var(--hairline);
@@ -456,9 +466,6 @@
 
         .early-note {
             max-width: var(--prose);
-            margin-top: var(--space-lg);
-            padding-top: var(--space-lg);
-            border-top: 1px solid var(--hairline);
             color: var(--muted);
         }
 
@@ -502,13 +509,15 @@
         }
 
         @media (min-width: 768px) {
-            .proof-list {
+            .proof-list,
+            .pillar-list {
                 grid-template-columns: 1fr 1fr;
             }
         }
 
         @media (min-width: 1100px) {
-            .proof-list {
+            .proof-list,
+            .pillar-list {
                 grid-template-columns: repeat(4, 1fr);
             }
 
@@ -559,6 +568,7 @@
             </a>
             <nav class="site-nav" aria-label="Primary">
                 <a href="#proof">Proof</a>
+                <a href="#pillars">Pillars</a>
                 <a href="#work">Work</a>
                 <a href="#career">Career</a>
                 <a href="#about">About</a>
@@ -571,9 +581,9 @@
         <!-- Hero -->
         <section class="hero" id="top" aria-labelledby="hero-title">
             <div class="wrap prose">
-                <p class="eyebrow">Head of Architecture · CERC</p>
+                <p class="eyebrow">Head of Architecture · CERC · São Paulo</p>
                 <h1 id="hero-title">Highly available architecture for Brazil’s credit-market infrastructure</h1>
-                <p class="support">Architecture as a Service, the platforms underneath it, and an AI-driven SDLC.</p>
+                <p class="support">Architecture as a Service, owned platforms, AI-driven SDLC.</p>
                 <p class="proof-chip">Elo Lead Architect — sub-300ms, &gt;99.999%</p>
                 <div class="cta-row">
                     <a class="button button-primary" href="#contact">Talk architecture</a>
@@ -588,8 +598,8 @@
                 <h2 id="proof-title">Proof</h2>
                 <ul class="proof-list">
                     <li>
-                        <h3>CERC HA</h3>
-                        <p>Highly available architecture for Brazil’s credit-market infrastructure.</p>
+                        <h3>CERC now</h3>
+                        <p>Head of Architecture since July 2025. The credit-market infrastructure has to stay available.</p>
                     </li>
                     <li>
                         <h3>SHIFT</h3>
@@ -597,11 +607,36 @@
                     </li>
                     <li>
                         <h3>Elo Lead Architect</h3>
-                        <p>Sub-300ms authorization. Availability above 99.999%.</p>
+                        <p>Sub-300ms. Availability above 99.999%.</p>
                     </li>
                     <li>
                         <h3>US acquiring</h3>
-                        <p>Delivery Lead. A program of about $10 million.</p>
+                        <p>Delivery Lead. About $10 million.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Pillars -->
+        <section class="band" id="pillars" aria-labelledby="pillars-title">
+            <div class="wrap">
+                <h2 id="pillars-title">Pillars</h2>
+                <ul class="pillar-list">
+                    <li>
+                        <h3>SHIFT</h3>
+                        <p>The agentic SDLC. Tasks come from people, events, and schedules, and land back as pull requests and reviews.</p>
+                    </li>
+                    <li>
+                        <h3>Architecture as a Service</h3>
+                        <p>Architecture owned as a platform the teams consume, for the credit-market infrastructure.</p>
+                    </li>
+                    <li>
+                        <h3>Backstage and Apigee</h3>
+                        <p>The developer portal and the API gateway. Not the receivables ledger.</p>
+                    </li>
+                    <li>
+                        <h3>Patterns and a live scorecard</h3>
+                        <p>Shared architecture patterns, scored in the open. <a href="https://github.com/allansli/scorecard" target="_blank" rel="noopener noreferrer">Live scorecard<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
                     </li>
                 </ul>
             </div>
@@ -612,7 +647,7 @@
             <div class="wrap">
                 <div class="prose">
                     <h2 id="work-title">Signature work</h2>
-                    <p class="lede">Four systems. Each one is a problem, the seat I held, and the result that shipped.</p>
+                    <p class="lede">Four stories. The seat, the constraint, and what shipped.</p>
                 </div>
                 <div class="work-grid">
                     <article class="work-card">
@@ -626,6 +661,7 @@
                             <dt>Result</dt>
                             <dd>Tens of thousands of tasks. Every open pull request is reviewed, without someone having to ask.</dd>
                         </dl>
+                        <p class="press-note">A short account of the fleet is on <a href="https://building.cerc.com/en/blog/shift-five-months-in-production/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
                         <ul class="tag-list" aria-label="SHIFT tags">
                             <li>Cloud Run</li>
                             <li>Agentic SDLC</li>
@@ -641,9 +677,9 @@
                             <dt>Problem</dt>
                             <dd>A national card network needed its authorization core rewritten for cloud without giving up the latency the scheme requires.</dd>
                             <dt>Role</dt>
-                            <dd>Lead Architect at Avanade. The architecture seat, separate from the delivery-lead role on US acquiring.</dd>
+                            <dd>Lead Architect at Avanade. The architecture seat, separate from the Safrapay delivery-lead role.</dd>
                             <dt>Result</dt>
-                            <dd>Authorization under 300ms and availability above 99.999% on a multicloud core. Elo was the first payments network to run its platform entirely in the cloud.</dd>
+                            <dd>Authorization under 300ms and availability above 99.999% on a multicloud core. <a href="https://tiinside.com.br/08/06/2026/nuvem-um-ano-apos-migracao-elo-reduz-em-media-50-no-custo-unitario-de-processamento-de-transacoes/" target="_blank" rel="noopener noreferrer">TI Inside<span class="visually-hidden"> (opens in a new tab)</span></a> reported, a year on, about 50% lower unit cost per transaction, 54% faster responses, and an 18× smaller financial impact from incidents.</dd>
                         </dl>
                         <ul class="tag-list" aria-label="Elo tags">
                             <li>Multicloud</li>
@@ -716,35 +752,38 @@
             <div class="wrap">
                 <div class="prose">
                     <h2 id="career-title">Career</h2>
-                    <p class="lede">Three seats. Lead Architect and Delivery Lead are different jobs.</p>
+                    <p class="lede">The seats are named on purpose. Lead Architect and Delivery Lead are different jobs.</p>
                 </div>
                 <div class="era-list">
                     <article class="era">
                         <h3>Head of Architecture</h3>
-                        <p class="era-meta">CERC · São Paulo · current</p>
+                        <p class="era-meta">CERC · São Paulo · Jul 2025–</p>
                         <ol>
-                            <li>Architecture for Brazil’s credit-market infrastructure: registration and settlement control that has to stay available.</li>
-                            <li>SHIFT as the agentic SDLC — tens of thousands of tasks, and a review on every open pull request.</li>
+                            <li>Highly available architecture for Brazil’s credit-market infrastructure.</li>
+                            <li>SHIFT, Architecture as a Service, and the platform edge on Backstage and Apigee.</li>
                         </ol>
                     </article>
                     <article class="era">
                         <h3>Lead Architect</h3>
                         <p class="era-meta">Avanade · 2021–2025</p>
                         <ol>
-                            <li>Elo authorization core: multicloud rewrite, sub-300ms, availability above 99.999%. Lead Architect, not the delivery-lead seat.</li>
-                            <li>Swiss private bank: trading and e-banking with near-real-time pricing for 10+ business units across 30+ markets.</li>
+                            <li>Elo authorization core. Sub-300ms, availability above 99.999%.</li>
+                            <li>Swiss private bank: trading and e-banking, near-real-time pricing for 10+ business units across 30+ markets.</li>
                         </ol>
                     </article>
                     <article class="era">
                         <h3>Delivery Lead</h3>
-                        <p class="era-meta">Avanade · 2019–2021</p>
+                        <p class="era-meta">Avanade · Safrapay · 2019–2021</p>
                         <ol>
-                            <li>Client and Delivery Lead for a US acquiring and digital-banking program of about $10 million, in production within a year.</li>
-                            <li>Samsung Pay on mobile banking, and commercial onboarding cut from 20 days to 24 hours.</li>
+                            <li>US acquiring. Delivery Lead for a program of about $10 million.</li>
                         </ol>
                     </article>
+                    <p class="early-note">Capgemini and Tangram, 2012–2013: systems analysis, e-commerce, and CRM.</p>
+                    <article class="era">
+                        <h3>Education</h3>
+                        <p>Computer Science, FEI. Master’s, FGV EAESP.</p>
+                    </article>
                 </div>
-                <p class="early-note">Early career: Avanade, 2013–2019, from consultant to associate manager on payment systems and mobile banking. Before that, Capgemini and Tangram in 2012–2013 — .NET administrative systems, plus e-commerce and CRM delivery.</p>
             </div>
         </section>
 
@@ -752,14 +791,14 @@
         <section class="band" id="about" aria-labelledby="about-title">
             <div class="wrap prose about">
                 <h2 id="about-title">About</h2>
-                <p>I lead architecture at CERC. The work is the infrastructure Brazil’s credit market uses to register receivables, and the platforms engineers use to change that infrastructure safely. I care about availability, a clear platform edge, and a software lifecycle where an agent can take work that has been specified.</p>
-                <ul class="skill-list" aria-label="Areas of work">
-                    <li>High availability</li>
-                    <li>Platform architecture</li>
-                    <li>Agentic SDLC</li>
-                    <li>Multicloud</li>
-                    <li>API management</li>
-                    <li>Financial infrastructure</li>
+                <p>I live in São Paulo and I like the work when it is specific: a platform that stays up, a service a team can find, a pull request that gets a real review.</p>
+                <ul class="skill-list" aria-label="Skills">
+                    <li>K8s</li>
+                    <li>Distributed Systems</li>
+                    <li>AI/GenAI</li>
+                    <li>GCP</li>
+                    <li>Payment Systems</li>
+                    <li>Cloud-Native/Azure</li>
                 </ul>
             </div>
         </section>
@@ -767,12 +806,13 @@
         <!-- Contact -->
         <section class="band" id="contact" aria-labelledby="contact-title">
             <div class="wrap prose">
-                <h2 id="contact-title">Talk architecture</h2>
-                <p class="lede">If you are deciding how a financial platform stays available, or how agents enter a delivery system, write with the constraint. I read these.</p>
+                <h2 id="contact-title">Let’s talk architecture</h2>
+                <p class="lede">Open to architecture conversations, advisory, and roles.</p>
                 <div class="contact-links">
-                    <a class="button button-primary" href="mailto:allan.mdepaula@gmail.com?subject=Talk%20architecture">Talk architecture by email</a>
+                    <a class="button button-primary" href="mailto:allan.mdepaula@gmail.com?subject=Let%27s%20talk%20architecture">Email</a>
                     <a href="https://linkedin.com/in/allan-mdp" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>
                     <a href="https://github.com/allansli" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (opens in a new tab)</span></a>
+                    <a href="https://building.cerc.com/en/" target="_blank" rel="noopener noreferrer">Building CERC<span class="visually-hidden"> (opens in a new tab)</span></a>
                 </div>
             </div>
         </section>
